@@ -1,4 +1,4 @@
-[//]: <> (this is a comment: See Markdown-syntax at https://en.wikipedia.org/wiki/Markdown)
+[//]: # (this is a comment: See Markdown-syntax at https://en.wikipedia.org/wiki/Markdown)
 
 # Privacy Friendly Solitaire
 This application is a basic Klondike-Solitaire game for Android. It is designed to be especially
