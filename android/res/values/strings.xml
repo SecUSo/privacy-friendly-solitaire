@@ -13,10 +13,10 @@
     <string name="action_game">Game</string>
 
 
-
-
     <!-- from here on: may not be used, later decide which is needed! -->
     <!-- TODO: delete unused strings -->
+    <string name ="appbar_scrolling_view_behavior">Keine Ahnung</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 

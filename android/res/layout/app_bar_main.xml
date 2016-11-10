@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="org.secuso.privacyfriendlysolitaire.MainActivity">
+
+
+    <include layout="@layout/toolbar" />
+
+    <include layout="@layout/content_main" />
+
+    <Button
+        android:id="@+id/button_welcomedialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="@dimen/fab_margin"
+        android:background="@drawable/button_normal"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:text="@string/main_button_welcomedialog"
+        android:textColor="@color/white" />
+
+</android.support.design.widget.CoordinatorLayout>
