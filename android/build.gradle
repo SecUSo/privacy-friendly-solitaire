@@ -78,7 +78,7 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'org.secuso.privacyfriendlysolitaire/org.secuso.privacyfriendlysolitaire.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'org.secuso.privacyfriendlysolitaire/org.secuso.privacyfriendlysolitaire.Activities.AndroidLauncher'
 }
 
 // sets up the Android Eclipse project, using the old Ant based build.

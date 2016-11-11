@@ -4,10 +4,10 @@
     android:versionCode="1"
     android:versionName="1.0">
 
-    <uses-sdk
-        android:minSdkVersion="17"
-        android:targetSdkVersion="24" />
-
+    <!--in gradle script, if it is removed from gradle, uncomment here-->
+    <!--<uses-sdk-->
+    <!--android:minSdkVersion="17"-->
+    <!--android:targetSdkVersion="24" />-->
 
 
     <!--android:theme="@style/GdxTheme"-->
@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".AndroidLauncher"
+            android:name=".Activities.AndroidLauncher"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="landscape">
@@ -30,7 +30,7 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".SplashActivity"
+            android:name=".Activities.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,7 +39,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>

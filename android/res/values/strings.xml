@@ -75,7 +75,11 @@
     <string name="pref_example_summary">Example Summary</string>
 
     <!-- ### WELCOME DIALOG ### -->
-    <string name="welcome_text">This App serves as a guideline to see the basic design of Privacy Friendly Apps. The sourcecode is available at GitHub. For further explanations have a look at the Privacy Friendly App Guide.\n\nThe welcome screen should introduce the app and the key elements of the start page.</string>
+    <!-- TODO: The welcome screen should introduce the app and the key elements of the start page.-->
+    <string name="welcome_text"> This App is a basic Klondike Solitaire Game analogous to the known
+        Windows Solitaire.
+        \n\n
+        The sourcecode is available at GitHub.\n\n</string>
     <string name="welcome">Welcome</string>
     <string name="okay">Okay</string>
     <string name="viewhelp">View Help</string>

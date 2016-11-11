@@ -1,4 +1,4 @@
-package org.secuso.privacyfriendlysolitaire;
+package org.secuso.privacyfriendlysolitaire.Activities;
 
 import android.os.Bundle;
 import android.view.Gravity;
@@ -12,13 +12,14 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.surfaceview.GLSurfaceView20;
 
 import org.secuso.privacyfriendlysolitaire.Game;
+import org.secuso.privacyfriendlysolitaire.R;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.outer_layout);
+		setContentView(R.layout.game_layout);
 
 		// just for demo-reasons
 		final Button testButton = (Button) findViewById(R.id.test_button);
