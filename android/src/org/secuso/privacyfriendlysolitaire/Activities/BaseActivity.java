@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.GravityCompat;
@@ -20,7 +19,8 @@ import android.view.View;
 import org.secuso.privacyfriendlysolitaire.R;
 
 /**
- * taken as is from privacy-friendly-example-app
+ * taken as is from privacy-friendly-example-app, only changed package names, and callDrawerItem to
+ * match the app at hand
  */
 public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -98,11 +98,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         selectNavigationItem(itemId);
 
         // fade out the active activity
-        // TODO: wieder einblenden?
-//        View mainContent = findViewById(R.id.main_content);
-//        if (mainContent != null) {
-//            mainContent.animate().alpha(0).setDuration(MAIN_CONTENT_FADEOUT_DURATION);
-//        }
+        View mainContent = findViewById(R.id.main_content);
+        if (mainContent != null) {
+            mainContent.animate().alpha(0).setDuration(MAIN_CONTENT_FADEOUT_DURATION);
+        }
         return true;
     }
 
@@ -146,10 +145,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 //                intent = new Intent(this, GameActivity.class);
 //                createBackStack(intent);
 //                break;
-//            case R.id.nav_about:
-//                intent = new Intent(this, AboutActivity.class);
-//                createBackStack(intent);
-//                break;
+            case R.id.nav_about:
+                intent = new Intent(this, AboutActivity.class);
+                createBackStack(intent);
+                break;
 //            case R.id.nav_help:
 //                intent = new Intent(this, HelpActivity.class);
 //                createBackStack(intent);

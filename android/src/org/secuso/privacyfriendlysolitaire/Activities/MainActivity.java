@@ -1,6 +1,6 @@
 package org.secuso.privacyfriendlysolitaire.Activities;
 
-import android.app.Activity;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-
 
 import org.secuso.privacyfriendlysolitaire.R;
 import org.secuso.privacyfriendlysolitaire.Utils.Config;
@@ -32,10 +31,7 @@ public class MainActivity extends BaseActivity {
 
     public static class WelcomeDialog extends DialogFragment {
 
-//        @Override
-//        public void onAttach(Activity activity) {
-//            super.onAttach(activity);
-//        }
+        // method onAttach removed, was deprecated
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
