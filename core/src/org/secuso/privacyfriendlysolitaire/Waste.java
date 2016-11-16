@@ -7,6 +7,6 @@ package org.secuso.privacyfriendlysolitaire;
 public class Waste {
     /*
     festlegen des Waste Stapels
-    ein oder drei Karten
+    ein oder drei Karten sollte hier vom Deck erben?
      */
 }

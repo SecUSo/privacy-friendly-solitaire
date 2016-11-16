@@ -7,7 +7,25 @@ package org.secuso.privacyfriendlysolitaire;
 public class Card {
 
 
-    //Symbol, Ziffer, Farbe, Sonderkarten festlegen
+    /*
+    Define the cards
+     */
+
+    public static final String[] CARD_Deck = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+
+    public static final int KING = 13;
+    public static final int Queen = 12;
+    public static final int JACK =  11;
+    public static final int ASS =    1;
+
+    /*
+    Define the card symbols
+     */
+    public static final int Herz =  0;
+    public static final int Kreuz = 1;
+    public static final int PIK =   2;
+    public static final int KARO =  3;
+
 
 
 
