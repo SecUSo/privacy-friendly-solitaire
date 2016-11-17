@@ -11,7 +11,7 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.surfaceview.GLSurfaceView20;
 
-import org.secuso.privacyfriendlysolitaire.Game;
+import org.secuso.privacyfriendlysolitaire.model.Game;
 import org.secuso.privacyfriendlysolitaire.R;
 
 public class AndroidLauncher extends AndroidApplication {

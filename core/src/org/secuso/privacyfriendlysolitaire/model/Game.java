@@ -1,4 +1,4 @@
-package org.secuso.privacyfriendlysolitaire;
+package org.secuso.privacyfriendlysolitaire.model;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
