@@ -29,4 +29,11 @@ public class Card {
 
 
 
+
+//enum vergleich int werte besser als string
+    //val und suit
+    // vergleich von symbolen
+    // getColor getNum
+    //
+
 }
