@@ -1,4 +1,4 @@
-package org.secuso.privacyfriendlysolitaire.model;
+package org.secuso.privacyfriendlysolitaire.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Game extends ApplicationAdapter {
+public class Application_maybe_later_Controller extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 

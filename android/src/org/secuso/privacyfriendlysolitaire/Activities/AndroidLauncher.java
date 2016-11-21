@@ -11,7 +11,7 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.surfaceview.GLSurfaceView20;
 
-import org.secuso.privacyfriendlysolitaire.model.Game;
+import org.secuso.privacyfriendlysolitaire.game.Application_maybe_later_Controller;
 import org.secuso.privacyfriendlysolitaire.R;
 
 public class AndroidLauncher extends AndroidApplication {
@@ -33,7 +33,7 @@ public class AndroidLauncher extends AndroidApplication {
 		});
 
 		GLSurfaceView20 gameView =
-				(GLSurfaceView20) initializeForView(new Game(), new AndroidApplicationConfiguration());
+				(GLSurfaceView20) initializeForView(new Application_maybe_later_Controller(), new AndroidApplicationConfiguration());
 
 		LinearLayout outerLayout = (LinearLayout) findViewById(R.id.outer);
 		outerLayout.addView(gameView);
