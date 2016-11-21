@@ -6,14 +6,20 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import static org.secuso.privacyfriendlysolitaire.game.Constants.*;
+
 public class Application_maybe_later_Controller extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
+    SolitaireGame solitaireGame;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
+
+        // TODO: find out which mode
+        solitaireGame = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(MODE_ONE_CARD_DEALT);
 	}
 
 	@Override

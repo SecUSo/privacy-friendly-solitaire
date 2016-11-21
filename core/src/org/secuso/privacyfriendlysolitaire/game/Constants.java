@@ -7,6 +7,8 @@ package org.secuso.privacyfriendlysolitaire.game;
 
 public class Constants {
 
-    public final static int MODE_ONE_CARD_DEALT = 0;
-    public final static int MODE_THREE_CARDs_DEALT = 1;
+    // unconventional modeling, but this simplifies the usage,
+    // because the mode itself says how much cards to draw
+    public final static int MODE_ONE_CARD_DEALT = 1;
+    public final static int MODE_THREE_CARDS_DEALT = 3;
 }

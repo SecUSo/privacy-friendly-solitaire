@@ -20,4 +20,13 @@ public class SolitaireGame {
     private ArrayList<Tableau> tableaus = new ArrayList(7);
 
 
+    protected Deck getDeck(){
+        return deck;
+    }
+
+    protected Foundation getFoundationAtPos(int n){
+        return foundations.get(n);
+    }
+
+
 }
