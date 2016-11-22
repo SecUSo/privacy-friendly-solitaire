@@ -38,6 +38,17 @@ public class Card {
         return suit;
     }
 
+    /**
+     * @return the color of the card according to its suit
+     */
+    public Color getColor() {
+        if (this.getSuit() == Suit.CLUBS || this.getSuit() == Suit.SPADES) {
+            return Color.BLACK;
+        } else {
+            return Color.RED;
+        }
+    }
+
 }
 
 
