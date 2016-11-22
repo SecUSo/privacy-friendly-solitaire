@@ -10,6 +10,9 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         RankTests.class,
+        DeckWasteTests.class,
+        FoundationTests.class,
+        TableauTests.class
 })
 
 public class ModelTestSuite {
