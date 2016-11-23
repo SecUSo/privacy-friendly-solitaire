@@ -141,10 +141,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-//            case R.id.nav_game:
-//                intent = new Intent(this, GameActivity.class);
-//                createBackStack(intent);
-//                break;
+            case R.id.nav_game:
+                intent = new Intent(this, AndroidLauncher.class);
+                createBackStack(intent);
+                break;
             case R.id.nav_about:
                 intent = new Intent(this, AboutActivity.class);
                 createBackStack(intent);

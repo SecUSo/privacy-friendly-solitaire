@@ -36,4 +36,8 @@ public class Application_maybe_later_Controller extends ApplicationAdapter {
 		batch.dispose();
 		img.dispose();
 	}
+
+	public void printToConsole(){
+		Gdx.app.log("Tag", "Hi");
+	}
 }

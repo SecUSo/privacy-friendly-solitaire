@@ -19,7 +19,7 @@ android {
     }
     defaultConfig {
         applicationId "org.secuso.privacyfriendlysolitaire"
-        minSdkVersion 17
+        minSdkVersion 21
         targetSdkVersion 24
     }
 }
