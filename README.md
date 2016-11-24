@@ -3,11 +3,10 @@
 # Privacy Friendly Solitaire
 This application is a basic Klondike-Solitaire game for Android. It is designed to be especially
 privacy friendly in that it uses only Android permissions that are strictly necessary for its
-functioning and abstains from advertisement or tracking mechanisms. Further information can be found
-on [link](secuso.org/pfa).
+functioning and abstains from advertisement or tracking mechanisms.
 
 # API Reference
-Mininum SDK: 17 Target SDK: 24
+Mininum SDK: 21 Target SDK: 24
 
 # License
 Privacy Friendly Solitaire is licensed under the GPLv3. Copyright (C) 2016 Emine Saracoglu, Moritz
