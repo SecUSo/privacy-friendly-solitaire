@@ -7,7 +7,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by m0 on 11/22/16.
+ * @author M. Fischer
  */
 
 public class RankTests {

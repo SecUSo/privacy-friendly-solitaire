@@ -2,7 +2,6 @@ package org.secuso.privacyfriendlysolitaire.test;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runners.Suite;
 import org.secuso.privacyfriendlysolitaire.model.Card;
 import org.secuso.privacyfriendlysolitaire.model.Rank;
 import org.secuso.privacyfriendlysolitaire.model.Suit;
@@ -15,12 +14,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by m0 on 11/22/16.
+ * @author M. Fischer
  */
 
 public class TableauTests {
-    Vector<Card> clubs;
-    Vector<Card> hearts;
+    private Vector<Card> clubs;
+    private Vector<Card> hearts;
 
     @Before
     public void init() {

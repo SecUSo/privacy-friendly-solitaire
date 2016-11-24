@@ -1,7 +1,7 @@
 package org.secuso.privacyfriendlysolitaire.test;
 
 /**
- * Created by m0 on 11/22/16.
+ * @author M. Fischer
  */
 
 import org.junit.runner.RunWith;

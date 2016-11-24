@@ -1,8 +1,6 @@
 package org.secuso.privacyfriendlysolitaire.game;
 
 import org.secuso.privacyfriendlysolitaire.model.Card;
-import org.secuso.privacyfriendlysolitaire.model.DeckWaste;
-import org.secuso.privacyfriendlysolitaire.model.Foundation;
 import org.secuso.privacyfriendlysolitaire.model.Rank;
 import org.secuso.privacyfriendlysolitaire.model.Suit;
 import org.secuso.privacyfriendlysolitaire.model.Tableau;
@@ -12,7 +10,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.Vector;
 
@@ -53,15 +50,14 @@ public class GeneratorSolitaireInstance {
         Set<Card> allCards = generateAllCards();
 
         // bring generated cards into random order
-        List<Card> scrambledCardList = new ArrayList();
-        Iterator iter = allCards.iterator();
-        while (iter.hasNext()) {
-            scrambledCardList.add((Card) iter.next());
+        List<Card> scrambledCardList = new ArrayList<Card>();
+        for (Card c : allCards) {
+            scrambledCardList.add(c);
         }
 
         // generate data container to store the deck and tableaus
         Vector<Card> deck = new Vector<Card>(24);
-        HashMap<Integer, Vector<Card>> tableaus = new HashMap(7);
+        HashMap<Integer, Vector<Card>> tableaus = new HashMap<Integer, Vector<Card>>(7);
         for (int i = 0; i < NR_OF_TABLEAUS; i++) {
             int j = i + 1;
             tableaus.put(i, new Vector<Card>(j));
@@ -73,7 +69,7 @@ public class GeneratorSolitaireInstance {
 
             // fill tableaus
             if (i < 28) {
-                int indexOfTableau = mapIndexToTableau(i);
+                int indexOfTableau = GeneratorUtils.mapIndexToTableau(i);
                 Vector<Card> currentTableau = tableaus.get(indexOfTableau);
                 currentTableau.add(c);
                 tableaus.put(indexOfTableau, currentTableau);
@@ -84,69 +80,7 @@ public class GeneratorSolitaireInstance {
             }
         }
 
-        return constructInstanceFromCardLists(mode, deck, tableaus);
-    }
-
-    /**
-     * @param i index of a card in the initial scrambled list
-     * @return the correct tableau it should be added to
-     * @throws IllegalArgumentException if i>27, because this card should not be added into a tableau
-     */
-    private static int mapIndexToTableau(int i) {
-        int firstUpmost = 0, secondUpmost = 2, thirdUpmost = 5, fourthUpmost = 9,
-                fifthUpmost = 14, sixthUpmost = 20, seventhUpmost = 27;
-        if (i <= firstUpmost) {
-            return 0;
-        } else if (i <= secondUpmost) {
-            return 1;
-        } else if (i <= thirdUpmost) {
-            return 2;
-        } else if (i <= fourthUpmost) {
-            return 3;
-        } else if (i <= fifthUpmost) {
-            return 4;
-        } else if (i <= sixthUpmost) {
-            return 5;
-        } else if (i <= seventhUpmost) {
-            return 6;
-        } else {
-            throw new IllegalArgumentException("index for tableaus may not ");
-        }
-    }
-
-    /**
-     * @param mode     the mode
-     * @param deck     a list of deck cards
-     * @param tableaus a hashmap of int->Vector<Card> containing the tableaus
-     * @return an instance generated from the given lists
-     */
-    private static SolitaireGame constructInstanceFromCardLists(int mode, Vector<Card> deck,
-                                                                HashMap<Integer, Vector<Card>> tableaus) {
-        DeckWaste d = new DeckWaste(mode);
-        d.setDeck(deck);
-
-        ArrayList<Tableau> tableauList = new ArrayList<Tableau>(NR_OF_TABLEAUS);
-        for (int i = 0; i < NR_OF_TABLEAUS; i++) {
-            Vector<Card> t = tableaus.get(i);
-            Tableau tableau = new Tableau();
-            // add last card (with highest index) as face up
-            tableau.addFaceUp(t.lastElement());
-
-            // remove this card from the interim-list and add the rest as face down
-            t.removeElement(t.lastElement());
-            if (!t.isEmpty()) {
-                tableau.setFaceDown(t);
-            }
-
-            // add to list
-            tableauList.add(tableau);
-        }
-        ArrayList<Foundation> foundations = new ArrayList<Foundation>(NR_OF_FOUNDATIONS);
-        for (int i = 0; i < NR_OF_FOUNDATIONS; i++) {
-            foundations.add(new Foundation());
-        }
-
-        return new SolitaireGame(d, foundations, tableauList);
+        return GeneratorUtils.constructInstanceFromCardLists(mode, deck, tableaus);
     }
 
     /**
@@ -220,7 +154,7 @@ public class GeneratorSolitaireInstance {
     /**
      * @param c the card
      * @param t the tableau
-     * @return true if the card can be moved to this tableau, else false
+     * @return 1 if the card can be moved to this tableau, else 0
      */
     private static int isMovingPossible(Card c, Tableau t) {
         Vector<Card> testingVector = new Vector<Card>(1);

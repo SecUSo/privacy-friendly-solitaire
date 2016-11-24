@@ -9,9 +9,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import static org.secuso.privacyfriendlysolitaire.game.Constants.*;
 
 public class Application_maybe_later_Controller extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-    SolitaireGame solitaireGame;
+	private SpriteBatch batch;
+    private Texture img;
+    private SolitaireGame solitaireGame;
 
 	@Override
 	public void create () {

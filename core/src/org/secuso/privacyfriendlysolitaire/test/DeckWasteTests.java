@@ -13,13 +13,13 @@ import static org.junit.Assert.assertTrue;
 import java.util.Vector;
 
 /**
- * Created by m0 on 11/22/16.
+ * @author M. Fischer
  */
 
 public class DeckWasteTests {
-    DeckWaste deckwaste1;
-    DeckWaste deckwaste3;
-    Vector<Card> clubs;
+    private DeckWaste deckwaste1;
+    private DeckWaste deckwaste3;
+    private Vector<Card> clubs;
 
     @Before
     public void init() {

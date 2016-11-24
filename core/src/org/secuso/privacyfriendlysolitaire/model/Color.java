@@ -1,7 +1,7 @@
 package org.secuso.privacyfriendlysolitaire.model;
 
 /**
- * Created by m0 on 11/21/16.
+ * @author M. Fischer
  */
 
 public enum Color {
