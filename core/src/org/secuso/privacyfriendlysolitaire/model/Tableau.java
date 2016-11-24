@@ -84,10 +84,21 @@ public class Tableau {
      * @return true if the cards could be added to the tableau
      */
     public boolean addFaceUpVector(Vector<Card> vecCards) {
+        if(isAddingFaceUpVectorPossible(vecCards)){
+            this.faceUp.addAll(vecCards);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param vecCards the vector of cards that should be added to this tableau pile
+     * @return true if adding the cards to the tableau would be allowed
+     */
+    public boolean isAddingFaceUpVectorPossible(Vector<Card> vecCards) {
         if (!vecCards.isEmpty()) {
             if (this.faceDown.isEmpty() && this.faceUp.isEmpty()) {//empty tableau piles can be filled with a stack starting with a king
                 if (vecCards.firstElement().getRank() == Rank.KING) {
-                    this.faceUp = vecCards;
                     return true;
                 } else {
                     return false;
@@ -95,7 +106,6 @@ public class Tableau {
             } else if (!this.faceDown.isEmpty() && this.faceUp.isEmpty()) {//cannot add cards, face down card has to be turned over first
                 return false;
             } else if (this.faceUp.lastElement().getColor() != vecCards.firstElement().getColor() && vecCards.firstElement().getRank().isPredecessor(this.faceUp.lastElement().getRank())) {
-                this.faceUp.addAll(vecCards);
                 return true;
             } else {
                 return false;
