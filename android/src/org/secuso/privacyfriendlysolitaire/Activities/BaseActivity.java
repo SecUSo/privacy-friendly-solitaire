@@ -143,7 +143,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 break;
             case R.id.nav_game:
-                intent = new Intent(this, AndroidLauncher.class);
+                intent = new Intent(this, Solitaire.class);
                 createBackStack(intent);
                 break;
             case R.id.nav_about:

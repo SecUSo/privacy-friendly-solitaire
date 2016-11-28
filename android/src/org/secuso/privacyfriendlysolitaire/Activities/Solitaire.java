@@ -14,7 +14,7 @@ import com.badlogic.gdx.backends.android.surfaceview.GLSurfaceView20;
 import org.secuso.privacyfriendlysolitaire.game.Application_maybe_later_Controller;
 import org.secuso.privacyfriendlysolitaire.R;
 
-public class AndroidLauncher extends AndroidApplication {
+public class Solitaire extends AndroidApplication {
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

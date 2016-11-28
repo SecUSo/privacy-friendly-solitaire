@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlysolitaire.R;
 
-public class GameActivity  extends BaseActivity {
+public class MenuActivity extends BaseActivity {
 
     private ViewPager mViewPager;
     private ImageView mArrowLeft;
@@ -28,7 +28,7 @@ public class GameActivity  extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game);
+        setContentView(R.layout.activity_menu);
 
 
         final SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
