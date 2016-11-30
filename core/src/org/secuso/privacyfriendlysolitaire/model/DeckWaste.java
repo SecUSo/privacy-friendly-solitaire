@@ -106,10 +106,10 @@ public class DeckWaste {
     /**
      * just probes if resetting the deck would be possible
      *
-     * @return true if the deck is empty
+     * @return true if the deck is empty and waste is not empty
      */
     public boolean canReset() {
-        return this.deck.isEmpty();
+        return this.deck.isEmpty() && !this.waste.isEmpty();
     }
 
     /**
