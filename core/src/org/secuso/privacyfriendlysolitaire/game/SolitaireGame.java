@@ -60,6 +60,10 @@ public class SolitaireGame extends Observable {
         return tableaus;
     }
 
+    public ArrayList<Foundation> getFoundations() {
+        return foundations;
+    }
+
     public Action getPrevAction() {
         return prevAction;
     }
