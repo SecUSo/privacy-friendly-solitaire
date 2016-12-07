@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.preference.PreferenceActivity;
+import android.widget.Button;
 
 import org.secuso.privacyfriendlysolitaire.R;
 
@@ -55,6 +56,8 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         //}
 
         overridePendingTransition(0, 0);
+
+
     }
 
     @Override

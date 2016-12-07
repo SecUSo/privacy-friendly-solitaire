@@ -12,8 +12,14 @@
             android:summaryOn="@string/pref_sound_switch_summary_on"
             android:summaryOff="@string/pref_sound_switch_summary_off"
             android:defaultValue="false"/>
-        <Preference android:title="Test Setting"
-            android:summary="Text Summary"/>
+
+        <SwitchPreference
+            android:id="@+id/pref_shake_switch"
+            android:key="pref_shake_switch"
+            android:title="@string/pref_shake_switch"
+            android:summaryOn="@string/pref_shake_switch_summary_on"
+            android:summaryOff="@string/pref_shake_switch_summary_off"
+            android:defaultValue="false"/>
 
         <ListPreference
             android:title="Sprache"

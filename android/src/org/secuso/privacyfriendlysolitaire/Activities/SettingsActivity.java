@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
@@ -81,6 +80,7 @@ public class SettingsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_settings);
+
 
 
         //setupActionBar();
@@ -158,7 +158,7 @@ public class SettingsActivity extends BaseActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_general);
+            addPreferencesFromResource(R.xml.pref_settings);
             //setHasOptionsMenu(true);
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
