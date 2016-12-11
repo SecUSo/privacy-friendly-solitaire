@@ -1,6 +1,7 @@
 package org.secuso.privacyfriendlysolitaire.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -34,10 +35,7 @@ public class View implements Observer {
 
     private float offsetBetweenFaceDownCards = 30;
 
-    private float scalingForCards = 1.4f;
-    private float scalingForCardWidth = 1.7f;
-
-    private ArrayList<Image> cards = new ArrayList<Image>(52);
+    private HashMap<String, Image> cards = new HashMap<String, Image>(52);
 
     public View(SolitaireGame game, Stage stage) {
         this.stage = stage;
@@ -83,19 +81,19 @@ public class View implements Observer {
                 // x position is dependant on nr of tableau
                 float x = (2 + i * (1 + 3)) * widthOneSpace;
                 // y position is dependant on nr in faceDown-Vector
-                float y = 10 * heightOneSpace - (j * offsetBetweenFaceDownCards);
+                float y = 10.5f * heightOneSpace - (j * offsetBetweenFaceDownCards);
                 setImageScalingAndPositionAndAddToStage(faceDownCard, x, y);
             }
 
             // add face-up card
             if (t.getFaceUp().size() > 1) {
-                Gdx.app.log("!!!!!!!!!!!!!!!!!!!!", "mehr als eine Face Up Karte! Diese Methode sollte nur bei der Initialisierung verwendet werden!");
+                Gdx.app.log("!!!!!!!!!!!!!!!!", "mehr als eine Face Up Karte! Diese Methode sollte nur bei der Initialisierung verwendet werden!");
             }
-            Image faceUpCard = getActorForCard(t.getFaceUp().lastElement());
+            Image faceUpCard = loadActorForCardAndSaveInMap(t.getFaceUp().lastElement());
             // x position is dependant on nr of tableau
             float x = (2 + i * (1 + 3)) * widthOneSpace;
             // y position is dependant on nr in faceDown-Vector
-            float y = 10 * heightOneSpace - (faceDownSize * offsetBetweenFaceDownCards);
+            float y = 10.5f * heightOneSpace - (faceDownSize * offsetBetweenFaceDownCards);
             setImageScalingAndPositionAndAddToStage(faceUpCard, x, y);
         }
     }
@@ -115,6 +113,12 @@ public class View implements Observer {
     }
 
 
+    /**
+     * method to react to changes in the model
+     *
+     * @param o
+     * @param arg
+     */
     @Override
     public void update(Observable o, Object arg) {
         // TODO
@@ -131,13 +135,6 @@ public class View implements Observer {
         else {
 
         }
-    }
-
-
-    private Image getActorForCard(Card card) {
-        String textureString = card.getRank().toString().toLowerCase() + "_" + card.getSuit().toString().toLowerCase();
-
-        return getImageForPath("cards/" + textureString + ".png");
     }
 
     private Image getEmptySpaceImageWithLogo() {
@@ -177,8 +174,36 @@ public class View implements Observer {
 
     private void setImageScalingAndPositionAndAddToStage(Image cardImage, float x, float y) {
         cardImage.setPosition(x, y);
-        cardImage.setScale(scalingForCards);
-        cardImage.setScaleX(scalingForCardWidth);
+        cardImage.setScale(1.4f);
+        cardImage.setScaleX(1.6f);
         stage.addActor(cardImage);
+    }
+
+    private String getCardTextureName(Card card) {
+        return card.getRank().toString().toLowerCase() + "_" + card.getSuit().toString().toLowerCase();
+    }
+
+    private Image getImageForCard(Card card) {
+        Image cardImage = cards.get(getCardTextureName(card));
+
+        if (cardImage != null) {
+            return cardImage;
+        } else {
+            return loadActorForCardAndSaveInMap(card);
+        }
+    }
+
+
+    /**
+     * @param card
+     * @return
+     */
+    private Image loadActorForCardAndSaveInMap(Card card) {
+        String textureString = getCardTextureName(card);
+        Image textureForCard = getImageForPath("cards/" + textureString + ".png");
+
+        cards.put(textureString, textureForCard);
+
+        return textureForCard;
     }
 }

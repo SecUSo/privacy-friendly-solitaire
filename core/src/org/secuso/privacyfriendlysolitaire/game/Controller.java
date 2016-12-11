@@ -1,5 +1,6 @@
 package org.secuso.privacyfriendlysolitaire.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 
@@ -39,6 +40,7 @@ public class Controller implements GestureDetector.GestureListener {
      */
     @Override
     public boolean tap(float x, float y, int count, int button) {
+        Gdx.app.log("Debug", "Click auf ("+x+","+y+")");
         return false;
     }
 
