@@ -1,8 +1,8 @@
 package org.secuso.privacyfriendlysolitaire.test;
 
 import org.junit.Test;
-import org.secuso.privacyfriendlysolitaire.game.GeneratorSolitaireInstance;
-import org.secuso.privacyfriendlysolitaire.game.GeneratorUtils;
+import org.secuso.privacyfriendlysolitaire.generator.GeneratorSolitaireInstance;
+import org.secuso.privacyfriendlysolitaire.generator.GeneratorUtils;
 import org.secuso.privacyfriendlysolitaire.game.SolitaireGame;
 import org.secuso.privacyfriendlysolitaire.model.Card;
 import org.secuso.privacyfriendlysolitaire.model.DeckWaste;
@@ -13,7 +13,6 @@ import org.secuso.privacyfriendlysolitaire.model.Tableau;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Vector;
 
 import static org.junit.Assert.assertEquals;

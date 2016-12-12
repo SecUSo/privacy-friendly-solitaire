@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 
+import org.secuso.privacyfriendlysolitaire.model.Action;
+
 /**
  * @author: I. Dix
  * <p>
@@ -16,8 +18,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Controller implements GestureDetector.GestureListener {
 
-    SolitaireGame game;
-    View view;
+    private final SolitaireGame game;
+    private final View view;
 
     public Controller(SolitaireGame initialGame, View initialView) {
         game = initialGame;
@@ -31,17 +33,24 @@ public class Controller implements GestureDetector.GestureListener {
     }
 
     /**
-     * use this when
+     * use this when user taps on the screen (thereby creating an action)
+     *
      * @param x
      * @param y
-     * @param count
+     * @param count  how many consecutive taps (taps within a specified time interval)
      * @param button
-     * @return
+     * @return true if a valid action was done, false else (e.g. because the user did not tap a sensible location)
      */
     @Override
     public boolean tap(float x, float y, int count, int button) {
-        Gdx.app.log("Debug", "Click auf ("+x+","+y+")");
+        y = invertHeight(y);
+
+
+        Action actionForClick = view.getActionForTap(x, y);
+
+        // TODO comment in other line as soon as model is finished
         return false;
+//        return actionForClick == null ? false : game.handleAction(actionForClick);
     }
 
     @Override
@@ -77,5 +86,16 @@ public class Controller implements GestureDetector.GestureListener {
     @Override
     public void pinchStop() {
 
+    }
+
+
+    /**
+     * the positions for y are inverted for positioning and input checking, so we invert it here!
+     *
+     * @param y
+     * @return heightScreen-y resulting in just the opposite y
+     */
+    private float invertHeight(float y) {
+        return Gdx.graphics.getHeight() - y;
     }
 }

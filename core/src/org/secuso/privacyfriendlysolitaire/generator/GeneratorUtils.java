@@ -1,5 +1,6 @@
-package org.secuso.privacyfriendlysolitaire.game;
+package org.secuso.privacyfriendlysolitaire.generator;
 
+import org.secuso.privacyfriendlysolitaire.game.SolitaireGame;
 import org.secuso.privacyfriendlysolitaire.model.Card;
 import org.secuso.privacyfriendlysolitaire.model.DeckWaste;
 import org.secuso.privacyfriendlysolitaire.model.Foundation;

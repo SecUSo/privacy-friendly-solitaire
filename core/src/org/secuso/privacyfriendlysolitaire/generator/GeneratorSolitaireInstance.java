@@ -1,5 +1,6 @@
-package org.secuso.privacyfriendlysolitaire.game;
+package org.secuso.privacyfriendlysolitaire.generator;
 
+import org.secuso.privacyfriendlysolitaire.game.SolitaireGame;
 import org.secuso.privacyfriendlysolitaire.model.Card;
 import org.secuso.privacyfriendlysolitaire.model.Rank;
 import org.secuso.privacyfriendlysolitaire.model.Suit;
@@ -8,7 +9,6 @@ import org.secuso.privacyfriendlysolitaire.model.Tableau;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
@@ -109,8 +109,8 @@ public class GeneratorSolitaireInstance {
      * <li>None of the 8/24 playable cards in the deck can be moved to any of the seven tableaus</li>
      * </ul>
      *
-     * @param instance
-     * @return
+     * @param instance the instance to be checked
+     * @return whether it is playable, meaning that at least one of the conditions given above is false
      */
     public static boolean isInstancePlayable(SolitaireGame instance, int mode) {
         int nrOfAces = 0;

@@ -8,8 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
+import org.secuso.privacyfriendlysolitaire.generator.GeneratorSolitaireInstance;
+
 public class Application extends ApplicationAdapter {
-    Stage stage;
+    private Stage stage;
 
     // state of game
     private SolitaireGame game;
