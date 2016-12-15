@@ -4,6 +4,7 @@ package org.secuso.privacyfriendlysolitaire.game;
 import com.badlogic.gdx.Game;
 
 import org.secuso.privacyfriendlysolitaire.model.Action;
+import org.secuso.privacyfriendlysolitaire.model.Card;
 import org.secuso.privacyfriendlysolitaire.model.DeckWaste;
 import org.secuso.privacyfriendlysolitaire.model.Foundation;
 import org.secuso.privacyfriendlysolitaire.model.GameObject;
@@ -13,6 +14,7 @@ import org.secuso.privacyfriendlysolitaire.model.Tableau;
 
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Vector;
 
 /**
  * @author: I. Dix
@@ -31,9 +33,14 @@ public class SolitaireGame extends Observable {
     private Action prevAction;
 
     /**
-     * the recent succesful move done in game
+     * the vector of moves that were made in this game so far
      */
-    private Move recentMove;
+    private Vector<Move> moves;
+
+    /**
+     * the index of the most recent move in the moves vector
+     */
+    private int moveIndex;
 
     public SolitaireGame(DeckWaste initialDeck, ArrayList<Foundation> initialFoundations,
                          ArrayList<Tableau> initialTableaus) {
@@ -41,7 +48,8 @@ public class SolitaireGame extends Observable {
         foundations = initialFoundations;
         tableaus = initialTableaus;
         prevAction = null;
-        recentMove = null;
+        moves = new Vector<Move>();
+        moveIndex = -1;
     }
 
     public DeckWaste getDeckWaste() {
@@ -60,16 +68,19 @@ public class SolitaireGame extends Observable {
         return tableaus;
     }
 
-    public ArrayList<Foundation> getFoundations() {
-        return foundations;
-    }
-
+    /**
+     * @return the previous action the game received, only marks of cards as source of a move
+     * will be saved here
+     */
     public Action getPrevAction() {
         return prevAction;
     }
 
-    public Move getRecentMove() {
-        return recentMove;
+    /**
+     * @return the vector of moves that were made in this game so far
+     */
+    public Vector<Move> getMoves() {
+        return moves;
     }
 
     /**
@@ -86,7 +97,6 @@ public class SolitaireGame extends Observable {
                 return handleTableau(action);
             case FOUNDATION:
                 return handleFoundation(action);
-            //TODO tableau face down card is target of action?!
         }
         return false;
     }
@@ -96,16 +106,15 @@ public class SolitaireGame extends Observable {
      * @return true if the action was valid and succesfully handled
      */
     private boolean handleDeck(Action action) {
+        this.saveAction(action);
         if (this.deckAndWaste.canTurnOver()) {
             if (this.deckAndWaste.turnOver()) {
-                this.recentMove = new Move(action, null);
-                notifyObservers();
+                makeMove(null);
                 return true;
             }
         } else if (this.deckAndWaste.canReset()) {
             if (this.deckAndWaste.reset()) {
-                this.recentMove = new Move(action, action);
-                notifyObservers();
+                makeMove(action);
                 return true;
             }
         }
@@ -193,9 +202,21 @@ public class SolitaireGame extends Observable {
      * @param action the action that specifies the target of this move
      */
     private void makeMove(Action action) {
-        this.recentMove = new Move(prevAction, action);
+        cleanUpMoves();
+        this.moves.add(new Move(prevAction, action));
         this.prevAction = null;
         notifyObservers();
+    }
+
+    /**
+     * deletes all moves which indices are greater than the current moveIndex
+     */
+    private void cleanUpMoves() {
+        if (moveIndex < moves.size() - 1) {
+            for (int i = moves.size() - 1; i > moveIndex; --i) {
+                moves.remove(i);
+            }
+        }
     }
 
     /**
@@ -212,7 +233,13 @@ public class SolitaireGame extends Observable {
      * @return true if the cards could be moved between two tableaus
      */
     private boolean handleTableauToTableau(Action action) {
-        //TODO implement
+        //get cards from source tableau
+        Vector<Card> toBeMoved = this.getTableauAtPos(prevAction.getStackIndex()).getCopyFaceUpVector(prevAction.getCardIndex());
+        //check if they can be added to the target tableau
+        if (this.getTableauAtPos(action.getStackIndex()).isAddingFaceUpVectorPossible(toBeMoved)) {
+            this.getTableauAtPos(action.getStackIndex()).addFaceUpVector(this.getTableauAtPos(prevAction.getStackIndex()).removeFaceUpVector(prevAction.getCardIndex()));
+            return true;
+        }
         return false;
     }
 
@@ -221,7 +248,18 @@ public class SolitaireGame extends Observable {
      * @return true if a card could be moved from waste to tableau
      */
     private boolean handleWasteToTableau(Action action) {
-        //TODO implement
+        //check if a card is on top of the waste
+        if (!deckAndWaste.isWasteEmpty()) {
+            //get card from the waste
+            Vector<Card> toBeMoved = new Vector<Card>();
+            toBeMoved.add(deckAndWaste.getWasteTop());
+            //check if it can be added to the tableau
+            if (this.getTableauAtPos(action.getStackIndex()).isAddingFaceUpVectorPossible(toBeMoved)) {
+                this.getTableauAtPos(action.getStackIndex()).addFaceUpVector(toBeMoved);
+                this.deckAndWaste.removeWasteTop();
+                return true;
+            }
+        }
         return false;
     }
 
@@ -230,7 +268,17 @@ public class SolitaireGame extends Observable {
      * @return true if a card could be moved from foundation to tableau
      */
     private boolean handleFoundationToTableau(Action action) {
-        //TODO implement
+        //get card to be moved from the foundation
+        if (!this.getFoundationAtPos(prevAction.getStackIndex()).isEmpty()) {
+            Vector<Card> toBeMoved = new Vector<Card>();
+            toBeMoved.add(this.getFoundationAtPos(prevAction.getStackIndex()).getFoundationTop());
+            //check if it can be added to the tableau
+            if (this.getTableauAtPos(action.getStackIndex()).isAddingFaceUpVectorPossible(toBeMoved)) {
+                this.getTableauAtPos(action.getStackIndex()).addFaceUpVector(toBeMoved);
+                this.getFoundationAtPos(prevAction.getStackIndex()).removeFoundationTop();
+                return true;
+            }
+        }
         return false;
     }
 
@@ -239,7 +287,15 @@ public class SolitaireGame extends Observable {
      * @return true if a card could be moved from tableau to foundation
      */
     private boolean handleTableauToFoundation(Action action) {
-        //TODO implement
+        //get cards from source tableau
+        Vector<Card> toBeMoved = this.getTableauAtPos(prevAction.getStackIndex()).getCopyFaceUpVector(prevAction.getCardIndex());
+        if (toBeMoved.size() == 1) {
+            if (this.getFoundationAtPos(action.getStackIndex()).canAddCard(toBeMoved.firstElement())) {
+                this.getFoundationAtPos(action.getStackIndex()).addCard(toBeMoved.firstElement());
+                this.getTableauAtPos(prevAction.getStackIndex()).removeFaceUpVector(prevAction.getCardIndex());
+                return true;
+            }
+        }
         return false;
     }
 
@@ -248,7 +304,21 @@ public class SolitaireGame extends Observable {
      * @return true if a card could be moved from waste to foundation
      */
     private boolean handleWasteToFoundation(Action action) {
-        //TODO implement
+        //check if a card is on top of the waste
+        if (!deckAndWaste.isWasteEmpty()) {
+            //get card from the waste
+            Vector<Card> toBeMoved = new Vector<Card>();
+            toBeMoved.add(deckAndWaste.getWasteTop());
+            //check if it can be added to the foundation
+            if (toBeMoved.size() == 1) {
+                if (this.getFoundationAtPos(action.getStackIndex()).canAddCard(toBeMoved.firstElement())) {
+                    this.getFoundationAtPos(action.getStackIndex()).addCard(toBeMoved.firstElement());
+                    this.deckAndWaste.removeWasteTop();
+                    return true;
+                }
+            }
+
+        }
         return false;
     }
 

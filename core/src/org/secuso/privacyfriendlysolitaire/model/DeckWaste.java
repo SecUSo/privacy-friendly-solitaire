@@ -79,6 +79,13 @@ public class DeckWaste {
     }
 
     /**
+     * @return true if the waste is empty
+     */
+    public boolean isWasteEmpty() {
+        return this.waste.isEmpty();
+    }
+
+    /**
      * just probes if turning over would be possible
      *
      * @return true if cards could be turned over from deck to waste

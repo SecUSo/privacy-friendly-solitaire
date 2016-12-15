@@ -120,6 +120,17 @@ public class Tableau {
      * @return the vector of cards that was removed from the tableau
      */
     public Vector<Card> removeFaceUpVector(int index) {
+        Vector<Card> result = getCopyFaceUpVector(index);
+        this.faceUp.removeAll(result);
+        return result;
+
+    }
+
+    /**
+     * @param index the index of the first card in the stack that shall be copied from face up cards on the tableau
+     * @return a copy of a vector of cards on this tableau starting with the card specified by index
+     */
+    public Vector<Card> getCopyFaceUpVector(int index) {
         if ((index < 0) || (index >= this.faceUp.size())) {
             return new Vector<Card>();
         } else {
@@ -130,6 +141,14 @@ public class Tableau {
             this.faceUp.removeAll(result);
             return result;
         }
+    }
+
+    /**
+     * @param vecCards the vector of cards that shall be removed from the tableau
+     * @return true if the tableau changed as a result of the call
+     */
+    public boolean removeAllFaceUpVector(Vector<Card> vecCards) {
+        return this.faceUp.removeAll(vecCards);
     }
 
 }

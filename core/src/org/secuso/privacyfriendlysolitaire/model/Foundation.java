@@ -39,6 +39,10 @@ public class Foundation {
         return cards;
     }
 
+    public boolean isEmpty() {
+        return this.cards.isEmpty();
+    }
+
     /**
      * @param card the Card that should be added to this Foundation
      * @return true if the card could be added to the Foundation, false if suit did not fit or card is not the successor of the top card of the Foundation
@@ -62,6 +66,45 @@ public class Foundation {
         } else { // foundation not empty and suit does not fit --> cannot add card here
             return false;
         }
+    }
+
+    /**
+     * @param card the card that will be checked in regard to adding
+     * @return true if adding the card would be possible
+     */
+    public boolean canAddCard(Card card) {
+        if (this.getSuit() == null && this.getCards().isEmpty()) { //foundation empty --> only ace can be added, this defines the suit of the foundation
+            if (card.getRank() == Rank.ACE) {
+                return true;
+            } else {
+                return false;
+            }
+        } else if (this.getSuit() == card.getSuit()) { //foundation not empty --> suit must fit
+            if (this.getCards().lastElement().getRank().isPredecessor(card.getRank())) { // suit fits --> card must be successor of top card
+                return true;
+            } else {
+                return false;
+            }
+        } else { // foundation not empty and suit does not fit --> cannot add card here
+            return false;
+        }
+    }
+
+    /**
+     * @return the Card on top of this foundation
+     */
+    public Card getFoundationTop() {
+        return this.cards.lastElement();
+    }
+
+    /**
+     * @return the card that was removed from the top of this foundation
+     */
+    public Card removeFoundationTop() {
+        if (this.cards.size() == 1) {
+            this.suit = null;
+        }
+        return this.cards.remove(this.cards.size() - 1);
     }
 
 }
