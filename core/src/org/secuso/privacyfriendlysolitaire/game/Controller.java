@@ -5,6 +5,8 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 
 import org.secuso.privacyfriendlysolitaire.model.Action;
+import org.secuso.privacyfriendlysolitaire.model.GameObject;
+import org.secuso.privacyfriendlysolitaire.model.Tableau;
 
 /**
  * @author: I. Dix
@@ -48,9 +50,26 @@ public class Controller implements GestureDetector.GestureListener {
 
         Action actionForClick = view.getActionForTap(x, y);
 
-        // TODO comment in other line as soon as model is finished
-        return false;
-//        return actionForClick == null ? false : game.handleAction(actionForClick);
+        if (actionForClick != null && actionForClick.getGameObject() != null &&
+                actionForClick.getGameObject().equals(GameObject.TABLEAU)) {
+            int index = actionForClick.getStackIndex();
+            Tableau tableau = game.getTableauAtPos(index);
+            int cardIndex = actionForClick.getCardIndex();
+
+            // maybe the view made an error and the index is not a valid card of this tableau
+            if (cardIndex >= tableau.getFaceDown().size() + tableau.getFaceUp().size()) {
+                actionForClick = null;
+            } else {
+                int cardIndexInFaceUp = cardIndex - tableau.getFaceDown().size();
+                if (cardIndexInFaceUp < 0) {
+                    actionForClick = null;
+                } else {
+                    actionForClick = new Action(GameObject.TABLEAU, index, cardIndexInFaceUp);
+                }
+            }
+        }
+
+        return actionForClick == null ? false : game.handleAction(actionForClick);
     }
 
     @Override

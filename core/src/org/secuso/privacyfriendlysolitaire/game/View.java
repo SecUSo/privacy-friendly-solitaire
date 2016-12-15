@@ -126,7 +126,7 @@ public class View implements Observer {
         SolitaireGame game = (SolitaireGame) o;
 
         Action prevAction = game.getPrevAction();
-        Move prevMove = game.getRecentMove();
+        Move prevMove = game.getMoves().lastElement();
 
         // get whether this was a marking action
         if (prevAction != null) {

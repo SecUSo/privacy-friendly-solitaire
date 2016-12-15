@@ -134,4 +134,9 @@ public class DeckWaste {
     public Card removeWasteTop() {
         return this.waste.remove(this.waste.size() - 1);
     }
+
+
+    public String toString() {
+        return "Deck: " + deck.toString() + "; Waste: " + waste.toString();
+    }
 }

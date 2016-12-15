@@ -107,4 +107,9 @@ public class Foundation {
         return this.cards.remove(this.cards.size() - 1);
     }
 
+
+    public String toString() {
+        return cards.toString();
+    }
+
 }

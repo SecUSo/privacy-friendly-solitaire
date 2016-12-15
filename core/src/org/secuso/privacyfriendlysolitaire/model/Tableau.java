@@ -151,5 +151,10 @@ public class Tableau {
         return this.faceUp.removeAll(vecCards);
     }
 
+
+    public String toString() {
+        return "Face-Down: " + faceDown.toString() + "; Face-Up: " + faceUp.toString();
+    }
+
 }
 
