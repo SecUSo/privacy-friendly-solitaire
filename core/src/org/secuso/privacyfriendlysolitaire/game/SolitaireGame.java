@@ -322,4 +322,20 @@ public class SolitaireGame extends Observable {
         return false;
     }
 
+    public String toString() {
+        StringBuilder sb = new StringBuilder(this.deckAndWaste.toString());
+        sb.append("\n");
+        for (Tableau t : tableaus) {
+            sb.append("Tableau: ");
+            sb.append(t.toString());
+            sb.append("\n");
+        }
+        for (Foundation f : foundations) {
+            sb.append("Foundation: ");
+            sb.append(f.toString());
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
 }

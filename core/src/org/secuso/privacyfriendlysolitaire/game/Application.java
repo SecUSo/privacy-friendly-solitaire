@@ -52,4 +52,8 @@ public class Application extends ApplicationAdapter {
             actor.addAction(Actions.removeActor());
         }
     }
+
+    public void print() {
+        Gdx.app.log("debug", game.toString());
+    }
 }
