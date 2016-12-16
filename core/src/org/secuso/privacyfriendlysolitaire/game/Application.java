@@ -34,6 +34,7 @@ public class Application extends ApplicationAdapter {
     private void initialiseModelViewAndController() {
         game = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(mode);
         view = new View(game, stage);
+        game.addObserver(view);
         controller = new Controller(game, view);
         Gdx.input.setInputProcessor(new GestureDetector(controller));
     }

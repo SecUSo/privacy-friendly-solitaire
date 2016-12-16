@@ -78,8 +78,6 @@ public class View implements Observer {
                 // y position is dependant on nr in faceDown-Vector
                 float y = 10.5f * ViewConstants.heightOneSpace - (j * ViewConstants.offsetHeightBetweenCards);
                 setImageScalingAndPositionAndAddToStage(faceDownCard, x, y);
-
-//                Gdx.app.log("Debug", "Face-Down platziert an (" + x + "," + y + ")");
             }
 
             // add face-up card
@@ -92,7 +90,6 @@ public class View implements Observer {
             // y position is dependant on nr in faceDown-Vector
             float y = 10.5f * ViewConstants.heightOneSpace - (faceDownSize * ViewConstants.offsetHeightBetweenCards);
             setImageScalingAndPositionAndAddToStage(faceUpCard, x, y);
-//            Gdx.app.log("Debug", ImageLoader.getCardTextureName(t.getFaceUp().lastElement()) + " platziert an (" + x + "," + y + ")");
 
             // save the y at which the last card (face-up) was positioned
             smallestYForTableau.put(i, y);
@@ -122,20 +119,21 @@ public class View implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
+        Gdx.app.log("Debug", "-----------update-----------");
         // TODO
         SolitaireGame game = (SolitaireGame) o;
 
         Action prevAction = game.getPrevAction();
-        Move prevMove = game.getMoves().lastElement();
-
-        // get whether this was a marking action
-        if (prevAction != null) {
-            Gdx.app.log("Debug: Action", prevAction.toString());
-        }
-        // or a move
-        else {
-            Gdx.app.log("Debug: Move", prevMove.toString());
-        }
+//        Move prevMove = game.getMoves().lastElement();
+//
+//        // get whether this was a marking action
+//        if (prevAction != null) {
+//            Gdx.app.log("Debug: Action", prevAction.toString());
+//        }
+//        // or a move
+//        else {
+//            Gdx.app.log("Debug: Move", prevMove.toString());
+//        }
     }
 
 

@@ -1,8 +1,5 @@
 package org.secuso.privacyfriendlysolitaire.game;
 
-
-import com.badlogic.gdx.Game;
-
 import org.secuso.privacyfriendlysolitaire.model.Action;
 import org.secuso.privacyfriendlysolitaire.model.Card;
 import org.secuso.privacyfriendlysolitaire.model.DeckWaste;
@@ -192,7 +189,7 @@ public class SolitaireGame extends Observable {
      */
     private void saveAction(Action action) {
         this.prevAction = action;
-        notifyObservers();
+        customNotify();
     }
 
     /**
@@ -205,7 +202,7 @@ public class SolitaireGame extends Observable {
         cleanUpMoves();
         this.moves.add(new Move(prevAction, action));
         this.prevAction = null;
-        notifyObservers();
+        customNotify();
     }
 
     /**
@@ -225,7 +222,7 @@ public class SolitaireGame extends Observable {
      */
     private void failMove() {
         this.prevAction = null;
-        notifyObservers();
+        customNotify();
     }
 
     /**
@@ -320,6 +317,11 @@ public class SolitaireGame extends Observable {
 
         }
         return false;
+    }
+
+    private void customNotify(){
+        setChanged();
+        notifyObservers();
     }
 
 }
