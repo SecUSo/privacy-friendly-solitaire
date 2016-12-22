@@ -230,12 +230,15 @@ public class SolitaireGame extends Observable {
      * @return true if the cards could be moved between two tableaus
      */
     private boolean handleTableauToTableau(Action action) {
-        //get cards from source tableau
-        Vector<Card> toBeMoved = this.getTableauAtPos(prevAction.getStackIndex()).getCopyFaceUpVector(prevAction.getCardIndex());
-        //check if they can be added to the target tableau
-        if (this.getTableauAtPos(action.getStackIndex()).isAddingFaceUpVectorPossible(toBeMoved)) {
-            this.getTableauAtPos(action.getStackIndex()).addFaceUpVector(this.getTableauAtPos(prevAction.getStackIndex()).removeFaceUpVector(prevAction.getCardIndex()));
-            return true;
+        //prevent moves where source and target tableau are the same
+        if (prevAction.getStackIndex() != action.getStackIndex()) {
+            //get cards from source tableau
+            Vector<Card> toBeMoved = this.getTableauAtPos(prevAction.getStackIndex()).getCopyFaceUpVector(prevAction.getCardIndex());
+            //check if they can be added to the target tableau
+            if (this.getTableauAtPos(action.getStackIndex()).isAddingFaceUpVectorPossible(toBeMoved)) {
+                this.getTableauAtPos(action.getStackIndex()).addFaceUpVector(this.getTableauAtPos(prevAction.getStackIndex()).removeFaceUpVector(prevAction.getCardIndex()));
+                return true;
+            }
         }
         return false;
     }
@@ -335,7 +338,7 @@ public class SolitaireGame extends Observable {
         return sb.toString();
     }
 
-    private void customNotify(){
+    private void customNotify() {
         setChanged();
         notifyObservers();
     }
