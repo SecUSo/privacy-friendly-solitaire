@@ -10,6 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 import org.secuso.privacyfriendlysolitaire.generator.GeneratorSolitaireInstance;
 
+/**
+ * @author: I. Dix
+ * the outer application, holding everything together (model, view, controller)
+ * it is responsible for creating and redrawing the stage and is the contact point from the Android app
+ */
 public class Application extends ApplicationAdapter {
     private Stage stage;
 

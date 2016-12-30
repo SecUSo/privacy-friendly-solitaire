@@ -26,70 +26,94 @@ import org.secuso.privacyfriendlysolitaire.model.Tableau;
 
 public class View implements Observer {
     private boolean widthHeightOfCardSet = false;
+    private ImageLoader loader = new ImageLoader();
 
     private Stage stage;
+    private ImageWrapper marker;
+    private ImageWrapper backsideCardOnDeck;
 
-    private HashMap<String, Image> cards = new HashMap<String, Image>(52);
+    private boolean lastWasAMarkingAction = false;
+
+    private HashMap<String, ImageWrapper> faceUpCards = new HashMap<String, ImageWrapper>(52);
+    //    private HashMap<Point, String> cardNameForCardAndStackIndex = new HashMap<Point, String>(52);
     // describes the y at which the given tableau is positioned at the smallest
     private HashMap<Integer, Float> smallestYForTableau = new HashMap<Integer, Float>(7);
 
     public View(SolitaireGame game, Stage stage) {
         this.stage = stage;
 
+        // set view constants
         ViewConstants.widthScreen = Gdx.graphics.getWidth();
         ViewConstants.heightScreen = Gdx.graphics.getHeight();
-
         ViewConstants.widthOneSpace = ViewConstants.widthScreen / 31;
         ViewConstants.heightOneSpace = ViewConstants.heightScreen / 21;
+        // positions
+        ViewConstants.WasteDeckFoundationY = 16 * ViewConstants.heightOneSpace;
+        ViewConstants.WasteX = (2 + 5 * (1 + 3)) * ViewConstants.widthOneSpace;
+        ViewConstants.DeckX = (2 + 6 * (1 + 3)) * ViewConstants.widthOneSpace;
+        ViewConstants.TableauFoundationX = new float[7];
+        for (int i = 0; i < 7; i++) {
+            ViewConstants.TableauFoundationX[i] = (2 + i * (1 + 3)) * ViewConstants.widthOneSpace;
+        }
+
+        // add mark and make it invisible
+        marker = loader.getMarkImage();
+        marker.setScale(1.4f);
+        marker.setScaleX(1.6f);
+        marker.setVisible(false);
+        stage.addActor(marker);
+
+        // add emptySpaceForDeck and make it invisible
+        backsideCardOnDeck = loader.getBacksideImage();
 
         arrangeInitialView(game);
     }
 
 
+    // ------------------------------------ Initial ------------------------------------
     private void arrangeInitialView(SolitaireGame game) {
         paintInitialFoundations();
         paintInitialTableaus(game.getTableaus());
-//        Gdx.app.log("Debug", "-------------------------");
         paintInitialDeckWaste();
     }
 
     private void paintInitialFoundations() {
         for (int i = 0; i < 4; i++) {
-            Image emptySpace = ImageLoader.getEmptySpaceImageWithoutLogo();
-            float x = (2 + i * (1 + 3)) * ViewConstants.widthOneSpace;
-            float y = 16 * ViewConstants.heightOneSpace;
-            setImageScalingAndPositionAndAddToStage(emptySpace, x, y);
+            ImageWrapper emptySpace = loader.getEmptySpaceImageWithoutLogo();
+            setImageScalingAndPositionAndStackCardIndicesAndAddToStage(emptySpace, null,
+                    ViewConstants.TableauFoundationX[i], ViewConstants.WasteDeckFoundationY, -1, -1);
         }
     }
 
     private void paintInitialTableaus(ArrayList<Tableau> tableaus) {
-        // TODO: resize when length to high
-        int longest = getLengthOfLongestTableau(tableaus);
-
+//        // TODO: resize when length to high
+//        int longest = getLengthOfLongestTableau(tableaus);
         for (int i = 0; i < Constants.NR_OF_TABLEAUS; i++) {
             Tableau t = tableaus.get(i);
 
-            // add face-down cards
+            float x = ViewConstants.TableauFoundationX[i];
+
+            // add empty space beneath
+            ImageWrapper emptySpace = loader.getEmptySpaceImageWithoutLogo();
+            setImageScalingAndPositionAndStackCardIndicesAndAddToStage(emptySpace, null, x,
+                    10.5f * ViewConstants.heightOneSpace, -1, -1);
+
+            // add face-down faceUpCards
             int faceDownSize = t.getFaceDown().size();
             for (int j = 0; j < faceDownSize; j++) {
-                Image faceDownCard = ImageLoader.geBacksideImage();
-                // x position is dependant on nr of tableau
-                float x = (2 + i * (1 + 3)) * ViewConstants.widthOneSpace;
-                // y position is dependant on nr in faceDown-Vector
+                ImageWrapper faceDownCard = loader.getBacksideImage();
                 float y = 10.5f * ViewConstants.heightOneSpace - (j * ViewConstants.offsetHeightBetweenCards);
-                setImageScalingAndPositionAndAddToStage(faceDownCard, x, y);
+                setImageScalingAndPositionAndStackCardIndicesAndAddToStage(faceDownCard, GameObject.TABLEAU, x, y, i, j);
             }
 
             // add face-up card
             if (t.getFaceUp().size() > 1) {
                 Gdx.app.log("!!!!!!!!!!!!!!!!", "mehr als eine Face Up Karte! Diese Methode sollte nur bei der Initialisierung verwendet werden!");
             }
-            Image faceUpCard = loadActorForCardAndSaveInMap(t.getFaceUp().lastElement());
-            // x position is dependant on nr of tableau
-            float x = (2 + i * (1 + 3)) * ViewConstants.widthOneSpace;
+            ImageWrapper faceUpCard = loadActorForCardAndSaveInMap(t.getFaceUp().lastElement());
             // y position is dependant on nr in faceDown-Vector
             float y = 10.5f * ViewConstants.heightOneSpace - (faceDownSize * ViewConstants.offsetHeightBetweenCards);
-            setImageScalingAndPositionAndAddToStage(faceUpCard, x, y);
+            setImageScalingAndPositionAndStackCardIndicesAndAddToStage(faceUpCard, GameObject.TABLEAU, x, y, i, t.getFaceDown().size());
 
             // save the y at which the last card (face-up) was positioned
             smallestYForTableau.put(i, y);
@@ -98,18 +122,20 @@ public class View implements Observer {
 
     private void paintInitialDeckWaste() {
         // empty waste
-        Image emptySpace = ImageLoader.getEmptySpaceImageWithoutLogo();
-        float x = (2 + 5 * (1 + 3)) * ViewConstants.widthOneSpace;
-        float y = 16 * ViewConstants.heightOneSpace;
-        setImageScalingAndPositionAndAddToStage(emptySpace, x, y);
+        ImageWrapper emptySpace = loader.getEmptySpaceImageWithoutLogo();
+        setImageScalingAndPositionAndStackCardIndicesAndAddToStage(emptySpace, null,
+                ViewConstants.WasteX, ViewConstants.WasteDeckFoundationY, -1, -1);
 
         // deck
-        Image deckCard = ImageLoader.geBacksideImage();
-        float x1 = (2 + 6 * (1 + 3)) * ViewConstants.widthOneSpace;
-        float y1 = 16 * ViewConstants.heightOneSpace;
-        setImageScalingAndPositionAndAddToStage(deckCard, x1, y1);
+        ImageWrapper emptySpaceDeck = loader.getEmptySpaceImageWithoutLogo();
+        setImageScalingAndPositionAndStackCardIndicesAndAddToStage(emptySpaceDeck, null,
+                ViewConstants.DeckX, ViewConstants.WasteDeckFoundationY, -1, -1);
+        setImageScalingAndPositionAndStackCardIndicesAndAddToStage(backsideCardOnDeck, GameObject.DECK,
+                ViewConstants.DeckX, ViewConstants.WasteDeckFoundationY, -1, -1);
     }
 
+
+    // ------------------------------------ Update ------------------------------------
 
     /**
      * method to react to changes in the model
@@ -119,23 +145,216 @@ public class View implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
+        Gdx.app.log("Debug", " ");
         Gdx.app.log("Debug", "-----------update-----------");
-        // TODO
         SolitaireGame game = (SolitaireGame) o;
 
         Action prevAction = game.getPrevAction();
-//        Move prevMove = game.getMoves().lastElement();
-//
-//        // get whether this was a marking action
-//        if (prevAction != null) {
-//            Gdx.app.log("Debug: Action", prevAction.toString());
-//        }
-//        // or a move
-//        else {
-//            Gdx.app.log("Debug: Move", prevMove.toString());
-//        }
+
+        // get whether this was a marking action
+        if (prevAction != null) {
+            Gdx.app.log("Action", prevAction.toString());
+            int stackIndex = prevAction.getStackIndex();
+
+            switch (prevAction.getGameObject()) {
+                case TABLEAU:
+                    markCardOnTableau(stackIndex, prevAction.getCardIndex(),
+                            game.getTableauAtPos(stackIndex).getFaceDown().size());
+                    lastWasAMarkingAction = true;
+                    break;
+                case FOUNDATION:
+                    // TODO
+                    markCardOnTableau(stackIndex, prevAction.getCardIndex(),
+                            game.getTableauAtPos(stackIndex).getFaceDown().size());
+                    lastWasAMarkingAction = true;
+                    break;
+                case WASTE:
+                    // TODO
+                    markCardOnTableau(stackIndex, prevAction.getCardIndex(),
+                            game.getTableauAtPos(stackIndex).getFaceDown().size());
+                    lastWasAMarkingAction = true;
+                    break;
+//                case DECK:
+//                    Gdx.app.log("Debug_game", game.toString());
+//                    turnDeckCard(game);
+//                    break;
+            }
+        }
+        // or a move
+        else {
+            // with successful move, remove marker
+            marker.setVisible(false);
+            lastWasAMarkingAction = false;
+
+            try {
+                Move prevMove = game.getMoves().lastElement();
+
+                handleMove(prevMove, game);
+
+            } catch (Exception e) {
+                Gdx.app.log("Error", e.getClass().toString() + ": " + e.getMessage());
+                // simple unmarking, maybe an invalid move
+                Gdx.app.log("Debug", "no prevMove");
+            }
+        }
     }
 
+    // ---------------------------- ACTIONS ----------------------------
+    private void markCardOnTableau(int stackIndex, int cardIndex, int nrOfFaceDownInThisTableau) {
+        ImageWrapper cardToBeMarked = null;
+
+        // will only result in tableau cards, because for all else the cardIndex = -1
+        for (String textureString : faceUpCards.keySet()) {
+            ImageWrapper faceUpCard = faceUpCards.get(textureString);
+            if (faceUpCard.getWrapperStackIndex() == stackIndex
+                    && (faceUpCard.getWrapperCardIndex() - nrOfFaceDownInThisTableau) == cardIndex) {
+                cardToBeMarked = faceUpCard;
+                break;
+            }
+        }
+
+        if (cardToBeMarked != null) {
+            // move marker to correct position and make visible
+            marker.setPosition(cardToBeMarked.getX() - 2, cardToBeMarked.getY() + 2);
+            marker.setVisible(true);
+
+            // move the card to the front
+            cardToBeMarked.toFront();
+        } else {
+            throw new RuntimeException("Card to be marked could not be found! Should not happen! Probably an error in the view.");
+        }
+    }
+
+
+    // ---------------------------- MOVES ----------------------------
+    private void handleMove(Move move, SolitaireGame game) {
+        Action ac1 = move.getAction1();
+        Action ac2 = move.getAction2();
+
+        int sourceStack = ac1.getStackIndex();
+        int sourceCard = ac1.getCardIndex();
+        int targetStack = -1, targetCard = -1, nrOfFaceDownInSourceTableau = -1;
+        if (ac2 != null) {
+            targetStack = ac2.getStackIndex();
+            targetCard = ac2.getCardIndex();
+        }
+
+
+        switch (ac1.getGameObject()) {
+            // possibilities: Deck -> Waste, Deck-Reset
+            // both are initiated by a click on the deck and therefore have the deck as ac1
+            case DECK:
+                // if after the move was handled (in the game) the waste is empty, this was a reset
+                if (game.getDeckWaste().isWasteEmpty()) {
+                    resetDeck(game);
+                } else {
+                    turnDeckCard(game);
+                }
+                break;
+
+            // possibilities: Waste -> Tableau, Waste -> Foundation
+            case WASTE:
+                if (ac2.getGameObject().equals(GameObject.TABLEAU)) {
+                    // TODO
+                } else if (ac2.getGameObject().equals(GameObject.FOUNDATION)) {
+                    // TODO
+                }
+                break;
+
+            // possibilities: Tableau -> Tableau, Tableau -> Foundation
+            case TABLEAU:
+                nrOfFaceDownInSourceTableau = game.getTableauAtPos(sourceStack).getFaceDown().size();
+
+                if (ac2.getGameObject().equals(GameObject.TABLEAU)) {
+                    int nrOfFaceDownInTargetTableau = game.getTableauAtPos(targetStack).getFaceDown().size();
+                    makeMoveTableauToTableau(sourceStack, sourceCard, nrOfFaceDownInSourceTableau, targetStack, targetCard, nrOfFaceDownInTargetTableau);
+
+                } else if (ac2.getGameObject().equals(GameObject.FOUNDATION)) {
+                    // TODO
+                }
+                break;
+
+            // possibilities: Foundation -> Tableau
+            case FOUNDATION:
+                if (ac2.getGameObject().equals(GameObject.TABLEAU)) {
+                    int nrOfFaceDownInTargetTableau = game.getTableauAtPos(targetStack).getFaceDown().size();
+                    // TODO
+                }
+                break;
+        }
+    }
+
+
+    private void turnDeckCard(SolitaireGame game) {
+        // load card that in the model already lies on top the waste
+        Card onWasteCard = game.getDeckWaste().getWasteTop();
+
+        // load imageWrapper (either from map or new)
+        String textureName = loader.getCardTextureName(onWasteCard);
+        // try pulling it from the faceUpCards (where it is currently invisible)
+        ImageWrapper turnedCard = faceUpCards.get(textureName);
+        // if this returns no result, load it
+        if (turnedCard == null) {
+            turnedCard = loadActorForCardAndSaveInMap(onWasteCard);
+            float x = (2 + 5 * (1 + 3)) * ViewConstants.widthOneSpace;
+            float y = 16 * ViewConstants.heightOneSpace;
+            setImageScalingAndPositionAndStackCardIndicesAndAddToStage(turnedCard, GameObject.WASTE, x, y, -1, -1);
+        }
+        turnedCard.setVisible(true);
+
+        Gdx.app.log("Debug_game", game.toString());
+
+        // check if this was the last
+        if (game.getDeckWaste().getDeck().isEmpty()) {
+            backsideCardOnDeck.setVisible(false);
+        }
+    }
+
+
+    private void resetDeck(SolitaireGame game) {
+        backsideCardOnDeck.setVisible(true);
+
+        // set all waste-cards invisible
+        for (String textureName : faceUpCards.keySet()) {
+            ImageWrapper potentiallyWasteCard = faceUpCards.get(textureName);
+            if (potentiallyWasteCard.getGameObject().equals(GameObject.WASTE)) {
+                potentiallyWasteCard.setVisible(false);
+            }
+        }
+    }
+
+
+    private void makeMoveTableauToTableau(int sourceStack, int sourceCardIndex, int nrOfFaceDownInSourceTableau, int targetStack, int targetCardIndex, int nrOfFaceDownInTargetTableau) {
+        // find correct card that should be moved and card to move it to
+        ImageWrapper sourceCard = null;
+        ImageWrapper targetCard = null;
+
+        for (String textureString : faceUpCards.keySet()) {
+            ImageWrapper cardToBeCompared = faceUpCards.get(textureString);
+
+            if (cardToBeCompared.getWrapperStackIndex() == sourceStack
+                    && (cardToBeCompared.getWrapperCardIndex() - nrOfFaceDownInSourceTableau) == sourceCardIndex) {
+                sourceCard = cardToBeCompared;
+
+            } else if ((cardToBeCompared.getWrapperStackIndex() == targetStack
+                    && (cardToBeCompared.getWrapperCardIndex() - nrOfFaceDownInTargetTableau) == targetCardIndex)) {
+                targetCard = cardToBeCompared;
+            }
+        }
+
+        if (sourceCard != null && targetCard != null) {
+            // move to new position
+
+            // TODO: set new smallestYForTableau
+            sourceCard.setPosition(targetCard.getX(), targetCard.getY() - ViewConstants.offsetHeightBetweenCards);
+        } else {
+            Gdx.app.log("Fehler", "Fehler: source or target of move could not be found");
+            throw new RuntimeException("source or target of move could not be found");
+        }
+
+    }
+
+    // ------------------------------------ getActionForTap for Controller ------------------------------------
 
     /**
      * for a given tap from the user, the view returns information about the position where the tap occurred
@@ -171,7 +390,7 @@ public class View implements Observer {
                     float biggestY = 10 * ViewConstants.heightOneSpace + ViewConstants.heightCard;
 
                     if (y >= smallestY && y <= biggestY) {
-                        // a tableau can at most hold 20 cards (14 in a row from king to ace + 6 face-down)
+                        // a tableau can at most hold 20 faceUpCards (14 in a row from king to ace + 6 face-down)
                         for (int i = 0; i < 20; i++) {
                             if ((y <= biggestY - (i * ViewConstants.offsetHeightBetweenCards) &&
                                     (y >= biggestY - ((i + 1) * ViewConstants.offsetHeightBetweenCards))
@@ -195,7 +414,6 @@ public class View implements Observer {
 
 
     // ------------------------------------ Helper ------------------------------------
-
     private int getStackIndexForX(float x) {
         if (x >= 2 * ViewConstants.widthOneSpace && x <= 2 * ViewConstants.widthOneSpace + ViewConstants.widthCard) {
             return 0;
@@ -217,7 +435,7 @@ public class View implements Observer {
     }
 
     /**
-     * returns the length (nr of cards) of the longest tableau
+     * returns the length (nr of faceUpCards) of the longest tableau
      *
      * @param tableaus all 7 tableaus
      * @return the length of the longest
@@ -243,10 +461,13 @@ public class View implements Observer {
      * @param x         the x-coordinate of the position
      * @param y         the y-coordinate of the position
      */
-    private void setImageScalingAndPositionAndAddToStage(Image cardImage, float x, float y) {
+    private void setImageScalingAndPositionAndStackCardIndicesAndAddToStage(ImageWrapper cardImage, GameObject gameObject, float x, float y, int stackIndex, int cardIndex) {
         cardImage.setPosition(x, y);
         cardImage.setScale(1.4f);
         cardImage.setScaleX(1.6f);
+        cardImage.setWrapperStackIndex(stackIndex);
+        cardImage.setWrapperCardIndex(cardIndex);
+        cardImage.setGameObject(gameObject);
         stage.addActor(cardImage);
 
         if (!widthHeightOfCardSet) {
@@ -263,8 +484,8 @@ public class View implements Observer {
      * @param card
      * @return the image/texture for it, either newly loaded or just from the map
      */
-    private Image getImageForCard(Card card) {
-        Image cardImage = cards.get(ImageLoader.getCardTextureName(card));
+    private ImageWrapper getImageForCard(Card card) {
+        ImageWrapper cardImage = faceUpCards.get(loader.getCardTextureName(card));
 
         if (cardImage != null) {
             return cardImage;
@@ -275,16 +496,16 @@ public class View implements Observer {
 
 
     /**
-     * loads the texture for the card given and saves it to the cards-map
+     * loads the texture for the card given and saves it to the faceUpCards-map
      *
      * @param card
      * @return the correct texture for this card
      */
-    private Image loadActorForCardAndSaveInMap(Card card) {
-        String textureString = ImageLoader.getCardTextureName(card);
-        Image textureForCard = ImageLoader.getImageForPath("cards/" + textureString + ".png");
+    private ImageWrapper loadActorForCardAndSaveInMap(Card card) {
+        String textureString = loader.getCardTextureName(card);
+        ImageWrapper textureForCard = loader.getImageForPath("cards/" + textureString + ".png");
 
-        cards.put(textureString, textureForCard);
+        faceUpCards.put(textureString, textureForCard);
 
         return textureForCard;
     }
@@ -293,17 +514,21 @@ public class View implements Observer {
     /**
      * class to load images
      */
-    private static class ImageLoader {
-        protected static Image getEmptySpaceImageWithLogo() {
+    private class ImageLoader {
+        protected ImageWrapper getEmptySpaceImageWithLogo() {
             return getImageForPath("cards/empty_space.png");
         }
 
-        private static Image getEmptySpaceImageWithoutLogo() {
+        private ImageWrapper getEmptySpaceImageWithoutLogo() {
             return getImageForPath("cards/empty_space_ohne_logo.png");
         }
 
-        private static Image geBacksideImage() {
+        private ImageWrapper getBacksideImage() {
             return getImageForPath("cards/backside.png");
+        }
+
+        private ImageWrapper getMarkImage() {
+            return getImageForPath("cards/mark.png");
         }
 
         /**
@@ -312,7 +537,7 @@ public class View implements Observer {
          * @param card
          * @return a string containing the card's rank and suit
          */
-        private static String getCardTextureName(Card card) {
+        private String getCardTextureName(Card card) {
             return card.getRank().toString().toLowerCase() + "_" + card.getSuit().toString().toLowerCase();
         }
 
@@ -322,9 +547,9 @@ public class View implements Observer {
          * @param path
          * @return the image lying at this path
          */
-        private static Image getImageForPath(String path) {
+        private ImageWrapper getImageForPath(String path) {
             try {
-                return new Image(new Texture(Gdx.files.internal(path)));
+                return new ImageWrapper(new Texture(Gdx.files.internal(path)));
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
@@ -333,6 +558,9 @@ public class View implements Observer {
     }
 
 
+    /**
+     * class to contain view constants
+     */
     private static class ViewConstants {
         private static float widthScreen;
         private static float heightScreen;
@@ -344,5 +572,50 @@ public class View implements Observer {
 
         private static float heightCard;
         private static float widthCard;
+
+        private static float DeckX;
+
+        private static float WasteX;
+        private static float WasteDeckFoundationY;
+
+        private static float[] TableauFoundationX;
+    }
+
+
+    /**
+     * Wrapper Information to wrap additional information aside the image/actor
+     */
+    private class ImageWrapper extends Image {
+        int stackIndex = -1;
+        int cardIndex = -1;
+        GameObject gameObject = null;
+
+        protected GameObject getGameObject() {
+            return gameObject;
+        }
+
+        protected void setGameObject(GameObject gameObject) {
+            this.gameObject = gameObject;
+        }
+
+        protected ImageWrapper(Texture texture) {
+            super(texture);
+        }
+
+        protected int getWrapperStackIndex() {
+            return stackIndex;
+        }
+
+        protected void setWrapperStackIndex(int stackIndex) {
+            this.stackIndex = stackIndex;
+        }
+
+        protected int getWrapperCardIndex() {
+            return cardIndex;
+        }
+
+        protected void setWrapperCardIndex(int cardIndex) {
+            this.cardIndex = cardIndex;
+        }
     }
 }

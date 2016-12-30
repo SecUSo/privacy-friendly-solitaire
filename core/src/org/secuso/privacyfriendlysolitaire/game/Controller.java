@@ -57,6 +57,7 @@ public class Controller implements GestureDetector.GestureListener {
             int cardIndex = actionForClick.getCardIndex();
 
             // maybe the view made an error and the index is not a valid card of this tableau
+            // therefore: check for sanity
             if (cardIndex >= tableau.getFaceDown().size() + tableau.getFaceUp().size()) {
                 actionForClick = null;
             } else {

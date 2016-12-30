@@ -3,7 +3,7 @@ package org.secuso.privacyfriendlysolitaire.model;
 import java.util.Vector;
 
 /**
- * Created by m0 on 11/17/16.
+ * @author: M. Fischer
  */
 
 public class Foundation {
