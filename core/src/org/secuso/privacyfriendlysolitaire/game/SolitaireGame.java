@@ -1,5 +1,7 @@
 package org.secuso.privacyfriendlysolitaire.game;
 
+import com.badlogic.gdx.Gdx;
+
 import org.secuso.privacyfriendlysolitaire.model.Action;
 import org.secuso.privacyfriendlysolitaire.model.Card;
 import org.secuso.privacyfriendlysolitaire.model.DeckWaste;
@@ -85,6 +87,7 @@ public class SolitaireGame extends Observable {
      * @return true if the action was valid and succesfully handled
      */
     public boolean handleAction(Action action) {
+        Gdx.app.log("Debug", "handleAction");
         switch (action.getGameObject()) {
             case DECK:
                 return handleDeck(action);
@@ -125,6 +128,7 @@ public class SolitaireGame extends Observable {
     private boolean handleWaste(Action action) {
         if (this.prevAction == null) {
             saveAction(action);
+            customNotify();
             return true;
         }
         failMove();
@@ -167,6 +171,7 @@ public class SolitaireGame extends Observable {
     private boolean handleFoundation(Action action) {
         if (this.prevAction == null) {
             saveAction(action);
+            customNotify();
             return true;
         } else if (this.prevAction.getGameObject() == GameObject.TABLEAU) {
             if (handleTableauToFoundation(action)) {
@@ -235,9 +240,11 @@ public class SolitaireGame extends Observable {
         if (prevAction.getStackIndex() != action.getStackIndex()) {
             //get cards from source tableau
             Vector<Card> toBeMoved = this.getTableauAtPos(prevAction.getStackIndex()).getCopyFaceUpVector(prevAction.getCardIndex());
+            Gdx.app.log("Debug_toBeMoved: ", toBeMoved.toString());         // THIS IS EMPTY
             //check if they can be added to the target tableau
             if (this.getTableauAtPos(action.getStackIndex()).isAddingFaceUpVectorPossible(toBeMoved)) {
                 this.getTableauAtPos(action.getStackIndex()).addFaceUpVector(this.getTableauAtPos(prevAction.getStackIndex()).removeFaceUpVector(prevAction.getCardIndex()));
+                Gdx.app.log("faceUpVectorAfterMoved: ", getTableauAtPos(action.getStackIndex()).getFaceUp().toString());
                 return true;
             }
         }

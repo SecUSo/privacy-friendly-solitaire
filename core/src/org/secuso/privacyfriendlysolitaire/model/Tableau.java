@@ -1,5 +1,7 @@
 package org.secuso.privacyfriendlysolitaire.model;
 
+import com.badlogic.gdx.Gdx;
+
 import java.util.Vector;
 
 /**
@@ -84,7 +86,8 @@ public class Tableau {
      * @return true if the cards could be added to the tableau
      */
     public boolean addFaceUpVector(Vector<Card> vecCards) {
-        if(isAddingFaceUpVectorPossible(vecCards)){
+        if (isAddingFaceUpVectorPossible(vecCards)) {
+            Gdx.app.log("Debug_addCards", vecCards.toString());
             this.faceUp.addAll(vecCards);
             return true;
         }
@@ -120,10 +123,12 @@ public class Tableau {
      * @return the vector of cards that was removed from the tableau
      */
     public Vector<Card> removeFaceUpVector(int index) {
+        Gdx.app.log("Debug_indexFromWhichToBeCopied", String.valueOf(index));
+
         Vector<Card> result = getCopyFaceUpVector(index);
         this.faceUp.removeAll(result);
+        Gdx.app.log("Debug_toBeRemovedFromOld", result.toString());
         return result;
-
     }
 
     /**
@@ -138,6 +143,8 @@ public class Tableau {
             for (int i = index; i < this.faceUp.size(); ++i) {
                 result.add(this.faceUp.get(i));
             }
+            Gdx.app.log("asldhapsd", result.toString());
+
             this.faceUp.removeAll(result);
             return result;
         }
