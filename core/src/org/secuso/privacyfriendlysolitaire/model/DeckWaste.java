@@ -137,6 +137,6 @@ public class DeckWaste {
 
 
     public String toString() {
-        return "Deck: " + deck.toString() + "; Waste: " + waste.toString();
+        return "Deck: " + deck.toString() + ";\nWaste: " + waste.toString();
     }
 }

@@ -63,6 +63,7 @@ task run(type: Exec) {
     def path
     def localProperties = project.file("../local.properties")
     if (localProperties.exists()) {
+
         Properties properties = new Properties()
         localProperties.withInputStream { instr ->
             properties.load(instr)

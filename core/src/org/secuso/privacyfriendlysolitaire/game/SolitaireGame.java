@@ -138,6 +138,7 @@ public class SolitaireGame extends Observable {
     private boolean handleTableau(Action action) {
         if (this.prevAction == null) {
             saveAction(action);
+            customNotify();
             return true;
         } else if (this.prevAction.getGameObject() == GameObject.TABLEAU) {
             if (handleTableauToTableau(action)) {
@@ -189,7 +190,7 @@ public class SolitaireGame extends Observable {
      */
     private void saveAction(Action action) {
         this.prevAction = action;
-        customNotify();
+//        customNotify();
     }
 
     /**

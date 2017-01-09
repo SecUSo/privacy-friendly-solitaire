@@ -1,7 +1,5 @@
 package org.secuso.privacyfriendlysolitaire.model;
 
-import com.badlogic.gdx.Game;
-
 /**
  * @author: M. Fischer
  * <p>
@@ -30,6 +28,10 @@ public class Action {
 
     public int getCardIndex() {
         return cardIndex;
+    }
+
+    public String toString(){
+        return gameObject+", stack: "+stackIndex+", card: "+cardIndex;
     }
 
 }
