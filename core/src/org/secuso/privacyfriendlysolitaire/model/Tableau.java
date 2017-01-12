@@ -145,7 +145,6 @@ public class Tableau {
             }
             Gdx.app.log("asldhapsd", result.toString());
 
-            this.faceUp.removeAll(result);
             return result;
         }
     }
