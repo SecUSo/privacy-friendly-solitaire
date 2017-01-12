@@ -206,6 +206,10 @@ public class SolitaireGame extends Observable {
      */
     private void makeMove(Action action) {
         cleanUpMoves();
+        //if source of move was a tableau, try to turn over this tableau
+        if (prevAction.getGameObject() == GameObject.TABLEAU) {
+            getTableauAtPos(prevAction.getStackIndex()).turnOver();
+        }
         this.moves.add(new Move(prevAction, action));
         this.prevAction = null;
         customNotify();
