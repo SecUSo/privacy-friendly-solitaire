@@ -307,8 +307,13 @@ public class View implements Observer {
 
                 // ------------------------ T -> T ------------------------
                 if (ac2.getGameObject().equals(GameObject.TABLEAU)) {
-                    Card targetTopCard = game.getTableauAtPos(targetStack).getFaceUp().get(targetCard);
+                    Card targetTopCard = null;
                     String textureStringOldTableauTop = null;
+                    try {
+                        targetTopCard = game.getTableauAtPos(targetStack).getFaceUp().get(targetCard);
+                    } catch (Exception e) {
+                    }
+
                     if (targetTopCard != null) {
                         textureStringOldTableauTop = loader.getCardTextureName(targetTopCard);
                     }
@@ -537,15 +542,11 @@ public class View implements Observer {
             else {
                 try {
                     float smallestY = smallestYForTableau.get(stackIndex);
-                    float biggestY = 10 * ViewConstants.heightOneSpace + ViewConstants.heightCard;
+                    // to prevent rounding errors, we subtract 1 and prevent, that
+                    // biggest-smallest == heightCard + 0.0002
+                    float biggestY = ViewConstants.TableauBaseY + ViewConstants.heightCard - 1;
 
                     if (y >= smallestY && y <= biggestY) {
-//                        Gdx.app.log("smallestY ", String.valueOf(smallestY));
-//                        Gdx.app.log("biggestY ", String.valueOf(biggestY));
-//                        if (biggestY) {
-//                            gameObject = GameObject.TABLEAU;
-//                            cardIndex = -1;
-//                        } else {
 
                         // a tableau can at most hold 20 faceUpCards (14 in a row from king to ace + 6 face-down)
                         for (int i = 0; i < 20; i++) {
