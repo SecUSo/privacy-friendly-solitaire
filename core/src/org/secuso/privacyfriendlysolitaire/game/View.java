@@ -28,16 +28,16 @@ import org.secuso.privacyfriendlysolitaire.model.Tableau;
 
 public class View implements Observer {
     private boolean widthHeightOfCardSet = false;
-    private ImageLoader loader = new ImageLoader();
+    private final ImageLoader loader = new ImageLoader();
 
-    private Stage stage;
-    private ImageWrapper marker;
-    private ImageWrapper backsideCardOnDeck;
+    private final Stage stage;
+    private final ImageWrapper marker;
+    private final ImageWrapper backsideCardOnDeck;
 
-    private HashMap<String, ImageWrapper> faceUpCards = new HashMap<String, ImageWrapper>(52);
-    private List<ImageWrapper> faceDownCards = new ArrayList<ImageWrapper>(21);
+    private final HashMap<String, ImageWrapper> faceUpCards = new HashMap<String, ImageWrapper>(52);
+    private final List<ImageWrapper> faceDownCards = new ArrayList<ImageWrapper>(21);
     // describes the y at which the given tableau is positioned at the smallest
-    private HashMap<Integer, Float> smallestYForTableau = new HashMap<Integer, Float>(7);
+    private final HashMap<Integer, Float> smallestYForTableau = new HashMap<Integer, Float>(7);
 
     public View(SolitaireGame game, Stage stage) {
         this.stage = stage;

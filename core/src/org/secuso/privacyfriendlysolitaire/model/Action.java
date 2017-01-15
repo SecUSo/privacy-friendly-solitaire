@@ -8,9 +8,9 @@ package org.secuso.privacyfriendlysolitaire.model;
 
 public class Action {
 
-    private GameObject gameObject;
-    private int stackIndex;
-    private int cardIndex;
+    private final GameObject gameObject;
+    private final int stackIndex;
+    private final int cardIndex;
 
     public Action(GameObject gameObject, int stackIndex, int cardIndex) {
         this.gameObject = gameObject;

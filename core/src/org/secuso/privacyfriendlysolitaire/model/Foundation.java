@@ -74,17 +74,10 @@ public class Foundation {
      */
     public boolean canAddCard(Card card) {
         if (this.getSuit() == null && this.getCards().isEmpty()) { //foundation empty --> only ace can be added, this defines the suit of the foundation
-            if (card.getRank() == Rank.ACE) {
-                return true;
-            } else {
-                return false;
-            }
+            return card.getRank() == Rank.ACE;
         } else if (this.getSuit() == card.getSuit()) { //foundation not empty --> suit must fit
-            if (this.getCards().lastElement().getRank().isPredecessor(card.getRank())) { // suit fits --> card must be successor of top card
-                return true;
-            } else {
-                return false;
-            }
+            // suit fits --> card must be successor of top card
+            return this.getCards().lastElement().getRank().isPredecessor(card.getRank());
         } else { // foundation not empty and suit does not fit --> cannot add card here
             return false;
         }
