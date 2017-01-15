@@ -243,12 +243,15 @@ public class View implements Observer {
 
         int sourceStack = ac1.getStackIndex();
         int sourceCard = ac1.getCardIndex();
-        int targetStack = -1, targetCard = -1, nrOfFaceDownInSourceTableau = -1;
+        int targetStack = -1, targetCard = -1, nrOfFaceDownInSourceTableauAfterChange = -1;
         if (ac2 != null) {
             targetStack = ac2.getStackIndex();
             targetCard = ac2.getCardIndex();
         }
 
+        // in order to understand the following code, it is important to understand, that the model
+        // has already performed the change
+        // => therefore we find the moved card already at the new position
         switch (ac1.getGameObject()) {
             // possibilities: Deck -> Waste, Deck-Reset
             // both are initiated by a click on the deck and therefore have the deck as ac1
@@ -266,39 +269,46 @@ public class View implements Observer {
             case WASTE:
                 // ------------------------ W -> T ------------------------
                 if (ac2.getGameObject().equals(GameObject.TABLEAU)) {
-                    String textureStringMovedCard =
+                    String textureStringOldWasteTop =
                             loader.getCardTextureName(game.getTableauAtPos(targetStack).getFaceUp().get(targetCard + 1));
 
-                    Card targetTopCard = null;
+                    Card targetOldTopCard = null;
+                    // after moving the waste-card here, this is no more the top
+                    // this can be null, if the waste-card was moved to an empty tableau
                     String textureStringOldTableauTop = null;
                     try {
-                        targetTopCard = game.getTableauAtPos(targetStack).getFaceUp().get(targetCard);
+                        targetOldTopCard = game.getTableauAtPos(targetStack).getFaceUp().get(targetCard);
                     } catch (Exception e) {
                     }
 
-                    if (targetTopCard != null) {
-                        textureStringOldTableauTop = loader.getCardTextureName(targetTopCard);
+                    if (targetOldTopCard != null) {
+                        textureStringOldTableauTop = loader.getCardTextureName(targetOldTopCard);
                     }
                     int nrOfFaceDownInTargetTableau = game.getTableauAtPos(targetStack).getFaceDown().size();
 
-                    makeMoveWasteToTableau(textureStringMovedCard, textureStringOldTableauTop,
+                    makeMoveWasteToTableau(textureStringOldWasteTop, textureStringOldTableauTop,
                             targetStack, targetCard, nrOfFaceDownInTargetTableau);
 
 
                 }
                 // ------------------------ W -> F ------------------------
                 else if (ac2.getGameObject().equals(GameObject.FOUNDATION)) {
-                    String textureStringWasteTop = loader.getCardTextureName(game.getFoundationAtPos(targetStack).getFoundationTop());
+                    String textureStringOldWasteTop =
+                            loader.getCardTextureName(game.getFoundationAtPos(targetStack).getFoundationTop());
 
-                    makeMoveWasteToFoundation(textureStringWasteTop, targetStack);
+                    makeMoveWasteToFoundation(textureStringOldWasteTop, targetStack);
                 }
                 break;
 
             // possibilities: Tableau -> Tableau, Tableau -> Foundation
             case TABLEAU:
+                // TODO: case with more than one card
                 String textureStringTableauSource = loader.getCardTextureName(
                         game.getTableauAtPos(targetStack).getFaceUp().get(targetCard + 1));
-                nrOfFaceDownInSourceTableau = game.getTableauAtPos(sourceStack).getFaceDown().size();
+                nrOfFaceDownInSourceTableauAfterChange =
+                        game.getTableauAtPos(sourceStack).getFaceDown().size();
+                // the card beneath the sourceCard,
+                // it may be null if after the move, the tableau has become empty
                 Card cardBeneathSource = null;
                 try {
                     cardBeneathSource = game.getTableauAtPos(ac1.getStackIndex()).getFaceUp().get(ac1.getCardIndex());
@@ -307,21 +317,22 @@ public class View implements Observer {
 
                 // ------------------------ T -> T ------------------------
                 if (ac2.getGameObject().equals(GameObject.TABLEAU)) {
-                    Card targetTopCard = null;
+                    Card targetOldTopCard = null;
                     String textureStringOldTableauTop = null;
                     try {
-                        targetTopCard = game.getTableauAtPos(targetStack).getFaceUp().get(targetCard);
+                        targetOldTopCard = game.getTableauAtPos(targetStack).getFaceUp().get(targetCard);
                     } catch (Exception e) {
                     }
 
-                    if (targetTopCard != null) {
-                        textureStringOldTableauTop = loader.getCardTextureName(targetTopCard);
+                    if (targetOldTopCard != null) {
+                        textureStringOldTableauTop = loader.getCardTextureName(targetOldTopCard);
                     }
-                    int nrOfFaceDownInTargetTableau = game.getTableauAtPos(targetStack).getFaceDown().size();
+                    int nrOfFaceDownInTargetTableau =
+                            game.getTableauAtPos(targetStack).getFaceDown().size();
 
                     makeMoveTableauToTableau(textureStringTableauSource, textureStringOldTableauTop,
                             cardBeneathSource, sourceStack, sourceCard, targetStack, targetCard,
-                            nrOfFaceDownInSourceTableau, nrOfFaceDownInTargetTableau);
+                            nrOfFaceDownInSourceTableauAfterChange, nrOfFaceDownInTargetTableau);
 
                 }
                 // ------------------------ T -> F ------------------------
@@ -333,12 +344,19 @@ public class View implements Observer {
 
             // possibilities: Foundation -> Tableau
             case FOUNDATION:
+                // after moving the card the old foundation top is now on top the tableau
+                // (on top the targetCard)
+                String textureStringFoundationSource = loader.getCardTextureName(
+                        game.getTableauAtPos(targetStack).getFaceUp().get(targetCard + 1));
                 // ------------------------ F -> T ------------------------
                 if (ac2.getGameObject().equals(GameObject.TABLEAU)) {
+                    String textureStringTableauTarget = loader.getCardTextureName(
+                            game.getTableauAtPos(targetStack).getFaceUp().get(targetCard));
                     int nrOfFaceDownInTargetTableau =
                             game.getTableauAtPos(targetStack).getFaceDown().size();
-                    // TODO
-                    makeMoveFoundationToTableau();
+
+                    makeMoveFoundationToTableau(textureStringFoundationSource, textureStringTableauTarget,
+                            targetStack, targetCard, nrOfFaceDownInTargetTableau);
                 }
                 break;
         }
@@ -382,13 +400,17 @@ public class View implements Observer {
         }
     }
 
-    private void makeMoveWasteToTableau(String sourceCardTextureString, String textureStringOldTableauTop, int targetStack, int targetCardIndex, int nrOfFaceDownInTargetTableau) {
+    private void makeMoveWasteToTableau(String sourceCardTextureString, String targetCardTextureString,
+                                        int targetStack, int targetCardIndex, int nrOfFaceDownInTargetTableau) {
         ImageWrapper sourceCard = faceUpCards.get(sourceCardTextureString);
-        ImageWrapper targetCard = faceUpCards.get(textureStringOldTableauTop);
+        ImageWrapper targetCard = null;
+        if (targetCardTextureString != null) {
+            targetCard = faceUpCards.get(targetCardTextureString);
+        }
 
         // targetCard may be null, but only if there are no cards in the targetStack
         if (sourceCard != null && !(targetCard == null && nrOfFaceDownInTargetTableau + targetCardIndex == 0)) {
-            // move to new position, either on top of another card (targetCard != null) or on an empty tableau
+            // move to new position, either on top of another card (targetCard != null)
             if (targetCard != null) {
                 moveCard(sourceCard.getX(), sourceCard.getY(), targetCard.getX(),
                         targetCard.getY() - ViewConstants.offsetHeightBetweenCards, sourceCard,
@@ -396,7 +418,9 @@ public class View implements Observer {
 
                 // set new smallestYForTableau
                 smallestYForTableau.put(targetStack, targetCard.getY() - ViewConstants.offsetHeightBetweenCards);
-            } else {
+            }
+            // or on an empty tableau
+            else {
                 moveCard(sourceCard.getX(), sourceCard.getY(), ViewConstants.TableauFoundationX[targetStack],
                         ViewConstants.TableauBaseY, sourceCard, targetStack);
 
@@ -424,12 +448,25 @@ public class View implements Observer {
         }
     }
 
-
-    private void makeMoveFoundationToTableau() {
-        // TODO
-    }
-
-
+    /**
+     * make a move tab -> tab: involves the actual move as well as the turning of the card below
+     * the moved one
+     *
+     * @param sourceCardTextureString     the texture name of the source-card
+     * @param targetCardTextureString     analogous to the sourceCardTextureString (may be null, if
+     *                                    the target is an empty tableau)
+     * @param beneathSourceCard           the card beneath the source card (may be null, if the
+     *                                    source card was the last one); is needed to be turned
+     *                                    after making the actual move
+     * @param sourceStack                 the index of the source stack (in [0,6])
+     * @param sourceCardIndex             the index of the source card in the faceUp cards of that
+     *                                    stack
+     * @param targetStack                 analogous to the sourceStack
+     * @param targetCardIndex             analogous to the sourceCardIndex
+     * @param nrOfFaceDownInSourceTableau the number of face-down cards in the source tableau
+     *                                    (after the change)
+     * @param nrOfFaceDownInTargetTableau analogous to the nrOfFaceDownInSourceTableau
+     */
     private void makeMoveTableauToTableau(String sourceCardTextureString,
                                           String targetCardTextureString, Card beneathSourceCard,
                                           int sourceStack, int sourceCardIndex, int targetStack,
@@ -438,13 +475,12 @@ public class View implements Observer {
         // find correct card that should be moved and card to move it to
         ImageWrapper sourceCard = faceUpCards.get(sourceCardTextureString);
         ImageWrapper targetCard = faceUpCards.get(targetCardTextureString);
+        // and maybe (if it exists), the card beneath
         ImageWrapper beneathSourceCardImageWrapper = null;
         String beneathSourceCardTextureString = null;
-        try {
+        if (beneathSourceCard != null) {
             beneathSourceCardTextureString = loader.getCardTextureName(beneathSourceCard);
             beneathSourceCardImageWrapper = faceUpCards.get(beneathSourceCardTextureString);
-        } catch (Exception e) {
-
         }
 
         if (sourceCard != null && !(targetCard == null && nrOfFaceDownInTargetTableau + targetCardIndex == 0)) {
@@ -494,14 +530,51 @@ public class View implements Observer {
         // TODO
     }
 
+
+    private void makeMoveFoundationToTableau(String sourceCardTextureString,
+                                             String targetCardTextureString, int targetStack,
+                                             int targetCardIndex, int nrOfFaceDownInTargetTableau) {
+        // find correct card that should be moved and card to move it to
+        ImageWrapper sourceCard = faceUpCards.get(sourceCardTextureString);
+        ImageWrapper targetCard = null;
+        if (targetCardTextureString != null) {
+            targetCard = faceUpCards.get(targetCardTextureString);
+        }
+
+        // targetCard may be null, but only if there are no cards in the targetStack
+        if (sourceCard != null && !(targetCard == null && nrOfFaceDownInTargetTableau + targetCardIndex == 0)) {
+            if (targetCard != null) {
+                moveCard(sourceCard.getX(), sourceCard.getY(), targetCard.getX(),
+                        targetCard.getY() - ViewConstants.offsetHeightBetweenCards, sourceCard,
+                        targetStack);
+
+                // set new smallestYForTableau
+                smallestYForTableau.put(targetStack, targetCard.getY() - ViewConstants.offsetHeightBetweenCards);
+            }
+            // or on an empty tableau
+            else {
+                moveCard(sourceCard.getX(), sourceCard.getY(), ViewConstants.TableauFoundationX[targetStack],
+                        ViewConstants.TableauBaseY, sourceCard, targetStack);
+
+                // set new smallestYForTableau
+                smallestYForTableau.put(targetStack, ViewConstants.TableauBaseY - ViewConstants.offsetHeightBetweenCards);
+            }
+            sourceCard.setGameObject(GameObject.TABLEAU);
+            sourceCard.setWrapperCardIndex(nrOfFaceDownInTargetTableau + targetCardIndex + 1);
+        } else {
+            throw new RuntimeException("source or target of move could not be found");
+        }
+    }
+
+
     /**
      * can later be used when animating the game
      *
-     * @param sourceX
-     * @param sourceY
-     * @param targetX
-     * @param targetY
-     * @param card
+     * @param sourceX initial x-position
+     * @param sourceY initial y-position
+     * @param targetX new x-position
+     * @param targetY new y-position
+     * @param card    the ImageWrapper-object to be moved
      */
     private void moveCard(float sourceX, float sourceY, float targetX, float targetY, ImageWrapper card, int targetStack) {
         // !!!!!!!!!!!!! Attention: leave sourceX and sourceY, in case they are needed later !!!!!!!!!!!!!
@@ -514,8 +587,8 @@ public class View implements Observer {
     /**
      * for a given tap from the user, the view returns information about the position where the tap occurred
      *
-     * @param x
-     * @param y
+     * @param x x-position of tap
+     * @param y y-position of tap
      * @return an action containing whether the click was on deck, waste, foundation or tableau,
      * which foundation/tableau was tapped and which card in this tableau
      */
@@ -569,7 +642,6 @@ public class View implements Observer {
                                 cardIndex = i;
                                 break;
                             }
-//                            }
                         }
                     }
                 } catch (Exception e) {
