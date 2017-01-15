@@ -70,7 +70,12 @@ public class Controller implements GestureDetector.GestureListener {
                     Gdx.app.log("----------Debug Controller----------", "2");
                     actionForClick = null;
                 } else {
-                    actionForClick = new Action(GameObject.TABLEAU, index, cardIndexInFaceUp);
+                    // View can not distinguish between just one card on the stack and no card
+                    if (tableau.getFaceDown().size() + tableau.getFaceUp().size() == 0) {
+                        actionForClick = new Action(GameObject.TABLEAU, index, -1);
+                    } else {
+                        actionForClick = new Action(GameObject.TABLEAU, index, cardIndexInFaceUp);
+                    }
                 }
             }
         }

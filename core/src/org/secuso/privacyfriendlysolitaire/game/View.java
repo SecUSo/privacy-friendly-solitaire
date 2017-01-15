@@ -199,9 +199,8 @@ public class View implements Observer {
             try {
                 Move prevMove = game.getMoves().lastElement();
                 handleMove(prevMove, game);
-
             } catch (Exception e) {
-                Gdx.app.log("Error", e.getClass().toString() + ": " + e.getMessage());
+                Gdx.app.log("Error", e.getClass().toString() + ": " + e.getMessage() + ", probably an invalid move");
                 e.printStackTrace();
                 // maybe an invalid move
             }
@@ -267,23 +266,29 @@ public class View implements Observer {
             case WASTE:
                 // ------------------------ W -> T ------------------------
                 if (ac2.getGameObject().equals(GameObject.TABLEAU)) {
-                    String textureStringWasteTop = loader.getCardTextureName(game.getTableauAtPos(ac2.getStackIndex()).getFaceUp().get(ac2.getCardIndex() + 1));
+                    String textureStringMovedCard =
+                            loader.getCardTextureName(game.getTableauAtPos(targetStack).getFaceUp().get(targetCard + 1));
 
-                    Card targetTopCard = game.getTableauAtPos(ac2.getStackIndex()).getFaceUp().get(ac2.getCardIndex());
+                    Card targetTopCard = null;
                     String textureStringOldTableauTop = null;
+                    try {
+                        targetTopCard = game.getTableauAtPos(targetStack).getFaceUp().get(targetCard);
+                    } catch (Exception e) {
+                    }
+
                     if (targetTopCard != null) {
                         textureStringOldTableauTop = loader.getCardTextureName(targetTopCard);
                     }
                     int nrOfFaceDownInTargetTableau = game.getTableauAtPos(targetStack).getFaceDown().size();
 
-                    makeMoveWasteToTableau(textureStringWasteTop, textureStringOldTableauTop,
+                    makeMoveWasteToTableau(textureStringMovedCard, textureStringOldTableauTop,
                             targetStack, targetCard, nrOfFaceDownInTargetTableau);
 
 
                 }
                 // ------------------------ W -> F ------------------------
                 else if (ac2.getGameObject().equals(GameObject.FOUNDATION)) {
-                    String textureStringWasteTop = loader.getCardTextureName(game.getFoundationAtPos(ac2.getStackIndex()).getFoundationTop());
+                    String textureStringWasteTop = loader.getCardTextureName(game.getFoundationAtPos(targetStack).getFoundationTop());
 
                     makeMoveWasteToFoundation(textureStringWasteTop, targetStack);
                 }
@@ -291,7 +296,8 @@ public class View implements Observer {
 
             // possibilities: Tableau -> Tableau, Tableau -> Foundation
             case TABLEAU:
-                String textureStringTableauSource = loader.getCardTextureName(game.getTableauAtPos(ac2.getStackIndex()).getFaceUp().get(ac2.getCardIndex() + 1));
+                String textureStringTableauSource = loader.getCardTextureName(
+                        game.getTableauAtPos(targetStack).getFaceUp().get(targetCard + 1));
                 nrOfFaceDownInSourceTableau = game.getTableauAtPos(sourceStack).getFaceDown().size();
                 Card cardBeneathSource = null;
                 try {
@@ -301,14 +307,16 @@ public class View implements Observer {
 
                 // ------------------------ T -> T ------------------------
                 if (ac2.getGameObject().equals(GameObject.TABLEAU)) {
-                    Card targetTopCard = game.getTableauAtPos(ac2.getStackIndex()).getFaceUp().get(ac2.getCardIndex());
+                    Card targetTopCard = game.getTableauAtPos(targetStack).getFaceUp().get(targetCard);
                     String textureStringOldTableauTop = null;
                     if (targetTopCard != null) {
                         textureStringOldTableauTop = loader.getCardTextureName(targetTopCard);
                     }
                     int nrOfFaceDownInTargetTableau = game.getTableauAtPos(targetStack).getFaceDown().size();
 
-                    makeMoveTableauToTableau(textureStringTableauSource, textureStringOldTableauTop, cardBeneathSource, sourceStack, sourceCard, targetStack, targetCard, nrOfFaceDownInSourceTableau, nrOfFaceDownInTargetTableau);
+                    makeMoveTableauToTableau(textureStringTableauSource, textureStringOldTableauTop,
+                            cardBeneathSource, sourceStack, sourceCard, targetStack, targetCard,
+                            nrOfFaceDownInSourceTableau, nrOfFaceDownInTargetTableau);
 
                 }
                 // ------------------------ T -> F ------------------------
@@ -322,7 +330,8 @@ public class View implements Observer {
             case FOUNDATION:
                 // ------------------------ F -> T ------------------------
                 if (ac2.getGameObject().equals(GameObject.TABLEAU)) {
-                    int nrOfFaceDownInTargetTableau = game.getTableauAtPos(targetStack).getFaceDown().size();
+                    int nrOfFaceDownInTargetTableau =
+                            game.getTableauAtPos(targetStack).getFaceDown().size();
                     // TODO
                     makeMoveFoundationToTableau();
                 }
@@ -531,6 +540,13 @@ public class View implements Observer {
                     float biggestY = 10 * ViewConstants.heightOneSpace + ViewConstants.heightCard;
 
                     if (y >= smallestY && y <= biggestY) {
+//                        Gdx.app.log("smallestY ", String.valueOf(smallestY));
+//                        Gdx.app.log("biggestY ", String.valueOf(biggestY));
+//                        if (biggestY) {
+//                            gameObject = GameObject.TABLEAU;
+//                            cardIndex = -1;
+//                        } else {
+
                         // a tableau can at most hold 20 faceUpCards (14 in a row from king to ace + 6 face-down)
                         for (int i = 0; i < 20; i++) {
                             // example for visualisation:
@@ -552,6 +568,7 @@ public class View implements Observer {
                                 cardIndex = i;
                                 break;
                             }
+//                            }
                         }
                     }
                 } catch (Exception e) {
