@@ -288,8 +288,6 @@ public class View implements Observer {
 
                     makeMoveWasteToTableau(textureStringOldWasteTop, textureStringOldTableauTop,
                             targetStack, targetCard, nrOfFaceDownInTargetTableau);
-
-
                 }
                 // ------------------------ W -> F ------------------------
                 else if (ac2.getGameObject().equals(GameObject.FOUNDATION)) {
@@ -303,8 +301,6 @@ public class View implements Observer {
             // possibilities: Tableau -> Tableau, Tableau -> Foundation
             case TABLEAU:
                 // TODO: case with more than one card
-                String textureStringTableauSource = loader.getCardTextureName(
-                        game.getTableauAtPos(targetStack).getFaceUp().get(targetCard + 1));
                 nrOfFaceDownInSourceTableauAfterChange =
                         game.getTableauAtPos(sourceStack).getFaceDown().size();
                 // the card beneath the sourceCard,
@@ -317,6 +313,8 @@ public class View implements Observer {
 
                 // ------------------------ T -> T ------------------------
                 if (ac2.getGameObject().equals(GameObject.TABLEAU)) {
+                    String textureStringTableauSource = loader.getCardTextureName(
+                            game.getTableauAtPos(targetStack).getFaceUp().get(targetCard + 1));
                     Card targetOldTopCard = null;
                     String textureStringOldTableauTop = null;
                     try {
@@ -333,12 +331,15 @@ public class View implements Observer {
                     makeMoveTableauToTableau(textureStringTableauSource, textureStringOldTableauTop,
                             cardBeneathSource, sourceStack, sourceCard, targetStack, targetCard,
                             nrOfFaceDownInSourceTableauAfterChange, nrOfFaceDownInTargetTableau);
-
                 }
                 // ------------------------ T -> F ------------------------
                 else if (ac2.getGameObject().equals(GameObject.FOUNDATION)) {
-                    // TODO
-                    makeMoveTableauToFoundation();
+                    String textureStringTableauSource = loader.getCardTextureName(
+                            game.getFoundationAtPos(targetStack).getFoundationTop());
+
+                    makeMoveTableauToFoundation(textureStringTableauSource, cardBeneathSource,
+                            sourceStack, sourceCard, targetStack,
+                            nrOfFaceDownInSourceTableauAfterChange);
                 }
                 break;
 
@@ -427,6 +428,8 @@ public class View implements Observer {
                 // set new smallestYForTableau
                 smallestYForTableau.put(targetStack, ViewConstants.TableauBaseY - ViewConstants.offsetHeightBetweenCards);
             }
+
+            // set meta-information
             sourceCard.setGameObject(GameObject.TABLEAU);
             sourceCard.setWrapperCardIndex(nrOfFaceDownInTargetTableau + targetCardIndex + 1);
         } else {
@@ -489,22 +492,25 @@ public class View implements Observer {
                         targetCard.getY() - ViewConstants.offsetHeightBetweenCards, sourceCard,
                         targetStack);
 
-                // set new smallestYForTableau
+                // set new smallestY for targetStack
                 smallestYForTableau.put(targetStack, targetCard.getY() - ViewConstants.offsetHeightBetweenCards);
             } else {
                 moveCard(sourceCard.getX(), sourceCard.getY(), ViewConstants.TableauFoundationX[targetStack],
                         ViewConstants.TableauBaseY, sourceCard, targetStack);
 
-                // set new smallestYForTableau
+                // set new smallestY for targetStack
                 smallestYForTableau.put(targetStack, ViewConstants.TableauBaseY - ViewConstants.offsetHeightBetweenCards);
             }
+
+            // set meta-information
             sourceCard.setWrapperCardIndex(nrOfFaceDownInTargetTableau + targetCardIndex + 1);
+
+            // set new smallestY for sourceStack
             if (nrOfFaceDownInSourceTableau >= 1) {
                 smallestYForTableau.put(sourceStack, smallestYForTableau.get(sourceStack) + ViewConstants.offsetHeightBetweenCards);
             } else {
                 smallestYForTableau.put(sourceStack, ViewConstants.TableauBaseY);
             }
-
 
             // if there is/was a card beneath the sourceCard, we have to turn it in the view too
             // and remove the backsideAsset from the stage
@@ -526,7 +532,54 @@ public class View implements Observer {
     }
 
 
-    private void makeMoveTableauToFoundation() {
+    private void makeMoveTableauToFoundation(String sourceCardTextureString, Card beneathSourceCard,
+                                             int sourceStack, int sourceCardIndex, int targetStack,
+                                             int nrOfFaceDownInSourceTableau) {
+        // find correct card that should be moved and card to move it to
+        ImageWrapper sourceCard = faceUpCards.get(sourceCardTextureString);
+        // and maybe (if it exists), the card beneath
+        ImageWrapper beneathSourceCardImageWrapper = null;
+        String beneathSourceCardTextureString = null;
+        if (beneathSourceCard != null) {
+            beneathSourceCardTextureString = loader.getCardTextureName(beneathSourceCard);
+            beneathSourceCardImageWrapper = faceUpCards.get(beneathSourceCardTextureString);
+        }
+
+        if (sourceCard != null) {
+            moveCard(sourceCard.getX(), sourceCard.getY(), ViewConstants.TableauFoundationX[targetStack],
+                    ViewConstants.WasteDeckFoundationY, sourceCard, targetStack);
+
+            // set meta-information
+            sourceCard.setGameObject(GameObject.FOUNDATION);
+            sourceCard.setWrapperCardIndex(-1);
+
+            // set new smallestY
+            if (nrOfFaceDownInSourceTableau >= 1) {
+                smallestYForTableau.put(sourceStack,
+                        smallestYForTableau.get(sourceStack) + ViewConstants.offsetHeightBetweenCards);
+            } else {
+                smallestYForTableau.put(sourceStack, ViewConstants.TableauBaseY);
+            }
+
+            // if there is/was a card beneath the sourceCard, we have to turn it in the view too
+            // and remove the backsideAsset from the stage
+            if (beneathSourceCardImageWrapper == null && beneathSourceCardTextureString != null) {
+                // delete backsideImage
+                ImageWrapper backsideImage = getBackSideCardForStackAndCardIndex(sourceStack,
+                        sourceCardIndex + nrOfFaceDownInSourceTableau);
+
+                // add asset for newly turned card
+                beneathSourceCardImageWrapper = loadActorForCardAndSaveInMap(beneathSourceCard);
+                setImageScalingAndPositionAndStackCardIndicesAndAddToStage(beneathSourceCardImageWrapper,
+                        GameObject.TABLEAU, backsideImage.getX(), backsideImage.getY(), sourceStack,
+                        sourceCardIndex - 1);
+
+                faceDownCards.remove(backsideImage);
+                backsideImage.remove();
+            }
+        } else {
+            throw new RuntimeException("source or target of move could not be found");
+        }
         // TODO
     }
 
@@ -559,6 +612,8 @@ public class View implements Observer {
                 // set new smallestYForTableau
                 smallestYForTableau.put(targetStack, ViewConstants.TableauBaseY - ViewConstants.offsetHeightBetweenCards);
             }
+
+            // set meta-information
             sourceCard.setGameObject(GameObject.TABLEAU);
             sourceCard.setWrapperCardIndex(nrOfFaceDownInTargetTableau + targetCardIndex + 1);
         } else {
