@@ -62,12 +62,12 @@ public class Controller implements GestureDetector.GestureListener {
             // maybe the view made an error and the index is not a valid card of this tableau
             // therefore: check for sanity
             if (cardIndex > tableau.getFaceDown().size() + tableau.getFaceUp().size()) {
-                Gdx.app.log("----------Debug Controller----------", "1");
+//                Gdx.app.log("----------Debug Controller----------", "1");
                 actionForClick = null;
             } else {
                 int cardIndexInFaceUp = cardIndex - tableau.getFaceDown().size();
                 if (cardIndexInFaceUp < 0) {
-                    Gdx.app.log("----------Debug Controller----------", "2");
+//                    Gdx.app.log("----------Debug Controller----------", "2");
                     actionForClick = null;
                 } else {
                     // View can not distinguish between just one card on the stack and no card
