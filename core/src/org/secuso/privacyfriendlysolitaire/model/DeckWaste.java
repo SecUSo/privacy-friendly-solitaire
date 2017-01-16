@@ -23,12 +23,30 @@ public class DeckWaste implements Cloneable {
     private int numTurnOver;
 
     /**
+     * true if vegas variant is played
+     */
+    private boolean vegas;
+
+
+    //TODO DEPRECATED remove if not used anymore
+    /**
      * @param numTurnOver the number of cards that is turned over simultaneously
      */
     public DeckWaste(int numTurnOver) {
         this.deck = new Vector<Card>();
         this.waste = new Vector<Card>();
         this.numTurnOver = numTurnOver;
+    }
+
+    /**
+     * @param numTurnOver the number of cards that is turned over simultaneously
+     * @param vegas       true if vegas is to be played
+     */
+    public DeckWaste(int numTurnOver, boolean vegas) {
+        this.deck = new Vector<Card>();
+        this.waste = new Vector<Card>();
+        this.numTurnOver = numTurnOver;
+        this.vegas = vegas;
     }
 
     /**
@@ -104,11 +122,11 @@ public class DeckWaste implements Cloneable {
 
     /**
      * tries to reset the deck from the waste, can only be done if the deck is empty
-     *
+     * in vegas mode the deck can never be reset
      * @return true if the deck was succesfully reset from the waste
      */
     public boolean reset() {
-        if (this.deck.isEmpty()) {
+        if (this.deck.isEmpty() && !vegas) {
             while (!this.waste.isEmpty()) {
                 this.deck.add(this.waste.remove(this.waste.size() - 1));
             }

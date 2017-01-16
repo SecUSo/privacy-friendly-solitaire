@@ -35,6 +35,10 @@ public class SolitaireGame extends Observable implements Cloneable {
      */
     private Vector<Move> moves;
 
+    /**
+     * number of face down tableau cards that where turned over
+     */
+    private int turnedOverTableau = 0;
 
     public SolitaireGame(DeckWaste initialDeck, ArrayList<Foundation> initialFoundations,
                          ArrayList<Tableau> initialTableaus) {
@@ -65,6 +69,9 @@ public class SolitaireGame extends Observable implements Cloneable {
         return tableaus;
     }
 
+    public int getTurnedOverTableau() {
+        return turnedOverTableau;
+    }
 
     public ArrayList<Foundation> getFoundations() {
         return foundations;
@@ -227,7 +234,9 @@ public class SolitaireGame extends Observable implements Cloneable {
     private void makeMove(Action action) {
         //if source of move was a tableau, try to turn over this tableau
         if (prevAction.getGameObject() == GameObject.TABLEAU) {
-            getTableauAtPos(prevAction.getStackIndex()).turnOver();
+            if (getTableauAtPos(prevAction.getStackIndex()).turnOver()) {
+                turnedOverTableau++;
+            }
         }
         this.moves.add(new Move(prevAction, action));
         this.prevAction = null;
