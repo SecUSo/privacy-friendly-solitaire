@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import org.secuso.privacyfriendlysolitaire.model.Action;
 import org.secuso.privacyfriendlysolitaire.model.Card;
+import org.secuso.privacyfriendlysolitaire.model.DeckWaste;
+import org.secuso.privacyfriendlysolitaire.model.Foundation;
 import org.secuso.privacyfriendlysolitaire.model.GameObject;
 import org.secuso.privacyfriendlysolitaire.model.Move;
 import org.secuso.privacyfriendlysolitaire.model.Tableau;
@@ -78,22 +80,31 @@ public class View implements Observer {
 
     // ------------------------------------ Initial ------------------------------------
     private void arrangeInitialView(SolitaireGame game) {
-        paintInitialFoundations();
+        paintInitialFoundations(game.getFoundations());
         paintInitialTableaus(game.getTableaus());
-        paintInitialDeckWaste();
+        paintInitialDeckWaste(game.getDeckWaste());
     }
 
-    private void paintInitialFoundations() {
+    private void paintInitialFoundations(ArrayList<Foundation> foundations) {
         for (int i = 0; i < 4; i++) {
+            // paint empty spaces
             ImageWrapper emptySpace = loader.getEmptySpaceImageWithoutLogo();
             setImageScalingAndPositionAndStackCardIndicesAndAddToStage(emptySpace, null,
                     ViewConstants.TableauFoundationX[i], ViewConstants.WasteDeckFoundationY, -1, -1);
+
+            // paint foundations
+            Foundation foundation = foundations.get(i);
+            for (int j = 0; i < foundation.getCards().size(); j++) {
+                Card c = foundation.getCards().get(j);
+                ImageWrapper card = loadActorForCardAndSaveInMap(c);
+                setImageScalingAndPositionAndStackCardIndicesAndAddToStage(card, GameObject.FOUNDATION,
+                        ViewConstants.TableauFoundationX[i], ViewConstants.WasteDeckFoundationY,
+                        i, -1);
+            }
         }
     }
 
     private void paintInitialTableaus(ArrayList<Tableau> tableaus) {
-//        // TODO: resize when length to high
-//        int longest = getLengthOfLongestTableau(tableaus);
         Gdx.app.log("TableauBaseY ", String.valueOf(ViewConstants.TableauBaseY));
         Gdx.app.log("biggestY ", String.valueOf(ViewConstants.TableauBaseY + ViewConstants.heightCard - 1));
         for (int i = 0; i < Constants.NR_OF_TABLEAUS; i++) {
@@ -106,14 +117,14 @@ public class View implements Observer {
             setImageScalingAndPositionAndStackCardIndicesAndAddToStage(emptySpace, null, x,
                     10.5f * ViewConstants.heightOneSpace, -1, -1);
 
-            // add face-down faceUpCards
+            // add face-down cards
             int faceDownSize = t.getFaceDown().size();
             for (int j = 0; j < faceDownSize; j++) {
                 ImageWrapper faceDownCard = loader.getBacksideImage();
                 float y = 10.5f * ViewConstants.heightOneSpace - (j * ViewConstants.offsetHeightBetweenCards);
                 setImageScalingAndPositionAndStackCardIndicesAndAddToStage(faceDownCard, GameObject.TABLEAU, x, y, i, j);
 
-                // add to faceDownCards
+                // add to faceDownCards (so it can be destroyed later, when it the card is turned)
                 faceDownCard.setGameObject(GameObject.TABLEAU);
                 faceDownCard.setWrapperStackIndex(i);
                 faceDownCard.setWrapperCardIndex(j);
@@ -121,26 +132,44 @@ public class View implements Observer {
                 faceDownCards.add(faceDownCard);
             }
 
-            // add face-up card
-            if (t.getFaceUp().size() > 1) {
-                Gdx.app.log("!!!!!!!!!!!!!!!!", "mehr als eine Face Up Karte! Diese Methode sollte nur bei der Initialisierung verwendet werden!");
+            // add face-up cards
+            int faceUpSize = t.getFaceUp().size();
+            float smallestY = 0;
+            for (int j = 0; j < faceUpSize; j++) {
+                ImageWrapper faceUpCard = loadActorForCardAndSaveInMap(t.getFaceUp().get(j));
+                // y position is dependant on nr in faceDown-Vector
+                float y = 10.5f * ViewConstants.heightOneSpace -
+                        ((faceDownSize + j) * ViewConstants.offsetHeightBetweenCards);
+
+                // save the last y as the smallest
+                if (j == faceUpSize - 1) {
+                    smallestY = y;
+                }
+
+                setImageScalingAndPositionAndStackCardIndicesAndAddToStage(faceUpCard, GameObject.TABLEAU, x, y, i, t.getFaceDown().size());
             }
-            ImageWrapper faceUpCard = loadActorForCardAndSaveInMap(t.getFaceUp().lastElement());
-            // y position is dependant on nr in faceDown-Vector
-            float y = 10.5f * ViewConstants.heightOneSpace - (faceDownSize * ViewConstants.offsetHeightBetweenCards);
-            setImageScalingAndPositionAndStackCardIndicesAndAddToStage(faceUpCard, GameObject.TABLEAU, x, y, i, t.getFaceDown().size());
+
 
             // save the y at which the last card (face-up) was positioned
-            smallestYForTableau.put(i, y);
-            Gdx.app.log("smallestY für Stack " + i, String.valueOf(y));
+            smallestYForTableau.put(i, smallestY);
+            Gdx.app.log("smallestY für Stack " + i, String.valueOf(smallestY));
         }
     }
 
-    private void paintInitialDeckWaste() {
-        // empty waste
+    private void paintInitialDeckWaste(DeckWaste deckWaste) {
+        // waste
         ImageWrapper emptySpace = loader.getEmptySpaceImageWithoutLogo();
         setImageScalingAndPositionAndStackCardIndicesAndAddToStage(emptySpace, null,
                 ViewConstants.WasteX, ViewConstants.WasteDeckFoundationY, -1, -1);
+
+        Vector<Card> waste = deckWaste.getWaste();
+        for (int i = 0; i < waste.size(); i++) {
+            Card c = waste.get(i);
+            ImageWrapper card = loadActorForCardAndSaveInMap(c);
+            setImageScalingAndPositionAndStackCardIndicesAndAddToStage(card, GameObject.WASTE,
+                    ViewConstants.WasteX, ViewConstants.WasteDeckFoundationY,
+                    5, -1);
+        }
 
         // deck
         ImageWrapper emptySpaceDeck = loader.getEmptySpaceImageWithoutLogo();
