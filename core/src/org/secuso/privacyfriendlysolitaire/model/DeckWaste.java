@@ -6,7 +6,7 @@ import java.util.Vector;
  * @author M. Fischer
  */
 
-public class DeckWaste {
+public class DeckWaste implements Cloneable {
     /**
      * the vector of cards representing the deck
      */
@@ -57,6 +57,14 @@ public class DeckWaste {
      */
     public void setWaste(Vector<Card> waste) {
         this.waste = waste;
+    }
+
+    public int getNumTurnOver() {
+        return numTurnOver;
+    }
+
+    public void setNumTurnOver(int numTurnOver) {
+        this.numTurnOver = numTurnOver;
     }
 
     /**
@@ -138,5 +146,27 @@ public class DeckWaste {
 
     public String toString() {
         return "Deck: " + deck.toString() + ";\nWaste: " + waste.toString();
+    }
+
+    @Override
+    public DeckWaste clone() {
+        DeckWaste dolly;
+        try {
+            dolly = (DeckWaste) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new Error();
+        }
+        //deep copy...
+        //... of deck
+        dolly.setDeck(new Vector<Card>());
+        for (Card c : this.deck) {
+            dolly.getDeck().add(c.clone());
+        }
+        //... of waste
+        dolly.setWaste(new Vector<Card>());
+        for (Card c : this.waste) {
+            dolly.getWaste().add(c.clone());
+        }
+        return dolly;
     }
 }

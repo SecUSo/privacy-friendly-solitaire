@@ -6,12 +6,14 @@ import org.secuso.privacyfriendlysolitaire.model.Foundation;
 import org.secuso.privacyfriendlysolitaire.model.Rank;
 import org.secuso.privacyfriendlysolitaire.model.Suit;
 
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertEquals;
 /**
- * Created by m0 on 11/22/16.
+ * @author M. Fischer
  */
 
 public class FoundationTests {
@@ -36,4 +38,25 @@ public class FoundationTests {
         assertTrue("TWO of SPADES should have been added", f1.getCards().get(1).getSuit() == Suit.SPADES);
     }
 
+    @Test
+    public void cloneTest() {
+        f1 = new Foundation();
+        for (Rank r : Rank.values()) {
+            f1.getCards().add(new Card(r, Suit.CLUBS));
+        }
+        Foundation f2 = f1.clone();
+        assertEquals(f1.getCards().size(), f2.getCards().size());
+        if (f1.getCards().size() == f2.getCards().size()) {
+            for (int i = 0; i < f1.getCards().size(); i++) {
+                assertEquals(f1.getCards().get(i).getRank(), f2.getCards().get(i).getRank());
+                assertEquals(f1.getCards().get(i).getSuit(), f2.getCards().get(i).getSuit());
+            }
+        }
+        for (Card c : f2.getCards()) {
+            c.setSuit(Suit.DIAMONDS);
+        }
+        for (int i = 0; i < f1.getCards().size(); i++) {
+            assertNotEquals(f1.getCards().get(i).getSuit(), f2.getCards().get(i).getSuit());
+        }
+    }
 }

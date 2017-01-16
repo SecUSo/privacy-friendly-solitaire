@@ -6,6 +6,7 @@ import org.secuso.privacyfriendlysolitaire.model.DeckWaste;
 import org.secuso.privacyfriendlysolitaire.model.Foundation;
 import org.secuso.privacyfriendlysolitaire.model.GameObject;
 import org.secuso.privacyfriendlysolitaire.model.Move;
+import org.secuso.privacyfriendlysolitaire.model.Rank;
 import org.secuso.privacyfriendlysolitaire.model.Tableau;
 
 
@@ -19,7 +20,7 @@ import java.util.Vector;
  * represents the solitaire game (its current state and all actions to invoke in order to do an action)
  */
 
-public class SolitaireGame extends Observable {
+public class SolitaireGame extends Observable implements Cloneable {
     private DeckWaste deckAndWaste;
     private ArrayList<Foundation> foundations;
     private ArrayList<Tableau> tableaus;
@@ -34,10 +35,6 @@ public class SolitaireGame extends Observable {
      */
     private Vector<Move> moves;
 
-    /**
-     * the index of the most recent move in the moves vector
-     */
-    private int moveIndex;
 
     public SolitaireGame(DeckWaste initialDeck, ArrayList<Foundation> initialFoundations,
                          ArrayList<Tableau> initialTableaus) {
@@ -46,11 +43,14 @@ public class SolitaireGame extends Observable {
         tableaus = initialTableaus;
         prevAction = null;
         moves = new Vector<Move>();
-        moveIndex = -1;
     }
 
     public DeckWaste getDeckWaste() {
         return deckAndWaste;
+    }
+
+    public void setDeckAndWaste(DeckWaste deckAndWaste) {
+        this.deckAndWaste = deckAndWaste;
     }
 
     public Foundation getFoundationAtPos(int n) {
@@ -63,6 +63,27 @@ public class SolitaireGame extends Observable {
 
     public ArrayList<Tableau> getTableaus() {
         return tableaus;
+    }
+
+
+    public ArrayList<Foundation> getFoundations() {
+        return foundations;
+    }
+
+    public void setFoundations(ArrayList<Foundation> foundations) {
+        this.foundations = foundations;
+    }
+
+    public void setTableaus(ArrayList<Tableau> tableaus) {
+        this.tableaus = tableaus;
+    }
+
+    public void setMoves(Vector<Move> moves) {
+        this.moves = moves;
+    }
+
+    public void setPrevAction(Action prevAction) {
+        this.prevAction = prevAction;
     }
 
     /**
@@ -138,9 +159,11 @@ public class SolitaireGame extends Observable {
      */
     private boolean handleTableau(Action action) {
         if (this.prevAction == null) {
-            saveAction(action);
-            customNotify();
-            return true;
+            if (action.getCardIndex() != -1) {
+                saveAction(action);
+                customNotify();
+                return true;
+            }
         } else if (this.prevAction.getGameObject() == GameObject.TABLEAU) {
             if (handleTableauToTableau(action)) {
                 makeMove(action);
@@ -202,7 +225,6 @@ public class SolitaireGame extends Observable {
      * @param action the action that specifies the target of this move
      */
     private void makeMove(Action action) {
-        cleanUpMoves();
         //if source of move was a tableau, try to turn over this tableau
         if (prevAction.getGameObject() == GameObject.TABLEAU) {
             getTableauAtPos(prevAction.getStackIndex()).turnOver();
@@ -212,16 +234,6 @@ public class SolitaireGame extends Observable {
         customNotify();
     }
 
-    /**
-     * deletes all moves which indices are greater than the current moveIndex
-     */
-    private void cleanUpMoves() {
-        if (moveIndex < moves.size() - 1) {
-            for (int i = moves.size() - 1; i > moveIndex; --i) {
-                moves.remove(i);
-            }
-        }
-    }
 
     /**
      * resets prevAction and notifies observers, to be called if an action could not be handled
@@ -348,6 +360,56 @@ public class SolitaireGame extends Observable {
     private void customNotify() {
         setChanged();
         notifyObservers();
+    }
+
+
+    /**
+     * @return true if the game is won
+     */
+    public boolean isWon() {
+        for (Foundation f : foundations) {
+            if (f.getFoundationTop().getRank() != Rank.KING) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public SolitaireGame clone() {
+        SolitaireGame dolly;
+        try {
+            dolly = (SolitaireGame) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new Error();
+        }
+        //deep copy...
+        //...of deckAndWaste
+        dolly.setDeckAndWaste(this.deckAndWaste.clone());
+        //...of foundations
+        dolly.setFoundations(new ArrayList<Foundation>());
+        for (Foundation f : this.foundations) {
+            dolly.getFoundations().add(f.clone());
+        }
+        //...of tableaus
+        dolly.setTableaus(new ArrayList<Tableau>());
+        for (Tableau t : this.tableaus) {
+            dolly.getTableaus().add(t.clone());
+        }
+        //...of previous action
+        if (this.prevAction != null) {
+            dolly.setPrevAction(this.prevAction.clone());
+        } else {
+            dolly.setPrevAction(null);
+        }
+        //...of moves
+        dolly.setMoves(new Vector<Move>());
+        for (Move m : this.moves) {
+            dolly.getMoves().add(m.clone());
+        }
+        //get rid of original observers, need to be added by application in case clone is used
+        dolly.deleteObservers();
+        return dolly;
     }
 
 }
