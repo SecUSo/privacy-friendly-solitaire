@@ -57,6 +57,16 @@ public class MoveFinder {
             }
             for (int f = 0; f < game.getFoundations().size(); f++) {
                 if (game.getFoundationAtPos(f).canAddCard(game.getTableauAtPos(t).getFaceUp().lastElement())) {
+                    //check if reversal of previous move
+                    if (!game.getMoves().isEmpty()) {
+                        Move prevMove = game.getMoves().lastElement();
+                        if (prevMove.getAction1().getGameObject() == GameObject.FOUNDATION &&
+                                prevMove.getAction2().getGameObject() == GameObject.TABLEAU &&
+                                prevMove.getAction1().getStackIndex() == f &&
+                                prevMove.getAction2().getStackIndex() == t) {
+                            continue;
+                        }
+                    }
                     int tableauCardIndex = game.getTableauAtPos(t).getFaceUp().size() - 1;
                     Action sourceAction = new Action(GameObject.TABLEAU, t, tableauCardIndex);
                     Action targetAction = new Action(GameObject.FOUNDATION, f, 0);
@@ -83,9 +93,20 @@ public class MoveFinder {
                 for (int cardIndex = 0; cardIndex < game.getTableauAtPos(targetT).getFaceUp().size(); cardIndex++) {
                     Vector<Card> toBeMoved = game.getTableauAtPos(sourceT).getCopyFaceUpVector(cardIndex);
                     if (game.getTableauAtPos(targetT).isAddingFaceUpVectorPossible(toBeMoved)) {
-                        Action sourceAction = new Action(GameObject.TABLEAU, sourceT, cardIndex);
-                        Action targetAction = new Action(GameObject.TABLEAU, targetT, 0);
-                        return new Move(sourceAction, targetAction);
+                        //check if reversal of previous move
+                        if (!game.getMoves().isEmpty()) {
+                            Move prevMove = game.getMoves().lastElement();
+                            if (prevMove.getAction1().getGameObject() == GameObject.TABLEAU &&
+                                    prevMove.getAction2().getGameObject() == GameObject.TABLEAU &&
+                                    prevMove.getAction1().getStackIndex() == targetT &&
+                                    prevMove.getAction2().getStackIndex() == sourceT &&
+                                    !game.isLastMoveturnedOverTableau()) {
+                                continue;
+                            }
+                            Action sourceAction = new Action(GameObject.TABLEAU, sourceT, cardIndex);
+                            Action targetAction = new Action(GameObject.TABLEAU, targetT, 0);
+                            return new Move(sourceAction, targetAction);
+                        }
                     }
                 }
             }
@@ -143,6 +164,14 @@ public class MoveFinder {
             toBeMoved.add(game.getFoundationAtPos(f).getCards().lastElement());
             for (int t = 0; t < game.getTableaus().size(); t++) {
                 if (game.getTableauAtPos(t).isAddingFaceUpVectorPossible(toBeMoved)) {
+                    //check if reversal of previous move
+                    Move prevMove = game.getMoves().lastElement();
+                    if (prevMove.getAction1().getGameObject() == GameObject.TABLEAU &&
+                            prevMove.getAction2().getGameObject() == GameObject.FOUNDATION &&
+                            prevMove.getAction1().getStackIndex() == t &&
+                            prevMove.getAction2().getStackIndex() == f) {
+                        continue;
+                    }
                     Action sourceAction = new Action(GameObject.FOUNDATION, f, 0);
                     Action targetAction = new Action(GameObject.TABLEAU, t, 0);
                     return new Move(sourceAction, targetAction);

@@ -40,6 +40,11 @@ public class SolitaireGame extends Observable implements Cloneable {
      */
     private int turnedOverTableau = 0;
 
+    /**
+     * indicates if the last move allowed turning over a face down tableau card
+     */
+    private boolean lastMoveturnedOverTableau = false;
+
     public SolitaireGame(DeckWaste initialDeck, ArrayList<Foundation> initialFoundations,
                          ArrayList<Tableau> initialTableaus) {
         deckAndWaste = initialDeck;
@@ -106,6 +111,10 @@ public class SolitaireGame extends Observable implements Cloneable {
      */
     public Vector<Move> getMoves() {
         return moves;
+    }
+
+    public boolean isLastMoveturnedOverTableau() {
+        return lastMoveturnedOverTableau;
     }
 
     /**
@@ -232,10 +241,12 @@ public class SolitaireGame extends Observable implements Cloneable {
      * @param action the action that specifies the target of this move
      */
     private void makeMove(Action action) {
+        lastMoveturnedOverTableau = false;
         //if source of move was a tableau, try to turn over this tableau
         if (prevAction.getGameObject() == GameObject.TABLEAU) {
             if (getTableauAtPos(prevAction.getStackIndex()).turnOver()) {
                 turnedOverTableau++;
+                lastMoveturnedOverTableau = true;
             }
         }
         this.moves.add(new Move(prevAction, action));
