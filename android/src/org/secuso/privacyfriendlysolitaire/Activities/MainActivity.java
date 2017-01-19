@@ -14,6 +14,8 @@ import android.widget.Button;
 import org.secuso.privacyfriendlysolitaire.R;
 import org.secuso.privacyfriendlysolitaire.Utils.Config;
 
+import static android.R.attr.numColumns;
+
 public class MainActivity extends BaseActivity {
     private Config config;
 
@@ -37,8 +39,8 @@ public class MainActivity extends BaseActivity {
                 startActivity(new Intent(MainActivity.this,Solitaire.class));
             }
         });
-    }
 
+    }
 
     public static class WelcomeDialog extends DialogFragment {
 

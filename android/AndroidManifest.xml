@@ -37,6 +37,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activities.MainActivity" />
         </activity>
+
+
+        <activity
+            android:name=".Activities.RulesActivity"
+            android:label="@string/rules"
+            android:parentActivityName=".Activities.HelpActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activities.HelpActivity" />
+            <intent-filter>
+                <action android:name="org.secuso.privacyfriendlyexample.RuleActivity"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".Activities.HelpActivity"
             android:label="@string/help"
@@ -69,7 +85,11 @@
             android:name=".Activities.Solitaire"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
+            android:parentActivityName=".Activities.MainActivity"
             android:screenOrientation="landscape">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activities.MainActivity" />
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -78,6 +98,8 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
+
+
     </application>
 
 </manifest>

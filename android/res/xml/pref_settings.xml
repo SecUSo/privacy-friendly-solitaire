@@ -47,6 +47,17 @@
             android:entries="@array/countArray"
             android:entryValues="@array/countValue" />
 
+        <ListPreference
+            android:key="@string/sp_key_background_color"
+            android:title="Background Color"
+            android:entries="@array/background_color_names_array"
+            android:entryValues="@array/background_color_values_array"
+            android:icon="@drawable/icon_backroundcolor"
+            android:summary="@string/summary_backroundcolor"
+            android:defaultValue="@color/white"
+            />
+
+        
     </PreferenceCategory>
 
 </PreferenceScreen>
