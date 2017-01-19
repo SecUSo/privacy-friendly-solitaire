@@ -66,6 +66,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
 
 
+    private AppCompatDelegate mDelegate;
 
 
 
@@ -76,8 +77,8 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-       // getDelegate().installViewFactory();
-       // getDelegate().onCreate(savedInstanceState);
+        getDelegate().installViewFactory();
+        getDelegate().onCreate(savedInstanceState);
 
         setContentView(R.layout.game_layout);
 

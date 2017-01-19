@@ -31,7 +31,8 @@
 
             <TextView
                 android:text="@string/help"
-                android:layout_width="match_parent"
+                android:gravity=""
+                android:layout_width="332dp"
                 android:textColor="#388E3C"
                 android:layout_height="62dp"
                 android:id="@+id/textView" />
