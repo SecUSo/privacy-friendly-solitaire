@@ -8,7 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
+import org.secuso.privacyfriendlysolitaire.CallBackListener;
 import org.secuso.privacyfriendlysolitaire.generator.GeneratorSolitaireInstance;
+
+import jdk.nashorn.internal.codegen.CompilerConstants;
 
 /**
  * @author: I. Dix
@@ -17,6 +20,8 @@ import org.secuso.privacyfriendlysolitaire.generator.GeneratorSolitaireInstance;
  */
 public class Application extends ApplicationAdapter {
     private Stage stage;
+
+    private CallBackListener listener;
 
     // state of game
     private SolitaireGame game;
@@ -47,6 +52,11 @@ public class Application extends ApplicationAdapter {
     public void render() {
         Gdx.gl.glClearColor(204 / 255f, 255 / 255f, 255 / 255f, 0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        if (game.isWon() && listener != null) {
+            listener.onWon();
+        }
+
         stage.act();
         stage.draw();
     }
@@ -61,5 +71,9 @@ public class Application extends ApplicationAdapter {
 
     public void print() {
         Gdx.app.log("debug", game.toString());
+    }
+
+    public void registerCallBackListener(CallBackListener listener) {
+        this.listener = listener;
     }
 }
