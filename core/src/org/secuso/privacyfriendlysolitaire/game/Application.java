@@ -25,19 +25,18 @@ public class Application extends ApplicationAdapter {
 
     private int mode;
 
-    public void customConstructor(int mode) {
-        this.mode = mode;
+    public void customConstructor(int cardDrawMode, int scoreMode) {
+        initialiseModelViewAndController(cardDrawMode,  scoreMode);
     }
 
     @Override
     public void create() {
         stage = new Stage();
 
-        initialiseModelViewAndController();
     }
 
-    private void initialiseModelViewAndController() {
-        game = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(mode);
+    private void initialiseModelViewAndController(int cardDrawMode, int scoreMode) {
+        game = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(cardDrawMode);
         view = new View(game, stage);
         game.addObserver(view);
         controller = new Controller(game, view);

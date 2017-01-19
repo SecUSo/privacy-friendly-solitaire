@@ -47,7 +47,6 @@ import org.secuso.privacyfriendlysolitaire.game.Constants;
 public class Solitaire extends AndroidApplication implements NavigationView.OnNavigationItemSelectedListener {
 
 
-
     // delay to launch nav drawer item, to allow close animation to play
     static final int NAVDRAWER_LAUNCH_DELAY = 250;
     // fade in and fade out durations for the main content when switching between
@@ -64,12 +63,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     protected SharedPreferences mSharedPreferences;
 
 
-
-
     private AppCompatDelegate mDelegate;
-
-
-
 
 
     //private AppCompatDelegate delegate;
@@ -77,23 +71,15 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-    //    getDelegate().installViewFactory();
-      //  getDelegate().onCreate(savedInstanceState);
+        //    getDelegate().installViewFactory();
+        //  getDelegate().onCreate(savedInstanceState);
 
         setContentView(R.layout.game_layout);
-
-
 
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mHandler = new Handler();
         overridePendingTransition(0, 0);
-
-
-
-
-
-
 
 
         final Application application = new Application();
@@ -117,14 +103,13 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
                 (GLSurfaceView20) initializeForView(application, new AndroidApplicationConfiguration());
 
 
-
-
         LinearLayout outerLayout = (LinearLayout) findViewById(R.id.outer);
         outerLayout.addView(gameView);
 
         // TODO: get from settings/config
-        int mode = Constants.MODE_ONE_CARD_DEALT;
-        application.customConstructor(mode);
+        int cardDrawMode = Constants.MODE_ONE_CARD_DEALT;
+        int scoreMode = Constants.MODE_STANDARD;
+        application.customConstructor(cardDrawMode, scoreMode);
 
 
         // skip basic_layout and show game on full screen
@@ -132,10 +117,9 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 //		initialize(new TestGame(), config);
 
 
-
-      //  ActionBar ab = getDelegate().getSupportActionBar();
-       // if(ab != null) {
-       //     ab.setDisplayHomeAsUpEnabled(true);
+        //  ActionBar ab = getDelegate().getSupportActionBar();
+        // if(ab != null) {
+        //     ab.setDisplayHomeAsUpEnabled(true);
         //}
 
      /*   View mainContent = findViewById(R.id.main_content);
@@ -149,8 +133,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     }
 
 
-
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -161,7 +143,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         }
     }
 
-  //  protected int getNavigationDrawerID() {return 0;}
+    //  protected int getNavigationDrawerID() {return 0;}
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -264,8 +246,8 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
         //TODO: macht es einen Unterschied, wenn diese If-Bedinung nicht drin ist?
         //if (getSupportActionBar() == null) {
-       //     setSupportActionBar(toolbar);
-       // }
+        //     setSupportActionBar(toolbar);
+        // }
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -374,7 +356,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
             delegate = AppCompatDelegate.create(this, null);
         }
         return delegate;*/
-  //  }
+    //  }
 
 
     protected int getNavigationDrawerID() {
