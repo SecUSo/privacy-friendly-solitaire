@@ -40,6 +40,12 @@ public class SolitaireGame extends Observable implements Cloneable {
      */
     private int turnedOverTableau = 0;
 
+
+    /**
+     * indicated whether the last move was invalid (e.g. moving a card on itself)
+     */
+    private boolean invalidMove = false;
+
     /**
      * indicates if the last move allowed turning over a face down tableau card
      */
@@ -260,8 +266,21 @@ public class SolitaireGame extends Observable implements Cloneable {
      * succesfully
      */
     private void failMove() {
+        invalidMove = true;
         this.prevAction = null;
         customNotify();
+    }
+
+    /**
+     * @return whether the last move was invalid
+     */
+    protected boolean wasInvalidMove() {
+        if (invalidMove == true) {
+            invalidMove = false;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

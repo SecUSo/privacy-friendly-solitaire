@@ -225,17 +225,19 @@ public class View implements Observer {
         }
         // or a move
         else {
-            // with successful move, remove marker
+            // with successful or invalid move, remove marker
             marker.setVisible(false);
 
             try {
-                Move prevMove = game.getMoves().lastElement();
+                if (!game.wasInvalidMove()) {
+                    Move prevMove = game.getMoves().lastElement();
 //                Gdx.app.log("ac1:", prevMove.getAction1().toString() + "\n");
 //                if (prevMove.getAction2() != null) {
 //                    Gdx.app.log("ac2:", prevMove.getAction2().toString() + "\n");
 //                }
 //                Gdx.app.log("game after update:", "\n" + game.toString());
-                handleMove(prevMove, game);
+                    handleMove(prevMove, game);
+                }
             } catch (Exception e) {
                 Gdx.app.log("Error", e.getClass().toString() + ": " + e.getMessage() + ", probably an invalid move");
                 e.printStackTrace();
