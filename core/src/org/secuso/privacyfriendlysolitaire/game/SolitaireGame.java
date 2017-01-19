@@ -406,12 +406,17 @@ public class SolitaireGame extends Observable implements Cloneable {
      * @return true if the game is won
      */
     public boolean isWon() {
+        boolean allKings = true;
         for (Foundation f : foundations) {
-            if (f.getFoundationTop().getRank() != Rank.KING) {
-                return false;
+            if (!f.isEmpty()) {
+                if (f.getFoundationTop().getRank() != Rank.KING) {
+                    allKings = false;
+                }
+            } else {
+                allKings = false;
             }
         }
-        return true;
+        return allKings;
     }
 
     @Override
