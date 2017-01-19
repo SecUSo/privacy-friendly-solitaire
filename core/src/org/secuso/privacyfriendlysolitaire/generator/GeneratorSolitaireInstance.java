@@ -25,18 +25,18 @@ import static org.secuso.privacyfriendlysolitaire.game.Constants.*;
 
 public class GeneratorSolitaireInstance {
 
-    public static SolitaireGame buildPlayableSolitaireInstance(int mode) {
-        if (mode != MODE_ONE_CARD_DEALT && mode != MODE_THREE_CARDS_DEALT) {
+    public static SolitaireGame buildPlayableSolitaireInstance(int cardDrawMode, int scoreMode) {
+        if (cardDrawMode != MODE_ONE_CARD_DEALT && cardDrawMode != MODE_THREE_CARDS_DEALT) {
             throw new IllegalArgumentException("mode should be 0 or 1 (see Constants for reference");
         }
 
-        SolitaireGame instance = generateInstance(mode);
+        SolitaireGame instance = generateInstance(cardDrawMode, scoreMode);
 
         // check for playability
         boolean playable = false;
         while (!playable) {
-            instance = generateInstance(mode);
-            playable = isInstancePlayable(instance, mode);
+            instance = generateInstance(cardDrawMode, scoreMode);
+            playable = isInstancePlayable(instance, cardDrawMode);
         }
 
         return instance;
@@ -46,7 +46,7 @@ public class GeneratorSolitaireInstance {
     /**
      * @return a random solitaire instance
      */
-    public static SolitaireGame generateInstance(int mode) {
+    public static SolitaireGame generateInstance(int cardDrawMode, int scoreMode) {
         Set<Card> allCards = generateAllCards();
 
         // bring generated cards into random order
@@ -80,7 +80,9 @@ public class GeneratorSolitaireInstance {
             }
         }
 
-        return GeneratorUtils.constructInstanceFromCardLists(mode, deck, tableaus);
+        boolean isVegas = scoreMode == 1;
+
+        return GeneratorUtils.constructInstanceFromCardLists(cardDrawMode, isVegas, deck, tableaus);
     }
 
     /**

@@ -15,7 +15,7 @@ import static org.secuso.privacyfriendlysolitaire.game.Constants.NR_OF_TABLEAUS;
 
 /**
  * @author: I. Dix
- *
+ * <p>
  * holds the methods that are helpful for both generator and generator-test, but not
  * exactly part of the generation
  */
@@ -51,14 +51,14 @@ public class GeneratorUtils {
 
 
     /**
-     * @param mode     the mode
-     * @param deck     a list of deck cards
-     * @param tableaus a hashmap of int->Vector<Card> containing the tableaus
+     * @param cardDrawMode the mode
+     * @param deck         a list of deck cards
+     * @param tableaus     a hashmap of int->Vector<Card> containing the tableaus
      * @return an instance generated from the given lists
      */
-    public static SolitaireGame constructInstanceFromCardLists(int mode, Vector<Card> deck,
+    public static SolitaireGame constructInstanceFromCardLists(int cardDrawMode, boolean scoreIsVegas, Vector<Card> deck,
                                                                HashMap<Integer, Vector<Card>> tableaus) {
-        DeckWaste d = new DeckWaste(mode);
+        DeckWaste d = new DeckWaste(cardDrawMode, scoreIsVegas);
         d.setDeck(deck);
 
         ArrayList<Tableau> tableauList = new ArrayList<Tableau>(NR_OF_TABLEAUS);
