@@ -10,6 +10,7 @@ import java.util.Vector;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import org.secuso.privacyfriendlysolitaire.model.Action;
@@ -105,8 +106,8 @@ public class View implements Observer {
     }
 
     private void paintInitialTableaus(ArrayList<Tableau> tableaus) {
-        Gdx.app.log("TableauBaseY ", String.valueOf(ViewConstants.TableauBaseY));
-        Gdx.app.log("biggestY ", String.valueOf(ViewConstants.TableauBaseY + ViewConstants.heightCard - 1));
+//        Gdx.app.log("TableauBaseY ", String.valueOf(ViewConstants.TableauBaseY));
+//        Gdx.app.log("biggestY ", String.valueOf(ViewConstants.TableauBaseY + ViewConstants.heightCard - 1));
         for (int i = 0; i < Constants.NR_OF_TABLEAUS; i++) {
             Tableau t = tableaus.get(i);
 
@@ -152,7 +153,7 @@ public class View implements Observer {
 
             // save the y at which the last card (face-up) was positioned
             smallestYForTableau.put(i, smallestY);
-            Gdx.app.log("smallestY für Stack " + i, String.valueOf(smallestY));
+//            Gdx.app.log("smallestY für Stack " + i, String.valueOf(smallestY));
         }
     }
 
@@ -193,7 +194,6 @@ public class View implements Observer {
         Gdx.app.log("Debug", " ");
         Gdx.app.log("Debug", "-----------update-----------");
         SolitaireGame game = (SolitaireGame) o;
-//        Gdx.app.log("game after update:", "\n" + game.toString());
 
         Action prevAction = game.getPrevAction();
 
@@ -230,11 +230,11 @@ public class View implements Observer {
 
             try {
                 Move prevMove = game.getMoves().lastElement();
-                Gdx.app.log("ac1:", prevMove.getAction1().toString() + "\n");
-                if (prevMove.getAction2() != null) {
-                    Gdx.app.log("ac2:", prevMove.getAction2().toString() + "\n");
-                }
-                Gdx.app.log("game after update:", "\n" + game.toString());
+//                Gdx.app.log("ac1:", prevMove.getAction1().toString() + "\n");
+//                if (prevMove.getAction2() != null) {
+//                    Gdx.app.log("ac2:", prevMove.getAction2().toString() + "\n");
+//                }
+//                Gdx.app.log("game after update:", "\n" + game.toString());
                 handleMove(prevMove, game);
             } catch (Exception e) {
                 Gdx.app.log("Error", e.getClass().toString() + ": " + e.getMessage() + ", probably an invalid move");
@@ -466,7 +466,7 @@ public class View implements Observer {
 
             // set new smallestY for targetStack
             smallestYForTableau.put(targetStack, newY);
-            Gdx.app.log("smallestY für " + targetStack, String.valueOf(newY));
+//            Gdx.app.log("smallestY für " + targetStack, String.valueOf(newY));
 
             // set meta-information
             sourceCard.setGameObject(GameObject.TABLEAU);
@@ -559,7 +559,7 @@ public class View implements Observer {
 
             smallestYForTableau.put(targetStack, newSmallestYStart -
                     toSubtract);
-            Gdx.app.log("smallestY für " + targetStack, String.valueOf(smallestYForTableau.get(targetStack)));
+//            Gdx.app.log("smallestY für " + targetStack, String.valueOf(smallestYForTableau.get(targetStack)));
 
             // set meta-information
             for (ImageWrapper sourceCard : sourceCards) {
@@ -570,10 +570,10 @@ public class View implements Observer {
             if (nrOfFaceDownInSourceTableau > 0) {
                 smallestYForTableau.put(sourceStack, smallestYForTableau.get(sourceStack) +
                         sourceCards.size() * ViewConstants.offsetHeightBetweenCards);
-                Gdx.app.log("smallestY für " + sourceStack, String.valueOf(smallestYForTableau.get(sourceStack)));
+//                Gdx.app.log("smallestY für " + sourceStack, String.valueOf(smallestYForTableau.get(sourceStack)));
             } else {
                 smallestYForTableau.put(sourceStack, ViewConstants.TableauBaseY);
-                Gdx.app.log("smallestY für " + sourceStack, String.valueOf(smallestYForTableau.get(sourceStack)));
+//                Gdx.app.log("smallestY für " + sourceStack, String.valueOf(smallestYForTableau.get(sourceStack)));
             }
 
             // if there is/was a card beneath the sourceCard, turn it
@@ -623,7 +623,7 @@ public class View implements Observer {
                     ViewConstants.TableauBaseY;
 
             smallestYForTableau.put(sourceStack, smallestY);
-            Gdx.app.log("smallestY für " + sourceStack, String.valueOf(smallestYForTableau.get(sourceStack)));
+//            Gdx.app.log("smallestY für " + sourceStack, String.valueOf(smallestYForTableau.get(sourceStack)));
 
             // if there is/was a card beneath the sourceCard, turn it
             if (beneathSourceCardImageWrapper == null && beneathSourceCardTextureString != null) {
@@ -677,7 +677,7 @@ public class View implements Observer {
                     ViewConstants.TableauBaseY - ViewConstants.offsetHeightBetweenCards;
 
             smallestYForTableau.put(targetStack, smallestY);
-            Gdx.app.log("smallestY für " + targetStack, String.valueOf(smallestYForTableau.get(targetStack)));
+//            Gdx.app.log("smallestY für " + targetStack, String.valueOf(smallestYForTableau.get(targetStack)));
 
             // set meta-information
             sourceCard.setGameObject(GameObject.TABLEAU);
@@ -699,6 +699,7 @@ public class View implements Observer {
         // https://libgdx.badlogicgames.com/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/actions/MoveToAction.html
         // and
         // http://stackoverflow.com/questions/15004480/libgdx-actions-gradually-move-actor-from-point-a-to-point-b
+//        card.addAction(Actions.moveTo(targetX, targetY, 0.2f));
         card.setPosition(targetX, targetY);
         card.setWrapperStackIndex(targetStack);
     }

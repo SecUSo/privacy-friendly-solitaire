@@ -48,6 +48,7 @@ public class Application extends ApplicationAdapter {
     public void render() {
         Gdx.gl.glClearColor(204 / 255f, 255 / 255f, 255 / 255f, 0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.act();
         stage.draw();
     }
 
