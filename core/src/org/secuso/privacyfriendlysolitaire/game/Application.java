@@ -28,6 +28,9 @@ public class Application extends ApplicationAdapter {
     private View view;
     private Controller controller;
 
+    private Scorer scorer;
+    private Historian historian;
+
     private int cardDrawMode;
     private int scoreMode;
 
@@ -46,6 +49,15 @@ public class Application extends ApplicationAdapter {
         game = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(cardDrawMode, scoreMode);
         view = new View(game, stage);
         game.addObserver(view);
+        if (scoreMode == Constants.MODE_STANDARD) {
+            scorer = new StandardScorer();
+        } else if (scoreMode == Constants.MODE_VEGAS) {
+            scorer = new VegasScorer();
+        }
+        game.addObserver(scorer);
+        historian = new Historian();
+        game.addObserver(historian);
+        historian.update(game, null);
         controller = new Controller(game, view);
         Gdx.input.setInputProcessor(new GestureDetector(controller));
     }
