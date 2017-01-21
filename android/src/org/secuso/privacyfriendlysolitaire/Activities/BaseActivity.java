@@ -172,9 +172,9 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         super.onPostCreate(savedInstanceState);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-    //    if (getSupportActionBar() == null) {
-        //      setSupportActionBar(toolbar);
-       // }
+        if (getSupportActionBar() == null) {
+              setSupportActionBar(toolbar);
+        }
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

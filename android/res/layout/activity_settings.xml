@@ -9,13 +9,15 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
+
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         tools:context="org.secuso.privacyfriendlyexample.SettingsActivity">
 
-        <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar"/>
+
 
         <LinearLayout
             android:id="@+id/main_content"
@@ -23,15 +25,17 @@
             android:layout_height="match_parent"
             android:background="#FFFFFF"
             android:fitsSystemWindows="true"
+            android:layout_marginTop="?attr/actionBarSize"
             android:orientation="vertical"
             tools:context=".SettingsActivity"
-            android:layout_marginTop="?attr/actionBarSize"
             android:weightSum="1">
 
+
             <fragment android:name="org.secuso.privacyfriendlysolitaire.Activities.SettingsActivity$GeneralPreferenceFragment"
-                android:id="@+id/settings_fragment"
+                android:id="@+id/help_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
+
 
         </LinearLayout>
 

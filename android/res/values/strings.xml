@@ -36,6 +36,7 @@
     <string name="game_button_start">New Game</string>
     <string name="game_button_continue">Continue Game</string>
     <string name="game_desc">This is the default main menu for game apps. The viewpager above should be used to switch between game modes.</string>
+    <string name="game_points">Points</string>
 
     <!--###HELP###-->
 

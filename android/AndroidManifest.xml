@@ -57,20 +57,24 @@
             android:name=".Activities.HelpActivity"
             android:label="@string/help"
             android:parentActivityName=".Activities.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activities.MainActivity" />
         </activity>
         <activity
             android:name=".Activities.SettingsActivity"
-            android:label="@string/title_activity_settings"
+            android:label="@string/action_settings"
             android:parentActivityName=".Activities.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activities.MainActivity" />
         </activity>
+
+
         <activity
             android:name=".Activities.MenuActivity"
             android:label="@string/title_activity_game"

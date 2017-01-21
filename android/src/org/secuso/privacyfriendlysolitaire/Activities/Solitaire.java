@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ import org.secuso.privacyfriendlysolitaire.Utils.Config;
 import org.secuso.privacyfriendlysolitaire.game.Application;
 import org.secuso.privacyfriendlysolitaire.R;
 import org.secuso.privacyfriendlysolitaire.game.Constants;
+import org.secuso.privacyfriendlysolitaire.game.Historian;
 
 public class Solitaire extends AndroidApplication implements NavigationView.OnNavigationItemSelectedListener, CallBackListener {
 
@@ -73,20 +75,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
         Config config = new Config(getApplicationContext());
 
-        // just for demo-reasons
-   /*     final Button testButton = (Button) findViewById(R.id.test_button);
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Reaktion", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.show();
-
-                application.print();
-            }
-        });
-*/
-        GLSurfaceView20 gameView =
+    GLSurfaceView20 gameView =
                 (GLSurfaceView20) initializeForView(application, new AndroidApplicationConfiguration());
 
 
@@ -98,25 +87,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         int scoreMode = Constants.MODE_STANDARD;
         application.customConstructor(cardDrawMode, scoreMode);
 
-
-        // skip basic_layout and show game on full screen
-//		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-//		initialize(new TestGame(), config);
-
-
-        //  ActionBar ab = getDelegate().getSupportActionBar();
-        // if(ab != null) {
-        //     ab.setDisplayHomeAsUpEnabled(true);
-        //}
-
-     /*   View mainContent = findViewById(R.id.main_content);
-        if (mainContent != null) {
-            mainContent.setAlpha(0);
-            mainContent.animate().alpha(1).setDuration(BaseActivity.MAIN_CONTENT_FADEIN_DURATION);
-        }
-
-        overridePendingTransition(0, 0);
-*/
     }
 
 
@@ -254,96 +224,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-    public ActionBar getSupportActionBar() {
-        return getDelegate().getSupportActionBar();
-    }
-
-    public void setSupportActionBar(@Nullable Toolbar toolbar) {
-        getDelegate().setSupportActionBar(toolbar);
-    }
-
-    @Override
-    public MenuInflater getMenuInflater() {
-        return getDelegate().getMenuInflater();
-    }
-
-    @Override
-    public void setContentView(@LayoutRes int layoutResID) {
-        getDelegate().setContentView(layoutResID);
-    }
-
-    @Override
-    public void setContentView(View view) {
-        getDelegate().setContentView(view);
-    }
-
-    @Override
-    public void setContentView(View view, ViewGroup.LayoutParams params) {
-        getDelegate().setContentView(view, params);
-    }
-
-    @Override
-    public void addContentView(View view, ViewGroup.LayoutParams params) {
-        getDelegate().addContentView(view, params);
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        getDelegate().onPostResume();
-    }
-
-    @Override
-    protected void onTitleChanged(CharSequence title, int color) {
-        super.onTitleChanged(title, color);
-        getDelegate().setTitle(title);
-    }
-
-
-    public void invalidateOptionsMenu() {
-        getDelegate().invalidateOptionsMenu();
-    }
-
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        getDelegate().onPostCreate(savedInstanceState);
-    }
-
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        getDelegate().onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        getDelegate().onDestroy();
-    }
-
-
-    private AppCompatDelegate getDelegate(){
-        if(delegate == null){
-            delegate = AppCompatDelegate.create(this, null);
-        }
-        return delegate;*/
-    //  }
 
 
     protected int getNavigationDrawerID() {

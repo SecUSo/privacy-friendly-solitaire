@@ -10,14 +10,90 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
+
     <android.support.design.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context="org.secuso.privacyfriendlyexample.Solitaire">
+        tools:context="tu_darmstadt.sudoku.activity.Solitaire">
 
-        <include layout="@layout/toolbar" />
 
+        <android.support.design.widget.AppBarLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="14"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:gravity="center_vertical">
+
+
+
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/game_points"
+                            android:layout_centerHorizontal="true"
+                            android:id="@+id/point"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" 0 "
+                            android:layout_centerHorizontal="true"
+                            android:id="@+id/points"
+                            android:layout_below="@id/point"
+                            />
+                    </RelativeLayout>
+
+
+                    <ImageButton
+                        android:id="@+id/undo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/undo_nav_bar"
+                        android:clickable="true"/>
+
+
+                    <ImageButton
+                        android:id="@+id/redo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/redo_nav_bar"
+                        android:clickable="true"/>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00:00"
+                        android:layout_weight="0.73"
+                        android:id="@+id/timerView"
+                        android:gravity="end"
+                        android:layout_alignParentRight="true"
+                        />
+                </LinearLayout>
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.AppBarLayout>
 
         <LinearLayout
             android:id="@+id/outer"
