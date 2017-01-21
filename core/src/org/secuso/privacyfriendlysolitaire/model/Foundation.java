@@ -6,7 +6,7 @@ import java.util.Vector;
  * @author: M. Fischer
  */
 
-public class Foundation {
+public class Foundation implements Cloneable {
 
     /**
      * the Suit of this Foundation
@@ -32,11 +32,19 @@ public class Foundation {
         return suit;
     }
 
+    public void setSuit(Suit suit) {
+        this.suit = suit;
+    }
+
     /**
      * @return the Vector of Cards in this Foundation
      */
     public Vector<Card> getCards() {
         return cards;
+    }
+
+    public void setCards(Vector<Card> cards) {
+        this.cards = cards;
     }
 
     public boolean isEmpty() {
@@ -74,17 +82,10 @@ public class Foundation {
      */
     public boolean canAddCard(Card card) {
         if (this.getSuit() == null && this.getCards().isEmpty()) { //foundation empty --> only ace can be added, this defines the suit of the foundation
-            if (card.getRank() == Rank.ACE) {
-                return true;
-            } else {
-                return false;
-            }
+            return card.getRank() == Rank.ACE;
         } else if (this.getSuit() == card.getSuit()) { //foundation not empty --> suit must fit
-            if (this.getCards().lastElement().getRank().isPredecessor(card.getRank())) { // suit fits --> card must be successor of top card
-                return true;
-            } else {
-                return false;
-            }
+            // suit fits --> card must be successor of top card
+            return this.getCards().lastElement().getRank().isPredecessor(card.getRank());
         } else { // foundation not empty and suit does not fit --> cannot add card here
             return false;
         }
@@ -110,6 +111,22 @@ public class Foundation {
 
     public String toString() {
         return cards.toString();
+    }
+
+    @Override
+    public Foundation clone() {
+        Foundation dolly;
+        try {
+            dolly = (Foundation) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new Error();
+        }
+        //deep copy of cards
+        dolly.setCards(new Vector<Card>());
+        for (Card c : this.cards) {
+            dolly.getCards().add(c.clone());
+        }
+        return dolly;
     }
 
 }

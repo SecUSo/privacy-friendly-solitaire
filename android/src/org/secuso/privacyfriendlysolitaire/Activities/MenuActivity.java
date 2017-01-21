@@ -4,6 +4,11 @@ package org.secuso.privacyfriendlysolitaire.Activities;
  * Created by meric-doga on 27.11.16.
  */
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,12 +18,16 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.secuso.privacyfriendlysolitaire.R;
+import org.secuso.privacyfriendlysolitaire.Utils.Config;
 
 public class MenuActivity extends BaseActivity {
+
+    private Config config;
 
     private ViewPager mViewPager;
     private ImageView mArrowLeft;
@@ -30,6 +39,21 @@ public class MenuActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+        config = new Config(getApplicationContext());
+        // the method will
+        if (config.isFirstCall()) {
+            MainActivity.WelcomeDialog welcomeDialog = new MainActivity.WelcomeDialog();
+            welcomeDialog.show(getFragmentManager(), "WelcomeDialog");
+        }
+
+        Button button=(Button)findViewById(R.id.game_button_start);
+        button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MenuActivity.this,Solitaire.class));
+            }
+        });
 
         final SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
@@ -151,6 +175,37 @@ public class MenuActivity extends BaseActivity {
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText("Mode: "+String.valueOf(id));
             return rootView;
+        }
+    }
+
+
+    public static class WelcomeDialog extends DialogFragment {
+
+        // method onAttach removed, was deprecated
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+            LayoutInflater i = getActivity().getLayoutInflater();
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setView(i.inflate(R.layout.welcome_dialog, null));
+            builder.setIcon(R.mipmap.icon);
+            builder.setTitle(getActivity().getString(R.string.welcome));
+            builder.setPositiveButton(getActivity().getString(R.string.okay), null);
+            builder.setNegativeButton(getActivity().getString(R.string.viewhelp), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ((MainActivity) getActivity()).goToNavigationItem(R.id.nav_help);
+                }
+            });
+
+            return builder.create();
+        }
+    }
+    public void onClick(View view) {
+        switch (view.getId()) {
+            // do something with all these buttons?
+            default:
         }
     }
 }

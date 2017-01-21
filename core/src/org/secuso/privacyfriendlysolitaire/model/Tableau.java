@@ -6,7 +6,7 @@ import java.util.Vector;
  * @author: M. Fischer
  */
 
-public class Tableau {
+public class Tableau implements Cloneable {
     /**
      * the cards lying face down on this tableau
      */
@@ -84,7 +84,7 @@ public class Tableau {
      * @return true if the cards could be added to the tableau
      */
     public boolean addFaceUpVector(Vector<Card> vecCards) {
-        if(isAddingFaceUpVectorPossible(vecCards)){
+        if (isAddingFaceUpVectorPossible(vecCards)) {
             this.faceUp.addAll(vecCards);
             return true;
         }
@@ -97,19 +97,14 @@ public class Tableau {
      */
     public boolean isAddingFaceUpVectorPossible(Vector<Card> vecCards) {
         if (!vecCards.isEmpty()) {
-            if (this.faceDown.isEmpty() && this.faceUp.isEmpty()) {//empty tableau piles can be filled with a stack starting with a king
-                if (vecCards.firstElement().getRank() == Rank.KING) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else if (!this.faceDown.isEmpty() && this.faceUp.isEmpty()) {//cannot add cards, face down card has to be turned over first
+            if (this.faceDown.isEmpty() && this.faceUp.isEmpty()) {
+                //empty tableau piles can be filled with a stack starting with a king
+                return vecCards.firstElement().getRank() == Rank.KING;
+            } else if (!this.faceDown.isEmpty() && this.faceUp.isEmpty()) {
+                //cannot add cards, face down card has to be turned over first
                 return false;
-            } else if (this.faceUp.lastElement().getColor() != vecCards.firstElement().getColor() && vecCards.firstElement().getRank().isPredecessor(this.faceUp.lastElement().getRank())) {
-                return true;
-            } else {
-                return false;
-            }
+            } else
+                return this.faceUp.lastElement().getColor() != vecCards.firstElement().getColor() && vecCards.firstElement().getRank().isPredecessor(this.faceUp.lastElement().getRank());
         } else {
             return true;
         }
@@ -120,10 +115,10 @@ public class Tableau {
      * @return the vector of cards that was removed from the tableau
      */
     public Vector<Card> removeFaceUpVector(int index) {
+
         Vector<Card> result = getCopyFaceUpVector(index);
         this.faceUp.removeAll(result);
         return result;
-
     }
 
     /**
@@ -138,7 +133,7 @@ public class Tableau {
             for (int i = index; i < this.faceUp.size(); ++i) {
                 result.add(this.faceUp.get(i));
             }
-            this.faceUp.removeAll(result);
+
             return result;
         }
     }
@@ -154,6 +149,28 @@ public class Tableau {
 
     public String toString() {
         return "Face-Down: " + faceDown.toString() + "; Face-Up: " + faceUp.toString();
+    }
+
+    @Override
+    public Tableau clone() {
+        Tableau dolly;
+        try {
+            dolly = (Tableau) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new Error();
+        }
+        //deep copy...
+        //...of face down
+        dolly.setFaceDown(new Vector<Card>());
+        for (Card c : this.faceDown) {
+            dolly.getFaceDown().add(c.clone());
+        }
+        //...of face up
+        dolly.setFaceUp(new Vector<Card>());
+        for (Card c : this.faceUp) {
+            dolly.getFaceUp().add(c.clone());
+        }
+        return dolly;
     }
 
 }

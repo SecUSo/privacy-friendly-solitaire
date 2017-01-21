@@ -173,7 +173,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (getSupportActionBar() == null) {
-            setSupportActionBar(toolbar);
+              setSupportActionBar(toolbar);
         }
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);

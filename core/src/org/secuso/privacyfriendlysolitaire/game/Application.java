@@ -8,7 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
+import org.secuso.privacyfriendlysolitaire.CallBackListener;
 import org.secuso.privacyfriendlysolitaire.generator.GeneratorSolitaireInstance;
+
+import jdk.nashorn.internal.codegen.CompilerConstants;
 
 /**
  * @author: I. Dix
@@ -18,26 +21,29 @@ import org.secuso.privacyfriendlysolitaire.generator.GeneratorSolitaireInstance;
 public class Application extends ApplicationAdapter {
     private Stage stage;
 
+    private CallBackListener listener;
+
     // state of game
     private SolitaireGame game;
     private View view;
     private Controller controller;
 
-    private int mode;
+    private int cardDrawMode;
+    private int scoreMode;
 
-    public void customConstructor(int mode) {
-        this.mode = mode;
+    public void customConstructor(int cardDrawMode, int scoreMode) {
+        this.cardDrawMode = cardDrawMode;
+        this.scoreMode = scoreMode;
     }
 
     @Override
     public void create() {
         stage = new Stage();
-
         initialiseModelViewAndController();
     }
 
     private void initialiseModelViewAndController() {
-        game = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(mode);
+        game = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(cardDrawMode, scoreMode);
         view = new View(game, stage);
         game.addObserver(view);
         controller = new Controller(game, view);
@@ -48,6 +54,12 @@ public class Application extends ApplicationAdapter {
     public void render() {
         Gdx.gl.glClearColor(204 / 255f, 255 / 255f, 255 / 255f, 0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        if (game.isWon() && listener != null) {
+            listener.onWon();
+        }
+
+        stage.act();
         stage.draw();
     }
 
@@ -61,5 +73,9 @@ public class Application extends ApplicationAdapter {
 
     public void print() {
         Gdx.app.log("debug", game.toString());
+    }
+
+    public void registerCallBackListener(CallBackListener listener) {
+        this.listener = listener;
     }
 }

@@ -27,10 +27,13 @@
             android:orientation="vertical"
             tools:context=".HelpActivity"
             android:weightSum="1">
+
+
             <fragment android:name="org.secuso.privacyfriendlysolitaire.Activities.HelpActivity$HelpFragment"
                 android:id="@+id/help_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
+
 
         </LinearLayout>
 

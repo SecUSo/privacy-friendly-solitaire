@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 
 public class Config {
 
-    private SharedPreferences settings;
-    private SharedPreferences.Editor editor;
+    private final SharedPreferences settings;
+    private final SharedPreferences.Editor editor;
 
     public Config(Context applicationContext) {
         settings = applicationContext.getSharedPreferences("settings", 0);
@@ -26,4 +26,5 @@ public class Config {
 
         return isFirstCall;
     }
+
 }

@@ -6,7 +6,7 @@ package org.secuso.privacyfriendlysolitaire.model;
  * represents an interaction of the user with the game
  */
 
-public class Action {
+public class Action implements Cloneable {
 
     private GameObject gameObject;
     private int stackIndex;
@@ -22,16 +22,39 @@ public class Action {
         return stackIndex;
     }
 
+    public void setStackIndex(int stackIndex) {
+        this.stackIndex = stackIndex;
+    }
+
     public GameObject getGameObject() {
         return gameObject;
+    }
+
+    public void setGameObject(GameObject gameObject) {
+        this.gameObject = gameObject;
     }
 
     public int getCardIndex() {
         return cardIndex;
     }
 
+    public void setCardIndex(int cardIndex) {
+        this.cardIndex = cardIndex;
+    }
+
     public String toString(){
         return gameObject+", stack: "+stackIndex+", card: "+cardIndex;
+    }
+
+    @Override
+    public Action clone() {
+        Action dolly;
+        try {
+            dolly = (Action) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new Error();
+        }
+        return dolly;
     }
 
 }

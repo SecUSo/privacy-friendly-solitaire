@@ -7,7 +7,9 @@ import org.secuso.privacyfriendlysolitaire.model.DeckWaste;
 import org.secuso.privacyfriendlysolitaire.model.Rank;
 import org.secuso.privacyfriendlysolitaire.model.Suit;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Vector;
@@ -85,5 +87,23 @@ public class DeckWasteTests {
         assertTrue("Rank of top card of waste should now be NINE", deckwaste1.removeWasteTop().getRank() == Rank.NINE);
         assertTrue("Rank of top card of waste should now be EIGHT", deckwaste1.getWasteTop().getRank() == Rank.EIGHT);
         assertTrue("Rank of top card of waste should now be EIGHT", deckwaste1.removeWasteTop().getRank() == Rank.EIGHT);
+    }
+
+    @Test
+    public void cloneTest() {
+        DeckWaste dolly = deckwaste1.clone();
+        assertEquals(dolly.getDeck().size(), deckwaste1.getDeck().size());
+        if (dolly.getDeck().size() == deckwaste1.getDeck().size()) {
+            for (int i = 0; i < deckwaste1.getDeck().size(); i++) {
+                assertEquals(dolly.getDeck().get(i).getRank(), deckwaste1.getDeck().get(i).getRank());
+                assertEquals(dolly.getDeck().get(i).getSuit(), deckwaste1.getDeck().get(i).getSuit());
+            }
+        }
+        for (Card c : dolly.getDeck()) {
+            c.setSuit(Suit.DIAMONDS);
+        }
+        for (int i = 0; i < deckwaste1.getDeck().size(); i++) {
+            assertNotEquals(dolly.getDeck().get(i).getSuit(), deckwaste1.getDeck().get(i).getSuit());
+        }
     }
 }

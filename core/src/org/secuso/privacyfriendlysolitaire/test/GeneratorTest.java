@@ -51,7 +51,7 @@ public class GeneratorTest {
     public void generateInstanceTest() {
         // since randomness is involved, we test 100 instances
         for (int j = 0; j < 1000; j++) {
-            SolitaireGame instance = GeneratorSolitaireInstance.generateInstance(MODE_ONE_CARD_DEALT);
+            SolitaireGame instance = GeneratorSolitaireInstance.generateInstance(MODE_ONE_CARD_DEALT, MODE_STANDARD);
 
             Vector<Card> allCards = new Vector<Card>(NR_CARDS);
 
@@ -99,7 +99,7 @@ public class GeneratorTest {
             } else {
                 mode = MODE_THREE_CARDS_DEALT;
             }
-            SolitaireGame instance = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(mode);
+            SolitaireGame instance = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(mode, MODE_STANDARD);
 
             assertTrue(GeneratorSolitaireInstance.isInstancePlayable(instance, mode));
         }
@@ -233,7 +233,7 @@ public class GeneratorTest {
             }
         }
 
-        return GeneratorUtils.constructInstanceFromCardLists(mode, deck, tableaus);
+        return GeneratorUtils.constructInstanceFromCardLists(mode, false, deck, tableaus);
     }
 
 
