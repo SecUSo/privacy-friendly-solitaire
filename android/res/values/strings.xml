@@ -124,15 +124,28 @@
     </string-array>
 
 
+
+
+
+
+
+    <string name="pref_card_selection">Cards on Waste </string>
     <string-array name="cardArray">
         <item>Eine Karte </item>
         <item>Drei Karten</item>
     </string-array>
 
     <string-array name="cardValue">
-        <item>Eine Karte </item>
-        <item>Drei Karten </item>
+        <item>0</item>
+        <item>1</item>
     </string-array>
+
+
+
+
+
+
+
 
     <string-array name="countArray">
         <item>Standard</item>
@@ -150,12 +163,6 @@
 
     <!-- background color names array -->
     <string-array name="background_color_names_array">
-        <item>white</item>
-        <!--item>#ffffff</item-->
-
-        <item>lightblue</item>
-        <!--item>#0274B2</item-->
-
         <item>middleblue</item>
         <!--item>#8aa5ce</item-->
 
@@ -171,11 +178,6 @@
 
     <!-- background color values array -->
     <string-array name="background_color_values_array">
-        <!--item>Blue</item-->
-        <item>#ffffff</item>
-
-        <!--item>Crimson</item-->
-        <item>#0274B2</item>
 
         <!--item>Purple</item-->
         <item>#8aa5ce</item>

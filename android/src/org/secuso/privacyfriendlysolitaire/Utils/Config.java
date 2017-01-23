@@ -24,6 +24,8 @@ public class Config {
             editor.apply();
         }
 
+
+
         return isFirstCall;
     }
 

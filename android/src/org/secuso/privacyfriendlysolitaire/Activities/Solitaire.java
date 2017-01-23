@@ -14,10 +14,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -30,7 +31,7 @@ import org.secuso.privacyfriendlysolitaire.Utils.Config;
 import org.secuso.privacyfriendlysolitaire.game.Application;
 import org.secuso.privacyfriendlysolitaire.R;
 import org.secuso.privacyfriendlysolitaire.game.Constants;
-import org.secuso.privacyfriendlysolitaire.game.Historian;
+
 
 public class Solitaire extends AndroidApplication implements NavigationView.OnNavigationItemSelectedListener, CallBackListener {
 
@@ -75,7 +76,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
         Config config = new Config(getApplicationContext());
 
-    GLSurfaceView20 gameView =
+    final GLSurfaceView20 gameView =
                 (GLSurfaceView20) initializeForView(application, new AndroidApplicationConfiguration());
 
 
@@ -87,6 +88,48 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         int scoreMode = Constants.MODE_STANDARD;
         application.customConstructor(cardDrawMode, scoreMode);
 
+
+// Symbol s = Symbol.valueOf(Symbol.class, mSharedPreferences.getString("pref_card_selection", "Default"));
+        // layout.setSymbols(s);
+        // keyboard.setSymbols(s);
+
+        final boolean sound = mSharedPreferences.getBoolean("pref_sound_switch",true);
+        final boolean shake = mSharedPreferences.getBoolean("pref_shake_switch",true);
+
+        if(mSharedPreferences != null  && sound) {
+            //TODO: Sound an schalen
+        }
+        else{
+            //TODO: Sound aus schalen
+        }
+
+        if(mSharedPreferences != null && shake) {
+            //TODO: Shake animation on
+        }
+        else{
+            //TODO: Shake animation off
+        }
+
+
+
+
+        ImageButton undo = (ImageButton) findViewById(R.id.undo);
+        undo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Button für undo
+
+            }
+        });
+
+        ImageButton redo = (ImageButton) findViewById(R.id.redo);
+        redo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Button für redo
+
+            }
+        });
     }
 
 

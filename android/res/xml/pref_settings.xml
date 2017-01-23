@@ -31,9 +31,8 @@
 
 
         <ListPreference
-            android:title="Karten ziehen im Waste"
-            android:summary="Karten ablegen auf dem Waste."
-            android:key="cardPref"
+            android:title="@string/pref_card_selection"
+            android:key="@string/pref_card_selection"
             android:defaultValue="Eine Karte ziehen"
             android:entries="@array/cardArray"
             android:entryValues="@array/cardValue" />
@@ -57,7 +56,8 @@
             android:defaultValue="@color/white"
             />
 
-        
+
     </PreferenceCategory>
+
 
 </PreferenceScreen>

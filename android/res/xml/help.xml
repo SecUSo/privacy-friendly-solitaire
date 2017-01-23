@@ -2,15 +2,17 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/help">
-        <intent android:action="org.secuso.privacyfriendlyexample.RuleActivity" />
 
 
-        <!--    <Preference android:title="@string/rules"
-                android:selectable="true">
+
+        <Preference android:title="@string/rules"
+            android:key="rule"
+            android:layout="@layout/help_rules"
+            android:selectable="true">
             <intent android:action="org.secuso.privacyfriendlyexample.RuleActivity" />
-     </Preference>
+        </Preference>
 
-    -->
+
 
 
            <Preference android:title="@string/help_undo"
@@ -33,7 +35,9 @@
                android:icon="@drawable/glyphicons_robot"
                android:summary="@string/help_hint_summary"/>
 
-       </PreferenceCategory>
+
+
+    </PreferenceCategory>
 
 
        <PreferenceCategory android:title="@string/help_privacy_heading">

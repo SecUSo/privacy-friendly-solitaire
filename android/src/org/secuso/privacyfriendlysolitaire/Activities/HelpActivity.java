@@ -50,6 +50,8 @@ public class HelpActivity extends BaseActivity {
 
             addPreferencesFromResource(R.xml.help);
 
+
+
         }
     }
 

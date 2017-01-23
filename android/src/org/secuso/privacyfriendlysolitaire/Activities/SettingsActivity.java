@@ -14,7 +14,10 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 import org.secuso.privacyfriendlysolitaire.R;
 
@@ -179,5 +182,9 @@ public class SettingsActivity extends BaseActivity {
             }
             return super.onOptionsItemSelected(item);
         }
+
+
+
+
     }
 }
