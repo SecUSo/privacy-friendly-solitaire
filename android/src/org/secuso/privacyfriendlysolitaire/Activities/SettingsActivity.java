@@ -5,7 +5,9 @@ package org.secuso.privacyfriendlysolitaire.Activities;
  */
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -18,10 +20,15 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.secuso.privacyfriendlysolitaire.R;
 
 public class SettingsActivity extends BaseActivity {
+
+    AlertDialog alertDialog1;
+    CharSequence[] values = {" First Item "," Second Item "," Third Item "};
 
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
@@ -90,7 +97,16 @@ public class SettingsActivity extends BaseActivity {
 
 
         overridePendingTransition(0, 0);
+
+
+
+
+
     }
+
+
+
+
 
     @Override
     protected int getNavigationDrawerID() {

@@ -89,18 +89,18 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         application.customConstructor(cardDrawMode, scoreMode);
 
 
-// Symbol s = Symbol.valueOf(Symbol.class, mSharedPreferences.getString("pref_card_selection", "Default"));
-        // layout.setSymbols(s);
-        // keyboard.setSymbols(s);
 
         final boolean sound = mSharedPreferences.getBoolean("pref_sound_switch",true);
         final boolean shake = mSharedPreferences.getBoolean("pref_shake_switch",true);
+        final boolean waste = mSharedPreferences.getBoolean("pref_waste",true);
+        final boolean points = mSharedPreferences.getBoolean("pref_count_point",true);
+
 
         if(mSharedPreferences != null  && sound) {
-            //TODO: Sound an schalen
+            //TODO: Sound an schalten
         }
         else{
-            //TODO: Sound aus schalen
+            //TODO: Sound aus schalten
         }
 
         if(mSharedPreferences != null && shake) {
@@ -110,7 +110,20 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
             //TODO: Shake animation off
         }
 
+        if(mSharedPreferences != null && waste) {
+            //TODO: waste 3 Karten
+        }
+        else{
+            //TODO: waste 1 Karte
+        }
 
+
+        if(mSharedPreferences != null && points) {
+            //TODO: Points Vegas
+        }
+        else{
+            //TODO: Points Standard
+        }
 
 
         ImageButton undo = (ImageButton) findViewById(R.id.undo);

@@ -6,7 +6,6 @@
         android:title="Einstellungen">
 
         <SwitchPreference
-            android:id="@+id/pref_sound_switch"
             android:key="pref_sound_switch"
             android:title="@string/pref_sound_switch"
             android:summaryOn="@string/pref_sound_switch_summary_on"
@@ -14,50 +13,48 @@
             android:defaultValue="false"/>
 
         <SwitchPreference
-            android:id="@+id/pref_shake_switch"
             android:key="pref_shake_switch"
             android:title="@string/pref_shake_switch"
             android:summaryOn="@string/pref_shake_switch_summary_on"
             android:summaryOff="@string/pref_shake_switch_summary_off"
             android:defaultValue="false"/>
 
-        <ListPreference
-            android:title="Sprache"
-            android:summary="Wählen Sie die Sprache."
-            android:key="languagePref"
-            android:defaultValue="Deutsch"
-            android:entries="@array/languageArray"
-            android:entryValues="@array/languageValue" />
+        <SwitchPreference
+            android:key="@string/pref_language"
+            android:title="@string/pref_language"
+            android:summaryOn="@string/pref_language_summary_on"
+            android:summaryOff="@string/pref_language_summary_off"
+            android:defaultValue="@string/pref_language_summary_off"/>
+
+        <SwitchPreference
+            android:key="@string/pref_count_point"
+            android:title="@string/pref_count_point"
+            android:summaryOn="@string/pref_point_summary_on"
+            android:summaryOff="@string/pref_point_summary_off"
+            android:defaultValue="@string/pref_point_summary_off"/>
+
+        <SwitchPreference
+           android:key="@string/pref_waste"
+           android:title="@string/pref_waste"
+           android:summaryOn="@string/pref_waste_summary_on"
+           android:summaryOff="@string/pref_waste_summary_off"
+           android:defaultValue="@string/pref_waste_summary_off"/>
 
 
-        <ListPreference
-            android:title="@string/pref_card_selection"
-            android:key="@string/pref_card_selection"
-            android:defaultValue="Eine Karte ziehen"
-            android:entries="@array/cardArray"
-            android:entryValues="@array/cardValue" />
 
 
-        <ListPreference
-            android:title="Punktezählen"
-            android:summary="Punktezählvarianten"
-            android:key="countPref"
-            android:defaultValue="180"
-            android:entries="@array/countArray"
-            android:entryValues="@array/countValue" />
 
-        <ListPreference
-            android:key="@string/sp_key_background_color"
-            android:title="Background Color"
-            android:entries="@array/background_color_names_array"
-            android:entryValues="@array/background_color_values_array"
-            android:icon="@drawable/icon_backroundcolor"
-            android:summary="@string/summary_backroundcolor"
-            android:defaultValue="@color/white"
-            />
+   <ListPreference
+               android:key="@string/sp_key_background_color"
+               android:title="Background Color"
+               android:entries="@array/background_color_names_array"
+               android:entryValues="@array/background_color_values_array"
+               android:icon="@drawable/icon_backroundcolor"
+               android:summary="@string/summary_backroundcolor"
+               android:defaultValue="@color/white"
+               />
+
+     </PreferenceCategory>
 
 
-    </PreferenceCategory>
-
-
-</PreferenceScreen>
+   </PreferenceScreen>
