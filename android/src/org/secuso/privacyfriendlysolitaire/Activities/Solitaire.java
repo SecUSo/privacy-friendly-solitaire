@@ -14,10 +14,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -30,7 +31,7 @@ import org.secuso.privacyfriendlysolitaire.Utils.Config;
 import org.secuso.privacyfriendlysolitaire.game.Application;
 import org.secuso.privacyfriendlysolitaire.R;
 import org.secuso.privacyfriendlysolitaire.game.Constants;
-import org.secuso.privacyfriendlysolitaire.game.Historian;
+
 
 public class Solitaire extends AndroidApplication implements NavigationView.OnNavigationItemSelectedListener, CallBackListener {
 
@@ -75,7 +76,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
         Config config = new Config(getApplicationContext());
 
-    GLSurfaceView20 gameView =
+    final GLSurfaceView20 gameView =
                 (GLSurfaceView20) initializeForView(application, new AndroidApplicationConfiguration());
 
 
@@ -87,6 +88,61 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         int scoreMode = Constants.MODE_STANDARD;
         application.customConstructor(cardDrawMode, scoreMode);
 
+
+
+        final boolean sound = mSharedPreferences.getBoolean("pref_sound_switch",true);
+        final boolean shake = mSharedPreferences.getBoolean("pref_shake_switch",true);
+        final boolean waste = mSharedPreferences.getBoolean("pref_waste",true);
+        final boolean points = mSharedPreferences.getBoolean("pref_count_point",true);
+
+
+        if(mSharedPreferences != null  && sound) {
+            //TODO: Sound an schalten
+        }
+        else{
+            //TODO: Sound aus schalten
+        }
+
+        if(mSharedPreferences != null && shake) {
+            //TODO: Shake animation on
+        }
+        else{
+            //TODO: Shake animation off
+        }
+
+        if(mSharedPreferences != null && waste) {
+            //TODO: waste 3 Karten
+        }
+        else{
+            //TODO: waste 1 Karte
+        }
+
+
+        if(mSharedPreferences != null && points) {
+            //TODO: Points Vegas
+        }
+        else{
+            //TODO: Points Standard
+        }
+
+
+        ImageButton undo = (ImageButton) findViewById(R.id.undo);
+        undo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Button für undo
+
+            }
+        });
+
+        ImageButton redo = (ImageButton) findViewById(R.id.redo);
+        redo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Button für redo
+
+            }
+        });
     }
 
 
