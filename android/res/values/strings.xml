@@ -36,6 +36,7 @@
     <string name="game_button_start">New Game</string>
     <string name="game_button_continue">Continue Game</string>
     <string name="game_desc">This is the default main menu for game apps. The viewpager above should be used to switch between game modes.</string>
+    <string name="game_points">Points</string>
 
     <!--###HELP###-->
 
@@ -108,40 +109,21 @@
     <string name="pref_sound_switch_summary_on">Ton ausschalten</string>
     <string name="pref_sound_switch_summary_off">Ton anschalten</string>
 
-    <string name="pref_shake_switch">Schüttelfunktion </string>
-    <string name="pref_shake_switch_summary_on">Schüttel für automatisches Ablegen auf Foundations ausschalten</string>
-    <string name="pref_shake_switch_summary_off">Schüttel für automatisches Ablegen auf Foundations anschalten</string>
+    <string name="pref_shake_switch">Shake function </string>
+    <string name="pref_shake_switch_summary_on">shaking On</string>
+    <string name="pref_shake_switch_summary_off">Shaking Off</string>
 
-    <string-array name="languageArray">
-        <item>Deutsch</item>
-        <item>Englisch</item>
-    </string-array>
+    <string name="pref_language">Select Language</string>
+    <string name="pref_language_summary_on">English</string>
+    <string name="pref_language_summary_off">Deutsch</string>
 
-    <string-array name="languageValue">
-        <item>Deutsch</item>
-        <item>Englisch</item>
-    </string-array>
+    <string name="pref_count_point">Counting Points</string>
+    <string name="pref_point_summary_off">Stantard</string>
+    <string name="pref_point_summary_on">Vegas</string>
 
-
-    <string-array name="cardArray">
-        <item>Eine Karte </item>
-        <item>Drei Karten</item>
-    </string-array>
-
-    <string-array name="cardValue">
-        <item>Eine Karte </item>
-        <item>Drei Karten </item>
-    </string-array>
-
-    <string-array name="countArray">
-        <item>Standard</item>
-        <item>Vegas</item>
-    </string-array>
-
-    <string-array name="countValue">
-        <item> Standard </item>
-        <item>Vegas</item>
-    </string-array>
+    <string name="pref_waste">Number of cards on Waste</string>
+    <string name="pref_waste_summary_off">One card</string>
+    <string name="pref_waste_summary_on">Three cards</string>
 
 
     <string name="sp_key_background_color">Hintergrundfarbe</string>
@@ -149,12 +131,6 @@
 
     <!-- background color names array -->
     <string-array name="background_color_names_array">
-        <item>white</item>
-        <!--item>#ffffff</item-->
-
-        <item>lightblue</item>
-        <!--item>#0274B2</item-->
-
         <item>middleblue</item>
         <!--item>#8aa5ce</item-->
 
@@ -170,11 +146,6 @@
 
     <!-- background color values array -->
     <string-array name="background_color_values_array">
-        <!--item>Blue</item-->
-        <item>#ffffff</item>
-
-        <!--item>Crimson</item-->
-        <item>#0274B2</item>
 
         <!--item>Purple</item-->
         <item>#8aa5ce</item>

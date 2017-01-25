@@ -2,7 +2,6 @@ package org.secuso.privacyfriendlysolitaire.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,10 +14,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.SurfaceView;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -31,6 +31,7 @@ import org.secuso.privacyfriendlysolitaire.Utils.Config;
 import org.secuso.privacyfriendlysolitaire.game.Application;
 import org.secuso.privacyfriendlysolitaire.R;
 import org.secuso.privacyfriendlysolitaire.game.Constants;
+
 
 public class Solitaire extends AndroidApplication implements NavigationView.OnNavigationItemSelectedListener, CallBackListener {
 
@@ -70,43 +71,17 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         overridePendingTransition(0, 0);
 
 
-        Config config = new Config(getApplicationContext());
-
-        // just for demo-reasons
-   /*     final Button testButton = (Button) findViewById(R.id.test_button);
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Reaktion", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.show();
-
-                application.print();
-            }
-        });
-*/
-
-        AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
-        cfg.r = cfg.g = cfg.b = cfg.a = 8;
-
-        cfg.useGLSurfaceView20API18 = false;
-
         final Application application = new Application();
         application.registerCallBackListener(this);
 
+        Config config = new Config(getApplicationContext());
 
-        GLSurfaceView20 gameView = (GLSurfaceView20) initializeForView(application, cfg);
+    final GLSurfaceView20 gameView =
+                (GLSurfaceView20) initializeForView(application, new AndroidApplicationConfiguration());
 
 
         LinearLayout outerLayout = (LinearLayout) findViewById(R.id.outer);
         outerLayout.addView(gameView);
-
-        if (graphics.getView() instanceof SurfaceView) {
-            SurfaceView glView = (SurfaceView) graphics.getView();
-            glView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-            glView.setZOrderOnTop(true);
-        }
-
 
         // TODO: get from settings/config
         int cardDrawMode = Constants.MODE_ONE_CARD_DEALT;
@@ -114,24 +89,60 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         application.customConstructor(cardDrawMode, scoreMode);
 
 
-        // skip basic_layout and show game on full screen
-//		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-//		initialize(new TestGame(), config);
+
+        final boolean sound = mSharedPreferences.getBoolean("pref_sound_switch",true);
+        final boolean shake = mSharedPreferences.getBoolean("pref_shake_switch",true);
+        final boolean waste = mSharedPreferences.getBoolean("pref_waste",true);
+        final boolean points = mSharedPreferences.getBoolean("pref_count_point",true);
 
 
-        //  ActionBar ab = getDelegate().getSupportActionBar();
-        // if(ab != null) {
-        //     ab.setDisplayHomeAsUpEnabled(true);
-        //}
-
-     /*   View mainContent = findViewById(R.id.main_content);
-        if (mainContent != null) {
-            mainContent.setAlpha(0);
-            mainContent.animate().alpha(1).setDuration(BaseActivity.MAIN_CONTENT_FADEIN_DURATION);
+        if(mSharedPreferences != null  && sound) {
+            //TODO: Sound an schalten
+        }
+        else{
+            //TODO: Sound aus schalten
         }
 
-        overridePendingTransition(0, 0);
-*/
+        if(mSharedPreferences != null && shake) {
+            //TODO: Shake animation on
+        }
+        else{
+            //TODO: Shake animation off
+        }
+
+        if(mSharedPreferences != null && waste) {
+            //TODO: waste 3 Karten
+        }
+        else{
+            //TODO: waste 1 Karte
+        }
+
+
+        if(mSharedPreferences != null && points) {
+            //TODO: Points Vegas
+        }
+        else{
+            //TODO: Points Standard
+        }
+
+
+        ImageButton undo = (ImageButton) findViewById(R.id.undo);
+        undo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Button für undo
+
+            }
+        });
+
+        ImageButton redo = (ImageButton) findViewById(R.id.redo);
+        redo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Button für redo
+
+            }
+        });
     }
 
 
@@ -269,96 +280,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-    public ActionBar getSupportActionBar() {
-        return getDelegate().getSupportActionBar();
-    }
-
-    public void setSupportActionBar(@Nullable Toolbar toolbar) {
-        getDelegate().setSupportActionBar(toolbar);
-    }
-
-    @Override
-    public MenuInflater getMenuInflater() {
-        return getDelegate().getMenuInflater();
-    }
-
-    @Override
-    public void setContentView(@LayoutRes int layoutResID) {
-        getDelegate().setContentView(layoutResID);
-    }
-
-    @Override
-    public void setContentView(View view) {
-        getDelegate().setContentView(view);
-    }
-
-    @Override
-    public void setContentView(View view, ViewGroup.LayoutParams params) {
-        getDelegate().setContentView(view, params);
-    }
-
-    @Override
-    public void addContentView(View view, ViewGroup.LayoutParams params) {
-        getDelegate().addContentView(view, params);
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        getDelegate().onPostResume();
-    }
-
-    @Override
-    protected void onTitleChanged(CharSequence title, int color) {
-        super.onTitleChanged(title, color);
-        getDelegate().setTitle(title);
-    }
-
-
-    public void invalidateOptionsMenu() {
-        getDelegate().invalidateOptionsMenu();
-    }
-
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        getDelegate().onPostCreate(savedInstanceState);
-    }
-
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        getDelegate().onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        getDelegate().onDestroy();
-    }
-
-
-    private AppCompatDelegate getDelegate(){
-        if(delegate == null){
-            delegate = AppCompatDelegate.create(this, null);
-        }
-        return delegate;*/
-    //  }
 
 
     protected int getNavigationDrawerID() {
