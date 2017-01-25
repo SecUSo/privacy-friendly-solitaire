@@ -2,6 +2,7 @@ package org.secuso.privacyfriendlysolitaire.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +17,7 @@ import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -68,9 +70,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         overridePendingTransition(0, 0);
 
 
-        final Application application = new Application();
-        application.registerCallBackListener(this);
-
         Config config = new Config(getApplicationContext());
 
         // just for demo-reasons
@@ -86,12 +85,28 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
             }
         });
 */
-        GLSurfaceView20 gameView =
-                (GLSurfaceView20) initializeForView(application, new AndroidApplicationConfiguration());
+
+        AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
+        cfg.r = cfg.g = cfg.b = cfg.a = 8;
+
+        cfg.useGLSurfaceView20API18 = false;
+
+        final Application application = new Application();
+        application.registerCallBackListener(this);
+
+
+        GLSurfaceView20 gameView = (GLSurfaceView20) initializeForView(application, cfg);
 
 
         LinearLayout outerLayout = (LinearLayout) findViewById(R.id.outer);
         outerLayout.addView(gameView);
+
+        if (graphics.getView() instanceof SurfaceView) {
+            SurfaceView glView = (SurfaceView) graphics.getView();
+            glView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+            glView.setZOrderOnTop(true);
+        }
+
 
         // TODO: get from settings/config
         int cardDrawMode = Constants.MODE_ONE_CARD_DEALT;
