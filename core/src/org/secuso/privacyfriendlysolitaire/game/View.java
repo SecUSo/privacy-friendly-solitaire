@@ -701,9 +701,6 @@ public class View implements Observer {
      * @param card    the ImageWrapper-object to be moved
      */
     private void moveCard(float targetX, float targetY, ImageWrapper card, int targetStack) {
-        // https://libgdx.badlogicgames.com/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/actions/MoveToAction.html
-        // and
-        // http://stackoverflow.com/questions/15004480/libgdx-actions-gradually-move-actor-from-point-a-to-point-b
         card.addAction(Actions.moveTo(targetX, targetY, 0.2f));
 //        card.setPosition(targetX, targetY);
         card.setWrapperStackIndex(targetStack);

@@ -178,7 +178,6 @@ public class GeneratorSolitaireInstance {
         HashMap<Integer, Vector<Card>> foundations = new HashMap<Integer, Vector<Card>>(NR_OF_FOUNDATIONS);
 
         // fill all cards into the foundation
-        Gdx.app.log("1", "1");
         int i = 0;
         for (Suit suit : Suit.values()) {
             Vector<Card> foundation = new Vector<Card>();
