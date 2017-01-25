@@ -1,5 +1,9 @@
 package org.secuso.privacyfriendlysolitaire.game;
 
+import com.badlogic.gdx.Gdx;
+
+import org.secuso.privacyfriendlysolitaire.HistorianListener;
+
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
@@ -20,6 +24,8 @@ public class Historian implements Observer {
      */
     private int currentStateIndex;
 
+    private HistorianListener historianListener;
+
     public Historian() {
         history = new Vector<SolitaireGame>();
         currentStateIndex = -1;
@@ -28,9 +34,13 @@ public class Historian implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        cleanUpHistory();
-        history.add(((SolitaireGame) o).clone());
-        currentStateIndex++;
+        SolitaireGame game = (SolitaireGame) observable;
+        if (game.getPrevAction() == null) {
+            cleanUpHistory();
+            history.add(game.clone());
+            currentStateIndex++;
+            notifyListener();
+        }
     }
 
     /**
@@ -67,6 +77,7 @@ public class Historian implements Observer {
      */
     public SolitaireGame undo() {
         currentStateIndex--;
+        notifyListener();
         return history.get(currentStateIndex);
     }
 
@@ -75,6 +86,17 @@ public class Historian implements Observer {
      */
     public SolitaireGame redo() {
         currentStateIndex++;
+        notifyListener();
         return history.get(currentStateIndex);
+    }
+
+    public void registerHistorianListener(HistorianListener historianListener) {
+        this.historianListener = historianListener;
+    }
+
+    private void notifyListener() {
+        if (historianListener != null) {
+            historianListener.possibleActions(canUndo(), canRedo());
+        }
     }
 }

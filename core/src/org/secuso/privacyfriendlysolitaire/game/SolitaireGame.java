@@ -275,7 +275,7 @@ public class SolitaireGame extends Observable implements Cloneable {
      * @return whether the last move was invalid
      */
     protected boolean wasInvalidMove() {
-        if (invalidMove == true) {
+        if (invalidMove) {
             invalidMove = false;
             return true;
         } else {
@@ -396,11 +396,10 @@ public class SolitaireGame extends Observable implements Cloneable {
         return sb.toString();
     }
 
-    private void customNotify() {
+    public void customNotify() {
         setChanged();
         notifyObservers();
     }
-
 
     /**
      * @return true if the game is won
@@ -451,8 +450,6 @@ public class SolitaireGame extends Observable implements Cloneable {
         for (Move m : this.moves) {
             dolly.getMoves().add(m.clone());
         }
-        //get rid of original observers, need to be added by application in case clone is used
-        dolly.deleteObservers();
         return dolly;
     }
 

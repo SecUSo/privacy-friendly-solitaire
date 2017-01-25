@@ -28,6 +28,9 @@ public class Application extends ApplicationAdapter {
     private View view;
     private Controller controller;
 
+    private Scorer scorer;
+    private Historian historian;
+
     private int cardDrawMode;
     private int scoreMode;
 
@@ -46,14 +49,24 @@ public class Application extends ApplicationAdapter {
         game = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(cardDrawMode, scoreMode);
         view = new View(game, stage);
         game.addObserver(view);
+        if (scoreMode == Constants.MODE_STANDARD) {
+            scorer = new StandardScorer();
+        } else if (scoreMode == Constants.MODE_VEGAS) {
+            scorer = new VegasScorer();
+        }
+        game.addObserver(scorer);
+        historian = new Historian();
+        game.addObserver(historian);
+        historian.update(game, null);
         controller = new Controller(game, view);
         Gdx.input.setInputProcessor(new GestureDetector(controller));
     }
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(204 / 255f, 255 / 255f, 255 / 255f, 0f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        // make transparent, so the background can be set from android, instead of here
+        Gdx.gl.glClearColor( 0, 0, 0, 0 );
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
 
         if (game.isWon() && listener != null) {
             listener.onWon();
