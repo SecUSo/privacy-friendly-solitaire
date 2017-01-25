@@ -41,20 +41,27 @@
            android:defaultValue="@string/pref_waste_summary_off"/>
 
 
+        <Preference android:title="Backgroundcolor"
+            android:icon="@drawable/icon_backroundcolor"
+            android:key="rule"
+            android:layout="@layout/setting_color"
+            android:selectable="true">
+            <intent android:action="org.secuso.privacyfriendlyexample.BackgroundActivity" />
+        </Preference>
 
 
+        <!--      <ListPreference
+                   android:key="@string/sp_key_background_color"
+                   android:title="Background Color"
+                   android:entries="@array/background_color_names_array"
+                   android:entryValues="@array/background_color_values_array"
+                   android:icon="@drawable/icon_backroundcolor"
+                   android:summary="@string/summary_backroundcolor"
+                   android:defaultValue="@color/white"
+                   />
+                   -->
 
-   <ListPreference
-               android:key="@string/sp_key_background_color"
-               android:title="Background Color"
-               android:entries="@array/background_color_names_array"
-               android:entryValues="@array/background_color_values_array"
-               android:icon="@drawable/icon_backroundcolor"
-               android:summary="@string/summary_backroundcolor"
-               android:defaultValue="@color/white"
-               />
-
-     </PreferenceCategory>
+         </PreferenceCategory>
 
 
-   </PreferenceScreen>
+       </PreferenceScreen>

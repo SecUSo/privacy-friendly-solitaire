@@ -20,6 +20,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +30,8 @@ import org.secuso.privacyfriendlysolitaire.R;
 
 public class SettingsActivity extends BaseActivity {
 
-    AlertDialog alertDialog1;
-    CharSequence[] values = {" First Item "," Second Item "," Third Item "};
+
+
 
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
@@ -97,9 +100,6 @@ public class SettingsActivity extends BaseActivity {
 
 
         overridePendingTransition(0, 0);
-
-
-
 
 
     }

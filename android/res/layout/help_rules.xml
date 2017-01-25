@@ -7,7 +7,6 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:text="@string/rules"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/button_text_size"
@@ -16,5 +15,7 @@
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="10"
-        android:shadowColor="@color/middleblue"/>
+        android:shadowColor="@color/middleblue"
+        android:layout_height="94dp"
+        android:background="@color/middlegrey"/>
 </LinearLayout>
