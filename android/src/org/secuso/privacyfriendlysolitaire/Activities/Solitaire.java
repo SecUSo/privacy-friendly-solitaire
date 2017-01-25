@@ -2,6 +2,7 @@ package org.secuso.privacyfriendlysolitaire.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -74,14 +76,25 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         final Application application = new Application();
         application.registerCallBackListener(this);
 
-        Config config = new Config(getApplicationContext());
+//        Config config = new Config(getApplicationContext());
+        AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
+        cfg.r = cfg.g = cfg.b = cfg.a = 8;
 
-    final GLSurfaceView20 gameView =
-                (GLSurfaceView20) initializeForView(application, new AndroidApplicationConfiguration());
+        cfg.useGLSurfaceView20API18 = false;
+
+        final GLSurfaceView20 gameView = (GLSurfaceView20) initializeForView(application, cfg);
 
 
         LinearLayout outerLayout = (LinearLayout) findViewById(R.id.outer);
         outerLayout.addView(gameView);
+
+
+        if (graphics.getView() instanceof SurfaceView) {
+            SurfaceView glView = (SurfaceView) graphics.getView();
+            glView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+            glView.setZOrderOnTop(true);
+        }
+
 
         // TODO: get from settings/config
         int cardDrawMode = Constants.MODE_ONE_CARD_DEALT;
@@ -89,39 +102,34 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         application.customConstructor(cardDrawMode, scoreMode);
 
 
+        final boolean sound = mSharedPreferences.getBoolean("pref_sound_switch", true);
+        final boolean shake = mSharedPreferences.getBoolean("pref_shake_switch", true);
+        final boolean waste = mSharedPreferences.getBoolean("pref_waste", true);
+        final boolean points = mSharedPreferences.getBoolean("pref_count_point", true);
 
-        final boolean sound = mSharedPreferences.getBoolean("pref_sound_switch",true);
-        final boolean shake = mSharedPreferences.getBoolean("pref_shake_switch",true);
-        final boolean waste = mSharedPreferences.getBoolean("pref_waste",true);
-        final boolean points = mSharedPreferences.getBoolean("pref_count_point",true);
 
-
-        if(mSharedPreferences != null  && sound) {
+        if (mSharedPreferences != null && sound) {
             //TODO: Sound an schalten
-        }
-        else{
+        } else {
             //TODO: Sound aus schalten
         }
 
-        if(mSharedPreferences != null && shake) {
+        if (mSharedPreferences != null && shake) {
             //TODO: Shake animation on
-        }
-        else{
+        } else {
             //TODO: Shake animation off
         }
 
-        if(mSharedPreferences != null && waste) {
+        if (mSharedPreferences != null && waste) {
             //TODO: waste 3 Karten
-        }
-        else{
+        } else {
             //TODO: waste 1 Karte
         }
 
 
-        if(mSharedPreferences != null && points) {
+        if (mSharedPreferences != null && points) {
             //TODO: Points Vegas
-        }
-        else{
+        } else {
             //TODO: Points Standard
         }
 
@@ -281,15 +289,20 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     }
 
 
-
     protected int getNavigationDrawerID() {
         return R.id.nav_game;
     }
 
     @Override
     public void onWon() {
-        Toast toast = Toast.makeText(getApplicationContext(), "Reaktion", Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.BOTTOM, 0, 0);
-        toast.show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // TODO: ordentliche Reaktion auf Gewinn :D
+                Toast toast = Toast.makeText(getApplicationContext(), "You won", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.show();
+            }
+        });
     }
 }

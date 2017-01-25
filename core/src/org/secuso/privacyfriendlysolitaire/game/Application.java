@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 import org.secuso.privacyfriendlysolitaire.CallBackListener;
+import org.secuso.privacyfriendlysolitaire.HistorianListener;
+import org.secuso.privacyfriendlysolitaire.ScoreListener;
 import org.secuso.privacyfriendlysolitaire.generator.GeneratorSolitaireInstance;
 
 import jdk.nashorn.internal.codegen.CompilerConstants;
@@ -28,6 +30,9 @@ public class Application extends ApplicationAdapter {
     private View view;
     private Controller controller;
 
+    private Scorer scorer;
+    private Historian historian;
+
     private int cardDrawMode;
     private int scoreMode;
 
@@ -43,17 +48,29 @@ public class Application extends ApplicationAdapter {
     }
 
     private void initialiseModelViewAndController() {
+        // comment in for directly won game ;-)
+//        game = GeneratorSolitaireInstance.buildAlmostWonSolitaireInstance();
         game = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(cardDrawMode, scoreMode);
         view = new View(game, stage);
         game.addObserver(view);
+        if (scoreMode == Constants.MODE_STANDARD) {
+            scorer = new StandardScorer();
+        } else if (scoreMode == Constants.MODE_VEGAS) {
+            scorer = new VegasScorer();
+        }
+        game.addObserver(scorer);
+        historian = new Historian();
+        game.addObserver(historian);
+        historian.update(game, null);
         controller = new Controller(game, view);
         Gdx.input.setInputProcessor(new GestureDetector(controller));
     }
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(204 / 255f, 255 / 255f, 255 / 255f, 0f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        // make transparent, so the background can be set from android, instead of here
+        Gdx.gl.glClearColor(0, 0, 0, 0);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         if (game.isWon() && listener != null) {
             listener.onWon();
@@ -77,5 +94,27 @@ public class Application extends ApplicationAdapter {
 
     public void registerCallBackListener(CallBackListener listener) {
         this.listener = listener;
+    }
+
+    public void registerHistorianListener(HistorianListener historianListener) {
+        this.historian.registerHistorianListener(historianListener);
+    }
+
+    public void registerScoreListener(ScoreListener scoreListener) {
+        this.scorer.registerScoreListener(scoreListener);
+    }
+
+    public void undo() {
+        if (historian.canUndo()) {
+            game = historian.undo();
+            //TODO update view
+        }
+    }
+
+    public void redo() {
+        if (historian.canRedo()) {
+            game = historian.redo();
+            //TODO update view
+        }
     }
 }

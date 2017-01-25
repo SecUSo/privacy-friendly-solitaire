@@ -1,5 +1,7 @@
 package org.secuso.privacyfriendlysolitaire.generator;
 
+import com.badlogic.gdx.Gdx;
+
 import org.secuso.privacyfriendlysolitaire.game.SolitaireGame;
 import org.secuso.privacyfriendlysolitaire.model.Card;
 import org.secuso.privacyfriendlysolitaire.model.DeckWaste;
@@ -58,6 +60,26 @@ public class GeneratorUtils {
      */
     public static SolitaireGame constructInstanceFromCardLists(int cardDrawMode, boolean scoreIsVegas, Vector<Card> deck,
                                                                HashMap<Integer, Vector<Card>> tableaus) {
+        HashMap<Integer, Vector<Card>> emptyFoundations = new HashMap<Integer, Vector<Card>>(NR_OF_FOUNDATIONS);
+        for (int i = 0; i < NR_OF_FOUNDATIONS; i++) {
+            emptyFoundations.put(i, new Vector<Card>());
+        }
+
+        return constructInstanceFromCardLists(cardDrawMode, scoreIsVegas, deck, tableaus, emptyFoundations);
+    }
+
+
+    /**
+     * @param cardDrawMode the mode
+     * @param deck         a list of deck cards
+     * @param tableaus     a hashmap of int->Vector<Card> containing the tableaus
+     * @param foundations  a hashmap of int->Vector<Card> containing the foundations
+     * @return an instance generated from the given lists
+     */
+    public static SolitaireGame constructInstanceFromCardLists(int cardDrawMode, boolean scoreIsVegas,
+                                                               Vector<Card> deck,
+                                                               HashMap<Integer, Vector<Card>> tableaus,
+                                                               HashMap<Integer, Vector<Card>> foundations) {
         DeckWaste d = new DeckWaste(cardDrawMode, scoreIsVegas);
         d.setDeck(deck);
 
@@ -65,23 +87,37 @@ public class GeneratorUtils {
         for (int i = 0; i < NR_OF_TABLEAUS; i++) {
             Vector<Card> t = tableaus.get(i);
             Tableau tableau = new Tableau();
-            // add last card (with highest index) as face up
-            tableau.addFaceUp(t.lastElement());
 
-            // remove this card from the interim-list and add the rest as face down
-            t.removeElement(t.lastElement());
-            if (!t.isEmpty()) {
-                tableau.setFaceDown(t);
+            try {
+                // add last card (with highest index) as face up
+                tableau.addFaceUp(t.lastElement());
+
+                // remove this card from the interim-list and add the rest as face down
+                t.removeElement(t.lastElement());
+                if (!t.isEmpty()) {
+                    tableau.setFaceDown(t);
+                }
+            } catch (Exception e){
+                Gdx.app.log("exception", "exception unwichtig");
             }
 
             // add to list
             tableauList.add(tableau);
         }
-        ArrayList<Foundation> foundations = new ArrayList<Foundation>(NR_OF_FOUNDATIONS);
+
+
+        ArrayList<Foundation> foundationList = new ArrayList<Foundation>(NR_OF_FOUNDATIONS);
         for (int i = 0; i < NR_OF_FOUNDATIONS; i++) {
-            foundations.add(new Foundation());
+            Vector<Card> f = foundations.get(i);
+            Foundation foundation = new Foundation();
+
+            for (Card c : f) {
+                foundation.addCard(c);
+            }
+
+            foundationList.add(foundation);
         }
 
-        return new SolitaireGame(d, foundations, tableauList);
+        return new SolitaireGame(d, foundationList, tableauList);
     }
 }

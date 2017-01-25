@@ -17,15 +17,18 @@ public class VegasScorer extends Scorer {
 
     @Override
     public void update(Observable observable, Object o) {
-        setScore(-52);
-        setMoves(((SolitaireGame) observable).getMoves());
-        for (Move m : getMoves()) {
-            if (m.getAction1().getGameObject() == GameObject.FOUNDATION) {
-                addScore(-5);
+        SolitaireGame game = (SolitaireGame) observable;
+        if (game.getPrevAction() == null) {
+            setScore(-52);
+            for (Move m : game.getMoves()) {
+                if (m.getAction1().getGameObject() == GameObject.FOUNDATION) {
+                    addScore(-5);
+                }
+                if (m.getAction2().getGameObject() == GameObject.FOUNDATION) {
+                    addScore(5);
+                }
             }
-            if (m.getAction2().getGameObject() == GameObject.FOUNDATION) {
-                addScore(5);
-            }
+            notifyListener();
         }
     }
 }
