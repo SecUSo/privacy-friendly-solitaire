@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 import org.secuso.privacyfriendlysolitaire.CallBackListener;
+import org.secuso.privacyfriendlysolitaire.HistorianListener;
+import org.secuso.privacyfriendlysolitaire.ScoreListener;
 import org.secuso.privacyfriendlysolitaire.generator.GeneratorSolitaireInstance;
 
 import jdk.nashorn.internal.codegen.CompilerConstants;
@@ -65,8 +67,8 @@ public class Application extends ApplicationAdapter {
     @Override
     public void render() {
         // make transparent, so the background can be set from android, instead of here
-        Gdx.gl.glClearColor( 0, 0, 0, 0 );
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+        Gdx.gl.glClearColor(0, 0, 0, 0);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         if (game.isWon() && listener != null) {
             listener.onWon();
@@ -90,5 +92,27 @@ public class Application extends ApplicationAdapter {
 
     public void registerCallBackListener(CallBackListener listener) {
         this.listener = listener;
+    }
+
+    public void registerHistorianListener(HistorianListener historianListener) {
+        this.historian.registerHistorianListener(historianListener);
+    }
+
+    public void registerScoreListener(ScoreListener scoreListener) {
+        this.scorer.registerScoreListener(scoreListener);
+    }
+
+    public void undo() {
+        if (historian.canUndo()) {
+            game = historian.undo();
+            //TODO update view
+        }
+    }
+
+    public void redo() {
+        if (historian.canRedo()) {
+            game = historian.redo();
+            //TODO update view
+        }
     }
 }

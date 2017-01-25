@@ -28,6 +28,12 @@ public class DeckWaste implements Cloneable {
     private boolean vegas;
 
 
+    /**
+     * the number of cards currently fanned out on the waste
+     */
+    private int fanSize;
+
+
     //TODO DEPRECATED remove if not used anymore
     /**
      * @param numTurnOver the number of cards that is turned over simultaneously
@@ -85,6 +91,10 @@ public class DeckWaste implements Cloneable {
         this.numTurnOver = numTurnOver;
     }
 
+    public int getFanSize() {
+        return fanSize;
+    }
+
     /**
      * tries to turn over cards from deck to waste
      *
@@ -92,12 +102,15 @@ public class DeckWaste implements Cloneable {
      */
     public boolean turnOver() {
         if (this.canTurnOver()) {
+            int newfanSize = 0;
             for (int i = 0; i < this.numTurnOver; ++i) {
                 if (this.deck.isEmpty()) {
                     break;
                 }
                 this.waste.add(this.deck.remove(this.deck.size() - 1));
+                newfanSize++;
             }
+            this.fanSize = newfanSize;
             return true;
         } else {
             return false;
@@ -158,6 +171,9 @@ public class DeckWaste implements Cloneable {
      * @return the card on top of the waste that was removed from it
      */
     public Card removeWasteTop() {
+        if (fanSize > 1) {
+            fanSize--;
+        }
         return this.waste.remove(this.waste.size() - 1);
     }
 
