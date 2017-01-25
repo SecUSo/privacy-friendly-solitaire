@@ -367,8 +367,14 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
     @Override
     public void onWon() {
-        Toast toast = Toast.makeText(getApplicationContext(), "Reaktion", Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.BOTTOM, 0, 0);
-        toast.show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // TODO: ordentliche Reaktion auf Gewinn :D
+                Toast toast = Toast.makeText(getApplicationContext(), "You won", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.show();
+            }
+        });
     }
 }

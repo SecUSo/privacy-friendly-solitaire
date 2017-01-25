@@ -1,5 +1,7 @@
 package org.secuso.privacyfriendlysolitaire.generator;
 
+import com.badlogic.gdx.Gdx;
+
 import org.secuso.privacyfriendlysolitaire.game.SolitaireGame;
 import org.secuso.privacyfriendlysolitaire.model.Card;
 import org.secuso.privacyfriendlysolitaire.model.Rank;
@@ -169,9 +171,39 @@ public class GeneratorSolitaireInstance {
     }
 
 
-    // maybe later
-//    private boolean isInstanceWinnable(SolitaireGame instance){
-//
-//        return false;
-//    }
+    // for testing reasons
+    public static SolitaireGame buildAlmostWonSolitaireInstance() {
+        Vector<Card> deck = new Vector<Card>(2);
+        HashMap<Integer, Vector<Card>> tableaus = new HashMap<Integer, Vector<Card>>(NR_OF_TABLEAUS);
+        HashMap<Integer, Vector<Card>> foundations = new HashMap<Integer, Vector<Card>>(NR_OF_FOUNDATIONS);
+
+        // fill all cards into the foundation
+        Gdx.app.log("1", "1");
+        int i = 0;
+        for (Suit suit : Suit.values()) {
+            Vector<Card> foundation = new Vector<Card>();
+            Vector<Card> tableau = new Vector<Card>();
+            for (Rank rank : Rank.values()) {
+                Card c = new Card(rank, suit);
+
+                if (rank != Rank.KING) {
+                    foundation.add(c);
+                } else {
+                    // except for the 4 kings
+                    tableau.add(c);
+                }
+            }
+            foundations.put(i, foundation);
+            tableaus.put(i, tableau);
+            i++;
+        }
+
+        for (int j = 4; j < NR_OF_TABLEAUS; j++) {
+            Vector<Card> tableau = new Vector<Card>();
+            tableaus.put(j, tableau);
+        }
+
+        return GeneratorUtils.constructInstanceFromCardLists(MODE_ONE_CARD_DEALT, false, deck,
+                tableaus, foundations);
+    }
 }

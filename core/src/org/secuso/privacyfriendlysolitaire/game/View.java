@@ -95,7 +95,7 @@ public class View implements Observer {
 
             // paint foundations
             Foundation foundation = foundations.get(i);
-            for (int j = 0; i < foundation.getCards().size(); j++) {
+            for (int j = 0; j < foundation.getCards().size(); j++) {
                 Card c = foundation.getCards().get(j);
                 ImageWrapper card = loadActorForCardAndSaveInMap(c);
                 setImageScalingAndPositionAndStackCardIndicesAndAddToStage(card, GameObject.FOUNDATION,
@@ -344,6 +344,8 @@ public class View implements Observer {
 
                 nrOfFaceDownInSourceTableauAfterChange =
                         tabAtSourceStack.getFaceDown().size();
+                int nrOfFaceUpInSourceTableauAfterChange =
+                        tabAtSourceStack.getFaceUp().size();
                 // the card beneath the sourceCard,
                 // it may be null if after the move, the tableau has become empty
                 Card cardBeneathSource = null;
@@ -382,8 +384,8 @@ public class View implements Observer {
                             game.getFoundationAtPos(targetStack).getFoundationTop());
 
                     makeMoveTableauToFoundation(textureStringTableauSource, cardBeneathSource,
-                            sourceStack, sourceCard, targetStack,
-                            nrOfFaceDownInSourceTableauAfterChange);
+                            sourceStack, sourceCard, targetStack, nrOfFaceDownInSourceTableauAfterChange,
+                            nrOfFaceUpInSourceTableauAfterChange);
                 }
                 break;
 
@@ -599,7 +601,8 @@ public class View implements Observer {
 
     private void makeMoveTableauToFoundation(String sourceCardTextureString, Card beneathSourceCard,
                                              int sourceStack, int sourceCardIndex, int targetStack,
-                                             int nrOfFaceDownInSourceTableau) {
+                                             int nrOfFaceDownInSourceTableau,
+                                             int nrOfFaceUpInSourceTableau) {
         // find correct card that should be moved and card to move it to
         ImageWrapper sourceCard = faceUpCards.get(sourceCardTextureString);
         // and maybe (if it exists), the card beneath
@@ -620,7 +623,7 @@ public class View implements Observer {
             sourceCard.setWrapperCardIndex(-1);
 
             // set new smallestY for sourceStack
-            float smallestY = nrOfFaceDownInSourceTableau > 0 ?
+            float smallestY = (nrOfFaceDownInSourceTableau + nrOfFaceUpInSourceTableau) > 0 ?
                     smallestYForTableau.get(sourceStack) + ViewConstants.offsetHeightBetweenCards :
                     ViewConstants.TableauBaseY;
 
@@ -701,8 +704,8 @@ public class View implements Observer {
         // https://libgdx.badlogicgames.com/nightlies/docs/api/com/badlogic/gdx/scenes/scene2d/actions/MoveToAction.html
         // and
         // http://stackoverflow.com/questions/15004480/libgdx-actions-gradually-move-actor-from-point-a-to-point-b
-//        card.addAction(Actions.moveTo(targetX, targetY, 0.2f));
-        card.setPosition(targetX, targetY);
+        card.addAction(Actions.moveTo(targetX, targetY, 0.2f));
+//        card.setPosition(targetX, targetY);
         card.setWrapperStackIndex(targetStack);
     }
 

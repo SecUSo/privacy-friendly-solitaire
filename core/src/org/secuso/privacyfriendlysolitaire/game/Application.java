@@ -46,6 +46,8 @@ public class Application extends ApplicationAdapter {
     }
 
     private void initialiseModelViewAndController() {
+        // comment in for directly won game ;-)
+//        game = GeneratorSolitaireInstance.buildAlmostWonSolitaireInstance();
         game = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(cardDrawMode, scoreMode);
         view = new View(game, stage);
         game.addObserver(view);
