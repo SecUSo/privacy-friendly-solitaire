@@ -78,9 +78,9 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
 //        Config config = new Config(getApplicationContext());
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
-        cfg.r = cfg.g = cfg.b = cfg.a = 8;
+//        cfg.r = cfg.g = cfg.b = cfg.a = 8;
 
-        cfg.useGLSurfaceView20API18 = false;
+//        cfg.useGLSurfaceView20API18 = false;
 
         final GLSurfaceView20 gameView = (GLSurfaceView20) initializeForView(application, cfg);
 
@@ -89,24 +89,17 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         outerLayout.addView(gameView);
 
 
-        if (graphics.getView() instanceof SurfaceView) {
-            SurfaceView glView = (SurfaceView) graphics.getView();
-            glView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-            glView.setZOrderOnTop(true);
-        }
-
-
-        // TODO: get from settings/config
-        int cardDrawMode = Constants.MODE_ONE_CARD_DEALT;
-        int scoreMode = Constants.MODE_STANDARD;
-        application.customConstructor(cardDrawMode, scoreMode);
+//        if (graphics.getView() instanceof SurfaceView) {
+//            SurfaceView glView = (SurfaceView) graphics.getView();
+//            glView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+//            glView.setZOrderOnTop(true);
+//        }
 
 
         final boolean sound = mSharedPreferences.getBoolean("pref_sound_switch", true);
         final boolean shake = mSharedPreferences.getBoolean("pref_shake_switch", true);
         final boolean waste = mSharedPreferences.getBoolean("pref_waste", true);
         final boolean points = mSharedPreferences.getBoolean("pref_count_point", true);
-
 
         if (mSharedPreferences != null && sound) {
             //TODO: Sound an schalten
@@ -120,25 +113,22 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
             //TODO: Shake animation off
         }
 
+        // default modes for cardDraw and score
+        int cardDrawMode = Constants.MODE_ONE_CARD_DEALT;
+        int scoreMode = Constants.MODE_VEGAS;
+
         if (mSharedPreferences != null && waste) {
-            //TODO: waste 3 Karten
-        } else {
-            //TODO: waste 1 Karte
+            cardDrawMode = Constants.MODE_THREE_CARDS_DEALT;
         }
-
-
         if (mSharedPreferences != null && points) {
-            //TODO: Points Vegas
-        } else {
-            //TODO: Points Standard
+            scoreMode = Constants.MODE_STANDARD;
         }
-
 
         ImageButton undo = (ImageButton) findViewById(R.id.undo);
         undo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Button für undo
+                application.undo();
 
             }
         });
@@ -147,10 +137,13 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         redo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Button für redo
-
+                application.redo();
             }
         });
+
+
+        // start game
+        application.customConstructor(cardDrawMode, scoreMode);
     }
 
 
@@ -227,10 +220,8 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     }
 
     private void callDrawerItem(final int itemId) {
-
         Intent intent;
 
-//        TODO: nevigation_drawer erweitern
         switch (itemId) {
             case R.id.nav_example:
                 intent = new Intent(this, MainActivity.class);
