@@ -131,8 +131,7 @@ public class Application extends ApplicationAdapter {
                 public void run() {
                     stage = new Stage(v, new SpriteBatch());
 
-                    // update view and stuff
-                    initialiseViewAndController();
+                    reinitViewAndController();
                 }
             });
         }
@@ -150,10 +149,15 @@ public class Application extends ApplicationAdapter {
                 public void run() {
                     stage = new Stage(v, new SpriteBatch());
 
-                    // update view and stuff
-                    initialiseViewAndController();
+                    reinitViewAndController();
                 }
             });
         }
+    }
+
+    private void reinitViewAndController() {
+        view = new View(game, stage);
+        game.addObserver(view);
+        controller = new Controller(game, view);
     }
 }
