@@ -28,7 +28,6 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.surfaceview.GLSurfaceView20;
 
 import org.secuso.privacyfriendlysolitaire.CallBackListener;
-import org.secuso.privacyfriendlysolitaire.Utils.Config;
 import org.secuso.privacyfriendlysolitaire.game.Application;
 import org.secuso.privacyfriendlysolitaire.R;
 import org.secuso.privacyfriendlysolitaire.game.Constants;
@@ -79,14 +78,11 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         overridePendingTransition(0, 0);
 
 
+        // create Application object and initialize  view
         final Application application = new Application();
         application.registerCallBackListener(this);
 
-//        Config config = new Config(getApplicationContext());
-        AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
-//        cfg.r = cfg.g = cfg.b = cfg.a = 8;
-
-    final GLSurfaceView20 gameView =
+        final GLSurfaceView20 gameView =
                 (GLSurfaceView20) initializeForView(application, new AndroidApplicationConfiguration());
 
 
@@ -94,13 +90,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         outerLayout.addView(gameView);
 
 
-//        if (graphics.getView() instanceof SurfaceView) {
-//            SurfaceView glView = (SurfaceView) graphics.getView();
-//            glView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-//            glView.setZOrderOnTop(true);
-//        }
-
-
+        // read settings
         final boolean sound = mSharedPreferences.getBoolean("pref_sound_switch", true);
         final boolean shake = mSharedPreferences.getBoolean("pref_shake_switch", true);
         final boolean waste = mSharedPreferences.getBoolean("pref_waste", true);
@@ -129,6 +119,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
             scoreMode = Constants.MODE_STANDARD;
         }
 
+        // set buttons
         ImageButton undo = (ImageButton) findViewById(R.id.undo);
         undo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,10 +144,9 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         // start game
         application.customConstructor(cardDrawMode, scoreMode, c);
 
-
+        // start timer
         timerView = (TextView) findViewById(R.id.timerView);
         startTimer();
-
     }
 
     //Timer
@@ -180,7 +170,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         }
     }
 
-    int time=0;
+    int time = 0;
 
     public void initializeTimerTask() {
         timerTask = new TimerTask() {
@@ -189,11 +179,11 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
                 handler.post(new Runnable() {
                     public void run() {
 
-                        time= (time+1);
-                        if(((time % 60) < 10) ) {
-                            timerView.setText( String.valueOf(time / 60) + ":" + "0" + String.valueOf(time % 60));
-                        }else{
-                            timerView.setText( String.valueOf(time / 60) + ":"  + String.valueOf(time % 60));
+                        time = (time + 1);
+                        if (((time % 60) < 10)) {
+                            timerView.setText(String.valueOf(time / 60) + ":" + "0" + String.valueOf(time % 60));
+                        } else {
+                            timerView.setText(String.valueOf(time / 60) + ":" + String.valueOf(time % 60));
                         }
                     }
 
@@ -313,7 +303,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
 
-
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -331,7 +320,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
             mainContent.animate().alpha(1).setDuration(MAIN_CONTENT_FADEIN_DURATION);
         }
     }
-
 
 
     protected int getNavigationDrawerID() {
