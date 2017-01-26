@@ -16,6 +16,5 @@
         android:shadowDy="0"
         android:shadowRadius="10"
         android:shadowColor="@color/middleblue"
-        android:layout_height="94dp"
-        android:background="@color/middlegrey"/>
+        android:layout_height="94dp"/>
 </LinearLayout>

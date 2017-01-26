@@ -98,6 +98,7 @@
 
         <LinearLayout
             android:id="@+id/outer"
+            android:background="@color/white"
             android:layout_height="match_parent"
             android:layout_marginTop="?attr/actionBarSize"
             android:orientation="horizontal"

@@ -2,7 +2,6 @@ package org.secuso.privacyfriendlysolitaire.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,10 +17,10 @@ import android.support.v7.widget.Toolbar;
 
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -34,9 +33,16 @@ import org.secuso.privacyfriendlysolitaire.game.Application;
 import org.secuso.privacyfriendlysolitaire.R;
 import org.secuso.privacyfriendlysolitaire.game.Constants;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class Solitaire extends AndroidApplication implements NavigationView.OnNavigationItemSelectedListener, CallBackListener {
 
+
+    Timer timer;
+    TimerTask timerTask;
+    TextView timerView;
 
     // delay to launch nav drawer item, to allow close animation to play
     static final int NAVDRAWER_LAUNCH_DELAY = 250;
@@ -80,9 +86,8 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
 //        cfg.r = cfg.g = cfg.b = cfg.a = 8;
 
-//        cfg.useGLSurfaceView20API18 = false;
-
-        final GLSurfaceView20 gameView = (GLSurfaceView20) initializeForView(application, cfg);
+    final GLSurfaceView20 gameView =
+                (GLSurfaceView20) initializeForView(application, new AndroidApplicationConfiguration());
 
 
         LinearLayout outerLayout = (LinearLayout) findViewById(R.id.outer);
@@ -147,6 +152,54 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
         // start game
         application.customConstructor(cardDrawMode, scoreMode, c);
+
+
+        timerView = (TextView) findViewById(R.id.timerView);
+        startTimer();
+
+    }
+
+    //Timer
+
+    public void startTimer() {
+
+        //set a new Timer
+        timer = new Timer();
+        //initialize the TimerTask's job
+        initializeTimerTask();
+        //schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
+        timer.schedule(timerTask, 0, 1000); //
+    }
+
+    public void stoptimertask(View v) {
+
+        //stop the timer, if it's not already null
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
+
+    int time=0;
+
+    public void initializeTimerTask() {
+        timerTask = new TimerTask() {
+            public void run() {
+                //use a handler to run a toast that shows the current timestamp
+                handler.post(new Runnable() {
+                    public void run() {
+
+                        time= (time+1);
+                        if(((time % 60) < 10) ) {
+                            timerView.setText( String.valueOf(time / 60) + ":" + "0" + String.valueOf(time % 60));
+                        }else{
+                            timerView.setText( String.valueOf(time / 60) + ":"  + String.valueOf(time % 60));
+                        }
+                    }
+
+                });
+            }
+        };
     }
 
 
@@ -160,7 +213,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         }
     }
 
-    //  protected int getNavigationDrawerID() {return 0;}
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -225,6 +277,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     private void callDrawerItem(final int itemId) {
         Intent intent;
 
+//        TODO: nevigation_drawer erweitern
         switch (itemId) {
             case R.id.nav_example:
                 intent = new Intent(this, MainActivity.class);
@@ -259,10 +312,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        //TODO: macht es einen Unterschied, wenn diese If-Bedinung nicht drin ist?
-        //if (getSupportActionBar() == null) {
-        //     setSupportActionBar(toolbar);
-        // }
+
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -281,6 +331,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
             mainContent.animate().alpha(1).setDuration(MAIN_CONTENT_FADEIN_DURATION);
         }
     }
+
 
 
     protected int getNavigationDrawerID() {

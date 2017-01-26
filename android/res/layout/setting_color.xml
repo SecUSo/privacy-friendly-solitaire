@@ -17,7 +17,6 @@
             android:shadowDy="0"
             android:shadowRadius="10"
             android:shadowColor="@color/middleblue"
-            android:layout_width="match_parent"
-            android:background="@color/middlegrey"/>
+            android:layout_width="match_parent"/>
 
 </LinearLayout>

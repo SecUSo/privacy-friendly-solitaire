@@ -17,6 +17,7 @@ import org.secuso.privacyfriendlysolitaire.HistorianListener;
 import org.secuso.privacyfriendlysolitaire.ScoreListener;
 import org.secuso.privacyfriendlysolitaire.generator.GeneratorSolitaireInstance;
 
+
 import jdk.nashorn.internal.codegen.CompilerConstants;
 
 /**
@@ -55,8 +56,6 @@ public class Application extends ApplicationAdapter {
     }
 
     private void initialiseModelViewAndController() {
-        // comment in for directly won game ;-)
-//        game = GeneratorSolitaireInstance.buildAlmostWonSolitaireInstance();
         game = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(cardDrawMode, scoreMode);
 
         initialiseViewAndController();
@@ -82,7 +81,6 @@ public class Application extends ApplicationAdapter {
 
     @Override
     public void render() {
-//        Gdx.app.log("render", String.valueOf(stage.getActors().size));
         // make transparent, so the background can be set from android, instead of here
 //        Gdx.gl.glClearColor(0, 0, 0, 0);
 //        Gdx.gl.glClearColor(204 / 255f, 255 / 255f, 255 / 255f, 0f);

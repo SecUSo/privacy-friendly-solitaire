@@ -102,6 +102,42 @@ public class SettingsActivity extends BaseActivity {
         overridePendingTransition(0, 0);
 
 
+
+        final boolean sound = mSharedPreferences.getBoolean("pref_sound_switch",true);
+        final boolean shake = mSharedPreferences.getBoolean("pref_shake_switch",true);
+        final boolean waste = mSharedPreferences.getBoolean("pref_waste",true);
+        final boolean points = mSharedPreferences.getBoolean("pref_count_point",true);
+
+
+        if(mSharedPreferences != null  && sound) {
+            //TODO: Sound an schalten
+        }
+        else{
+            //TODO: Sound aus schalten
+        }
+
+        if(mSharedPreferences != null && shake) {
+            //TODO: Shake animation on
+        }
+        else{
+            //TODO: Shake animation off
+        }
+
+        if(mSharedPreferences != null && waste) {
+            //TODO: waste 3 Karten
+        }
+        else{
+            //TODO: waste 1 Karte
+        }
+
+
+        if(mSharedPreferences != null && points) {
+            //TODO: Points Vegas
+        }
+        else{
+            //TODO: Points Standard
+        }
+
     }
 
 
