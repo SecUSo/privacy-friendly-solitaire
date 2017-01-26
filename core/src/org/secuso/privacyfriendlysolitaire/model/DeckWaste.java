@@ -31,7 +31,7 @@ public class DeckWaste implements Cloneable {
     /**
      * the number of cards currently fanned out on the waste
      */
-    private int fanSize;
+    private int fanSize=0;
 
 
     //TODO DEPRECATED remove if not used anymore
@@ -171,7 +171,7 @@ public class DeckWaste implements Cloneable {
      * @return the card on top of the waste that was removed from it
      */
     public Card removeWasteTop() {
-        if (fanSize > 1) {
+        if (fanSize > 0) {
             fanSize--;
         }
         return this.waste.remove(this.waste.size() - 1);

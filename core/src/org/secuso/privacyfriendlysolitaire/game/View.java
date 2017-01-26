@@ -45,24 +45,7 @@ public class View implements Observer {
     public View(SolitaireGame game, Stage stage) {
         this.stage = stage;
 
-        // set view constants
-        ViewConstants.widthScreen = Gdx.graphics.getWidth();
-        ViewConstants.heightScreen = Gdx.graphics.getHeight();
-        ViewConstants.widthOneSpace = ViewConstants.widthScreen / 31;
-        ViewConstants.heightOneSpace = ViewConstants.heightScreen / 21;
-        // positions
-        ViewConstants.WasteDeckFoundationY = 16 * ViewConstants.heightOneSpace;
-        // waste resp. deck will be the same as TableauFoundationX[5 resp. 6]
-        // we keep them for transparency reasons
-        ViewConstants.WasteX = (2 + 5 * (1 + 3)) * ViewConstants.widthOneSpace;
-        ViewConstants.DeckX = (2 + 6 * (1 + 3)) * ViewConstants.widthOneSpace;
-        ViewConstants.TableauFoundationX = new float[7];
-        for (int i = 0; i < 7; i++) {
-            ViewConstants.TableauFoundationX[i] = (2 + i * (1 + 3)) * ViewConstants.widthOneSpace;
-        }
-        ViewConstants.TableauBaseY = 10.5f * ViewConstants.heightOneSpace;
-        ViewConstants.scaleXMarkerOneCard = 1.68f;
-        ViewConstants.scaleYMarkerOneCard = 1.5f;
+        initialiseViewConstants();
 
         // add mark and make it invisible
         marker = loader.getMarkImage();
@@ -76,6 +59,43 @@ public class View implements Observer {
         backsideCardOnDeck = loader.getBacksideImage();
 
         arrangeInitialView(game);
+    }
+
+    private void initialiseViewConstants() {
+        // screen scale
+        ViewConstants.widthScreen = Gdx.graphics.getWidth();
+        ViewConstants.heightScreen = Gdx.graphics.getHeight();
+        ViewConstants.widthOneSpace = ViewConstants.widthScreen / 31;
+        ViewConstants.heightOneSpace = ViewConstants.heightScreen / 21;
+
+        // positions
+        ViewConstants.WasteDeckFoundationY = 16 * ViewConstants.heightOneSpace;
+        // different x positions for different fanSizes in the waste
+        // fan.size=1
+        ViewConstants.WasteX1Fan = (2 + 5 * (1 + 3)) * ViewConstants.widthOneSpace;
+        // fan.size=2
+        ViewConstants.WasteX2Fan1 = (2 + 5 * (1 + 3)) * ViewConstants.widthOneSpace -
+                0.2f * ViewConstants.widthOneSpace;
+        ViewConstants.WasteX2Fan2 = (2 + 5 * (1 + 3)) * ViewConstants.widthOneSpace +
+                0.2f * ViewConstants.widthOneSpace;
+        // fan.size=3
+        ViewConstants.WasteX3Fan1 = (2 + 5 * (1 + 3)) * ViewConstants.widthOneSpace -
+                0.4f * ViewConstants.widthOneSpace;
+        ViewConstants.WasteX3Fan2 = ViewConstants.WasteX1Fan;
+        ViewConstants.WasteX3Fan3 = (2 + 5 * (1 + 3)) * ViewConstants.widthOneSpace +
+                0.4f * ViewConstants.widthOneSpace;
+
+        ViewConstants.DeckX = (2 + 6 * (1 + 3)) * ViewConstants.widthOneSpace;
+        ViewConstants.TableauFoundationX = new float[7];
+        for (int i = 0; i < 7; i++) {
+            ViewConstants.TableauFoundationX[i] = (2 + i * (1 + 3)) * ViewConstants.widthOneSpace;
+        }
+        ViewConstants.TableauBaseY = 10.5f * ViewConstants.heightOneSpace;
+        ViewConstants.scaleXMarkerOneCard = 1.68f;
+        ViewConstants.scaleYMarkerOneCard = 1.5f;
+        ViewConstants.scaleCard = 1.4f;
+        ViewConstants.scaleXCard = 1.6f;
+
     }
 
 
@@ -158,21 +178,17 @@ public class View implements Observer {
     }
 
     private void paintInitialDeckWaste(DeckWaste deckWaste) {
-        // waste
+        // ----- waste -----
+        // draw empty space card
         ImageWrapper emptySpace = loader.getEmptySpaceImageWithoutLogo();
         setImageScalingAndPositionAndStackCardIndicesAndAddToStage(emptySpace, null,
-                ViewConstants.WasteX, ViewConstants.WasteDeckFoundationY, -1, -1);
+                ViewConstants.WasteX1Fan, ViewConstants.WasteDeckFoundationY, -1, -1);
 
-        Vector<Card> waste = deckWaste.getWaste();
-        for (int i = 0; i < waste.size(); i++) {
-            Card c = waste.get(i);
-            ImageWrapper card = loadActorForCardAndSaveInMap(c);
-            setImageScalingAndPositionAndStackCardIndicesAndAddToStage(card, GameObject.WASTE,
-                    ViewConstants.WasteX, ViewConstants.WasteDeckFoundationY,
-                    5, -1);
-        }
+        // then draw the open fan
+        paintWaste(deckWaste, true, false);
 
-        // deck
+
+        // ----- deck -----
         ImageWrapper emptySpaceDeck = loader.getEmptySpaceImageWithoutLogo();
         setImageScalingAndPositionAndStackCardIndicesAndAddToStage(emptySpaceDeck, null,
                 ViewConstants.DeckX, ViewConstants.WasteDeckFoundationY, -1, -1);
@@ -335,6 +351,8 @@ public class View implements Observer {
 
                     makeMoveWasteToFoundation(textureStringOldWasteTop, targetStack);
                 }
+
+                paintWaste(game.getDeckWaste(), false, true);
                 break;
 
             // possibilities: Tableau -> Tableau, Tableau -> Foundation
@@ -412,25 +430,114 @@ public class View implements Observer {
 
 
     private void turnDeckCard(SolitaireGame game) {
-        // load card that in the model already lies on top the waste
-        Card onWasteCard = game.getDeckWaste().getWasteTop();
-
-        // load imageWrapper (either from map or new)
-        String textureName = loader.getCardTextureName(onWasteCard);
-        // try pulling it from the faceUpCards (where it is currently invisible)
-        ImageWrapper turnedCard = faceUpCards.get(textureName);
-        // if this returns no result, load it
-        if (turnedCard == null) {
-            turnedCard = loadActorForCardAndSaveInMap(onWasteCard);
-            float x = (2 + 5 * (1 + 3)) * ViewConstants.widthOneSpace;
-            float y = 16 * ViewConstants.heightOneSpace;
-            setImageScalingAndPositionAndStackCardIndicesAndAddToStage(turnedCard, GameObject.WASTE, x, y, -1, -1);
-        }
-        turnedCard.setVisible(true);
+        paintWaste(game.getDeckWaste(), false, false);
 
         // check if this was the last
         if (game.getDeckWaste().getDeck().isEmpty()) {
             backsideCardOnDeck.setVisible(false);
+        }
+    }
+
+    /**
+     * paints the waste in its current state
+     *
+     * @param deckWaste        the deckWaste object from the game
+     * @param isInitialization a boolean depicting whether this was called by paintInitialDeckWaste
+     *                         (true) or turnDeckCard (false)
+     * @param isInitialization a boolean depicting whether this was called by paintInitialDeckWaste
+     *                         (true) or turnDeckCard (false)
+     */
+    private void paintWaste(DeckWaste deckWaste, boolean isInitialization,
+                            boolean fanCardsToBeRearranged) {
+        // draw first few cards before the open fan
+        Vector<Card> waste = deckWaste.getWaste();
+        for (int i = 0; i < waste.size() - deckWaste.getFanSize(); i++) {
+            Card c = waste.get(i);
+            String textureName = loader.getCardTextureName(c);
+
+            ImageWrapper wasteCard;
+            if (isInitialization) {
+                wasteCard = loadActorForCardAndSaveInMap(c);
+
+                setImageScalingAndPositionAndStackCardIndicesAndAddToStage(wasteCard, GameObject.WASTE,
+                        ViewConstants.WasteX1Fan, ViewConstants.WasteDeckFoundationY, -1, 5);
+            } else {
+                wasteCard = faceUpCards.get(textureName);
+
+                moveCard(ViewConstants.WasteX1Fan, ViewConstants.WasteDeckFoundationY, wasteCard, 5,
+                        false);
+            }
+        }
+
+        // get nr of open cards in fan
+        int fanSize = deckWaste.getFanSize();
+        Vector<ImageWrapper> fanImages = new Vector<ImageWrapper>(3);
+
+        if (fanSize > 0) {
+            Gdx.app.log("fanSize ", String.valueOf(fanSize));
+
+            for (int i = fanSize - 1; i >= 0; i--) {
+                Card toBeAdded = waste.get(waste.size() - i - 1);
+                String textureName = loader.getCardTextureName(toBeAdded);
+                ImageWrapper turnedCard = faceUpCards.get(textureName);
+
+                if (turnedCard == null) {
+                    turnedCard = loadActorForCardAndSaveInMap(toBeAdded);
+                }
+                fanImages.add(turnedCard);
+            }
+
+            if (fanSize == 1) {
+                ImageWrapper card = fanImages.get(0);
+
+                if (fanCardsToBeRearranged) {
+                    moveCard(ViewConstants.WasteX1Fan, ViewConstants.WasteDeckFoundationY, card, 5, true);
+                } else {
+                    setImageScalingAndPositionAndStackCardIndicesAndAddToStage(card, GameObject.WASTE,
+                            ViewConstants.WasteX1Fan, ViewConstants.WasteDeckFoundationY, -1, 5);
+                }
+
+                card.setVisible(true);
+
+            } else if (fanSize == 2) {
+                ImageWrapper card0 = fanImages.get(0);
+                ImageWrapper card1 = fanImages.get(1);
+
+                if (fanCardsToBeRearranged) {
+                    moveCard(ViewConstants.WasteX2Fan1, ViewConstants.WasteDeckFoundationY, card0, 5, true);
+                    moveCard(ViewConstants.WasteX2Fan2, ViewConstants.WasteDeckFoundationY, card1, 5, true);
+                } else {
+                    setImageScalingAndPositionAndStackCardIndicesAndAddToStage(card0, GameObject.WASTE,
+                            ViewConstants.WasteX2Fan1, ViewConstants.WasteDeckFoundationY, -1, 5);
+                    setImageScalingAndPositionAndStackCardIndicesAndAddToStage(card1, GameObject.WASTE,
+                            ViewConstants.WasteX2Fan2, ViewConstants.WasteDeckFoundationY, -1, 5);
+                }
+
+                card0.setVisible(true);
+                card1.setVisible(true);
+
+            } else if (fanSize == 3) {
+                ImageWrapper card0 = fanImages.get(0);
+                ImageWrapper card1 = fanImages.get(1);
+                ImageWrapper card2 = fanImages.get(2);
+
+                if (fanCardsToBeRearranged) {
+                    moveCard(ViewConstants.WasteX3Fan1, ViewConstants.WasteDeckFoundationY, card0, 5, true);
+                    moveCard(ViewConstants.WasteX3Fan2, ViewConstants.WasteDeckFoundationY, card1, 5, true);
+                    moveCard(ViewConstants.WasteX3Fan3, ViewConstants.WasteDeckFoundationY, card2, 5, true);
+                } else {
+                    setImageScalingAndPositionAndStackCardIndicesAndAddToStage(card0, GameObject.WASTE,
+                            ViewConstants.WasteX3Fan1, ViewConstants.WasteDeckFoundationY, -1, -1);
+                    setImageScalingAndPositionAndStackCardIndicesAndAddToStage(card1, GameObject.WASTE,
+                            ViewConstants.WasteX3Fan2, ViewConstants.WasteDeckFoundationY, -1, -1);
+                    setImageScalingAndPositionAndStackCardIndicesAndAddToStage(card2, GameObject.WASTE,
+                            ViewConstants.WasteX3Fan3, ViewConstants.WasteDeckFoundationY, -1, -1);
+                }
+
+                card0.setVisible(true);
+                card1.setVisible(true);
+                card2.setVisible(true);
+            }
         }
     }
 
@@ -466,7 +573,7 @@ public class View implements Observer {
                     targetCard.getY() - ViewConstants.offsetHeightBetweenCards :
                     ViewConstants.TableauBaseY;
 
-            moveCard(newX, newY, sourceCard, targetStack);
+            moveCard(newX, newY, sourceCard, targetStack, true);
 
             // set new smallestY for targetStack
             smallestYForTableau.put(targetStack, newY);
@@ -486,7 +593,7 @@ public class View implements Observer {
         if (sourceCard != null) {
             // make movement
             moveCard(ViewConstants.TableauFoundationX[targetStack],
-                    ViewConstants.WasteDeckFoundationY, sourceCard, targetStack);
+                    ViewConstants.WasteDeckFoundationY, sourceCard, targetStack, true);
 
             // set meta-information
             sourceCard.setGameObject(GameObject.FOUNDATION);
@@ -549,7 +656,7 @@ public class View implements Observer {
                         targetCard.getY() - (i + 1) * ViewConstants.offsetHeightBetweenCards :
                         ViewConstants.TableauBaseY - i * ViewConstants.offsetHeightBetweenCards;
 
-                moveCard(newX, newY, sourceCard, targetStack);
+                moveCard(newX, newY, sourceCard, targetStack, true);
             }
 
             // set new smallestY for targetStack
@@ -616,7 +723,7 @@ public class View implements Observer {
         if (sourceCard != null) {
             // make movement
             moveCard(ViewConstants.TableauFoundationX[targetStack],
-                    ViewConstants.WasteDeckFoundationY, sourceCard, targetStack);
+                    ViewConstants.WasteDeckFoundationY, sourceCard, targetStack, true);
 
             // set meta-information
             sourceCard.setGameObject(GameObject.FOUNDATION);
@@ -674,7 +781,7 @@ public class View implements Observer {
                     targetCard.getY() - ViewConstants.offsetHeightBetweenCards :
                     ViewConstants.TableauBaseY;
 
-            moveCard(newX, newY, sourceCard, targetStack);
+            moveCard(newX, newY, sourceCard, targetStack, true);
 
             // set new smallestY for targetStack
             float smallestY = targetCardExists ?
@@ -699,10 +806,15 @@ public class View implements Observer {
      * @param targetX new x-position
      * @param targetY new y-position
      * @param card    the ImageWrapper-object to be moved
+     * @param animate whether to animate the moving or not
      */
-    private void moveCard(float targetX, float targetY, ImageWrapper card, int targetStack) {
-        card.addAction(Actions.moveTo(targetX, targetY, 0.2f));
-//        card.setPosition(targetX, targetY);
+    private void moveCard(float targetX, float targetY, ImageWrapper card, int targetStack,
+                          boolean animate) {
+        if (animate) {
+            card.addAction(Actions.moveTo(targetX, targetY, 0.2f));
+        } else {
+            card.setPosition(targetX, targetY);
+        }
         card.setWrapperStackIndex(targetStack);
     }
 
@@ -841,18 +953,22 @@ public class View implements Observer {
      * @param x         the x-coordinate of the position
      * @param y         the y-coordinate of the position
      */
-    private void setImageScalingAndPositionAndStackCardIndicesAndAddToStage(ImageWrapper cardImage, GameObject gameObject, float x, float y, int stackIndex, int cardIndex) {
+    private void setImageScalingAndPositionAndStackCardIndicesAndAddToStage(ImageWrapper cardImage,
+                                                                            GameObject gameObject,
+                                                                            float x, float y,
+                                                                            int stackIndex, int cardIndex) {
         cardImage.setPosition(x, y);
-        cardImage.setScale(1.4f);
-        cardImage.setScaleX(1.6f);
+        cardImage.setScale(ViewConstants.scaleCard);
+        cardImage.setScaleX(ViewConstants.scaleXCard);
         cardImage.setWrapperStackIndex(stackIndex);
         cardImage.setWrapperCardIndex(cardIndex);
         cardImage.setGameObject(gameObject);
         stage.addActor(cardImage);
 
         if (!widthHeightOfCardSet) {
-            ViewConstants.heightCard = cardImage.getHeight() * 1.4f;    // for some reason only this works :P
-            ViewConstants.widthCard = cardImage.getWidth() * 1.6f;
+            // for some reason only this works :P
+            ViewConstants.heightCard = cardImage.getHeight() * ViewConstants.scaleCard;
+            ViewConstants.widthCard = cardImage.getWidth() * ViewConstants.scaleXCard;
             widthHeightOfCardSet = true;
         }
     }
@@ -953,17 +1069,27 @@ public class View implements Observer {
         private static float heightCard;
         private static float widthCard;
 
+        private static float scaleCard;
+        private static float scaleXCard;
+
         private static float scaleXMarkerOneCard;
         private static float scaleYMarkerOneCard;
 
         private static float DeckX;
 
-        private static float WasteX;
+        //        private static float WasteX;
         private static float WasteDeckFoundationY;
 
         private static float[] TableauFoundationX;
 
         private static float TableauBaseY;
+
+        private static float WasteX1Fan;
+        private static float WasteX2Fan1;
+        private static float WasteX2Fan2;
+        private static float WasteX3Fan1;
+        private static float WasteX3Fan2;
+        private static float WasteX3Fan3;
     }
 
 

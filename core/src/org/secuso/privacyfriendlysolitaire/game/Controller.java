@@ -48,10 +48,6 @@ public class Controller implements GestureDetector.GestureListener {
         y = invertHeight(y);
 
         Action actionForClick = view.getActionForTap(x, y);
-        try {
-            Gdx.app.log("----------Debug Controller action given----------", actionForClick.toString());
-        } catch (Exception e) {
-        }
 
         if (actionForClick != null && actionForClick.getGameObject() != null &&
                 actionForClick.getGameObject().equals(GameObject.TABLEAU)) {
@@ -62,12 +58,10 @@ public class Controller implements GestureDetector.GestureListener {
             // maybe the view made an error and the index is not a valid card of this tableau
             // therefore: check for sanity
             if (cardIndex > tableau.getFaceDown().size() + tableau.getFaceUp().size()) {
-//                Gdx.app.log("----------Debug Controller----------", "1");
                 actionForClick = null;
             } else {
                 int cardIndexInFaceUp = cardIndex - tableau.getFaceDown().size();
                 if (cardIndexInFaceUp < 0) {
-//                    Gdx.app.log("----------Debug Controller----------", "2");
                     actionForClick = null;
                 } else {
                     // View can not distinguish between just one card on the stack and no card
@@ -80,11 +74,6 @@ public class Controller implements GestureDetector.GestureListener {
             }
         }
 
-        if (actionForClick != null) {
-            Gdx.app.log("----------Debug Controller action final----------", actionForClick.toString());
-        } else {
-            Gdx.app.log("----------Debug Controller action final----------", "no action");
-        }
         return actionForClick == null ? false : game.handleAction(actionForClick);
     }
 
