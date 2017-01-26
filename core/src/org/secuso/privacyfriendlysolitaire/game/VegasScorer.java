@@ -1,5 +1,7 @@
 package org.secuso.privacyfriendlysolitaire.game;
 
+import com.badlogic.gdx.Gdx;
+
 import org.secuso.privacyfriendlysolitaire.model.GameObject;
 import org.secuso.privacyfriendlysolitaire.model.Move;
 
@@ -24,8 +26,11 @@ public class VegasScorer extends Scorer {
                 if (m.getAction1().getGameObject() == GameObject.FOUNDATION) {
                     addScore(-5);
                 }
-                if (m.getAction2().getGameObject() == GameObject.FOUNDATION) {
-                    addScore(5);
+                try {
+                    if (m.getAction2().getGameObject() == GameObject.FOUNDATION) {
+                        addScore(5);
+                    }
+                } catch (Exception e) {
                 }
             }
             notifyListener();

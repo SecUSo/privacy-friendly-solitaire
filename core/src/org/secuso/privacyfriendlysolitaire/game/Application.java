@@ -67,12 +67,13 @@ public class Application extends ApplicationAdapter {
 //        Gdx.app.log("stage", stage.toString());
         view = new View(game, stage);
         game.addObserver(view);
-        if (scoreMode == Constants.MODE_STANDARD) {
+        if (scoreMode == Constants.MODE_STANDARD && false) {
             scorer = new StandardScorer();
-        } else if (scoreMode == Constants.MODE_VEGAS) {
+        } else if (scoreMode == Constants.MODE_VEGAS || true) {
             scorer = new VegasScorer();
         }
         game.addObserver(scorer);
+        scorer.update(game, null);
         historian = new Historian();
         game.addObserver(historian);
         historian.update(game, null);
@@ -81,9 +82,6 @@ public class Application extends ApplicationAdapter {
 
     @Override
     public void render() {
-        // make transparent, so the background can be set from android, instead of here
-//        Gdx.gl.glClearColor(0, 0, 0, 0);
-//        Gdx.gl.glClearColor(204 / 255f, 255 / 255f, 255 / 255f, 0f);
         Gdx.gl.glClearColor(backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
