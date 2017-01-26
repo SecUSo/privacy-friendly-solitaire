@@ -2,7 +2,6 @@ package org.secuso.privacyfriendlysolitaire.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,10 +17,10 @@ import android.support.v7.widget.Toolbar;
 
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -34,9 +33,16 @@ import org.secuso.privacyfriendlysolitaire.game.Application;
 import org.secuso.privacyfriendlysolitaire.R;
 import org.secuso.privacyfriendlysolitaire.game.Constants;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class Solitaire extends AndroidApplication implements NavigationView.OnNavigationItemSelectedListener, CallBackListener {
 
+
+    Timer timer;
+    TimerTask timerTask;
+    TextView timerView;
 
     // delay to launch nav drawer item, to allow close animation to play
     static final int NAVDRAWER_LAUNCH_DELAY = 250;
@@ -76,62 +82,19 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         final Application application = new Application();
         application.registerCallBackListener(this);
 
-//        Config config = new Config(getApplicationContext());
-        AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
-        cfg.r = cfg.g = cfg.b = cfg.a = 8;
+        Config config = new Config(getApplicationContext());
 
-        cfg.useGLSurfaceView20API18 = false;
-
-        final GLSurfaceView20 gameView = (GLSurfaceView20) initializeForView(application, cfg);
+    final GLSurfaceView20 gameView =
+                (GLSurfaceView20) initializeForView(application, new AndroidApplicationConfiguration());
 
 
         LinearLayout outerLayout = (LinearLayout) findViewById(R.id.outer);
         outerLayout.addView(gameView);
 
-
-        if (graphics.getView() instanceof SurfaceView) {
-            SurfaceView glView = (SurfaceView) graphics.getView();
-            glView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-            glView.setZOrderOnTop(true);
-        }
-
-
         // TODO: get from settings/config
         int cardDrawMode = Constants.MODE_ONE_CARD_DEALT;
         int scoreMode = Constants.MODE_STANDARD;
         application.customConstructor(cardDrawMode, scoreMode);
-
-
-        final boolean sound = mSharedPreferences.getBoolean("pref_sound_switch", true);
-        final boolean shake = mSharedPreferences.getBoolean("pref_shake_switch", true);
-        final boolean waste = mSharedPreferences.getBoolean("pref_waste", true);
-        final boolean points = mSharedPreferences.getBoolean("pref_count_point", true);
-
-
-        if (mSharedPreferences != null && sound) {
-            //TODO: Sound an schalten
-        } else {
-            //TODO: Sound aus schalten
-        }
-
-        if (mSharedPreferences != null && shake) {
-            //TODO: Shake animation on
-        } else {
-            //TODO: Shake animation off
-        }
-
-        if (mSharedPreferences != null && waste) {
-            //TODO: waste 3 Karten
-        } else {
-            //TODO: waste 1 Karte
-        }
-
-
-        if (mSharedPreferences != null && points) {
-            //TODO: Points Vegas
-        } else {
-            //TODO: Points Standard
-        }
 
 
         ImageButton undo = (ImageButton) findViewById(R.id.undo);
@@ -151,7 +114,57 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
             }
         });
+
+
+        timerView = (TextView) findViewById(R.id.timerView);
+        startTimer();
+
     }
+
+    //Timer
+
+    public void startTimer() {
+
+        //set a new Timer
+        timer = new Timer();
+        //initialize the TimerTask's job
+        initializeTimerTask();
+        //schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
+        timer.schedule(timerTask, 0, 1000); //
+    }
+
+    public void stoptimertask(View v) {
+
+        //stop the timer, if it's not already null
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
+
+    int time=0;
+
+    public void initializeTimerTask() {
+        timerTask = new TimerTask() {
+            public void run() {
+                //use a handler to run a toast that shows the current timestamp
+                handler.post(new Runnable() {
+                    public void run() {
+
+                        time= (time+1);
+                        if(((time % 60) < 10) ) {
+                            timerView.setText( String.valueOf(time / 60) + ":" + "0" + String.valueOf(time % 60));
+                        }else{
+                            timerView.setText( String.valueOf(time / 60) + ":"  + String.valueOf(time % 60));
+                        }
+                    }
+
+                });
+            }
+        };
+    }
+
+
 
 
     @Override
@@ -289,20 +302,15 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     }
 
 
+
     protected int getNavigationDrawerID() {
         return R.id.nav_game;
     }
 
     @Override
     public void onWon() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                // TODO: ordentliche Reaktion auf Gewinn :D
-                Toast toast = Toast.makeText(getApplicationContext(), "You won", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.show();
-            }
-        });
+        Toast toast = Toast.makeText(getApplicationContext(), "Reaktion", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.BOTTOM, 0, 0);
+        toast.show();
     }
 }
