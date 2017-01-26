@@ -141,9 +141,12 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
             }
         });
 
+        // TODO: set color from settings
+        // caution: this is libgdx Color, not Android Color
+        com.badlogic.gdx.graphics.Color c = com.badlogic.gdx.graphics.Color.LIME;
 
         // start game
-        application.customConstructor(cardDrawMode, scoreMode);
+        application.customConstructor(cardDrawMode, scoreMode, c);
     }
 
 
