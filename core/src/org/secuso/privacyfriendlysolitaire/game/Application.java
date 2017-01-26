@@ -2,6 +2,7 @@ package org.secuso.privacyfriendlysolitaire.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -39,9 +40,12 @@ public class Application extends ApplicationAdapter {
     private int cardDrawMode;
     private int scoreMode;
 
-    public void customConstructor(int cardDrawMode, int scoreMode) {
+    private Color backgroundColour;
+
+    public void customConstructor(int cardDrawMode, int scoreMode, Color backgroundColour) {
         this.cardDrawMode = cardDrawMode;
         this.scoreMode = scoreMode;
+        this.backgroundColour = backgroundColour;
     }
 
     @Override
@@ -81,7 +85,8 @@ public class Application extends ApplicationAdapter {
 //        Gdx.app.log("render", String.valueOf(stage.getActors().size));
         // make transparent, so the background can be set from android, instead of here
 //        Gdx.gl.glClearColor(0, 0, 0, 0);
-        Gdx.gl.glClearColor(204 / 255f, 255 / 255f, 255 / 255f, 0f);
+//        Gdx.gl.glClearColor(204 / 255f, 255 / 255f, 255 / 255f, 0f);
+        Gdx.gl.glClearColor(backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         if (game.isWon() && listener != null) {
@@ -138,7 +143,6 @@ public class Application extends ApplicationAdapter {
     public void redo() {
         if (historian.canRedo()) {
             game = historian.redo();
-            Gdx.app.log("game", game.toString());
 
             // clear stage
             final Viewport v = stage.getViewport();
