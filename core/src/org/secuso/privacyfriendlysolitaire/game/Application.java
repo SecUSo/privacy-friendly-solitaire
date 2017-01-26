@@ -3,10 +3,13 @@ package org.secuso.privacyfriendlysolitaire.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import org.secuso.privacyfriendlysolitaire.CallBackListener;
 import org.secuso.privacyfriendlysolitaire.HistorianListener;
@@ -51,6 +54,14 @@ public class Application extends ApplicationAdapter {
         // comment in for directly won game ;-)
 //        game = GeneratorSolitaireInstance.buildAlmostWonSolitaireInstance();
         game = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(cardDrawMode, scoreMode);
+
+        initialiseViewAndController();
+
+        Gdx.input.setInputProcessor(new GestureDetector(controller));
+    }
+
+    private void initialiseViewAndController() {
+//        Gdx.app.log("stage", stage.toString());
         view = new View(game, stage);
         game.addObserver(view);
         if (scoreMode == Constants.MODE_STANDARD) {
@@ -63,13 +74,14 @@ public class Application extends ApplicationAdapter {
         game.addObserver(historian);
         historian.update(game, null);
         controller = new Controller(game, view);
-        Gdx.input.setInputProcessor(new GestureDetector(controller));
     }
 
     @Override
     public void render() {
+//        Gdx.app.log("render", String.valueOf(stage.getActors().size));
         // make transparent, so the background can be set from android, instead of here
-        Gdx.gl.glClearColor(0, 0, 0, 0);
+//        Gdx.gl.glClearColor(0, 0, 0, 0);
+        Gdx.gl.glClearColor(204 / 255f, 255 / 255f, 255 / 255f, 0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         if (game.isWon() && listener != null) {
@@ -107,14 +119,39 @@ public class Application extends ApplicationAdapter {
     public void undo() {
         if (historian.canUndo()) {
             game = historian.undo();
-            //TODO update view
+
+            // clear stage
+            final Viewport v = stage.getViewport();
+            stage.clear();
+            Gdx.app.postRunnable(new Runnable() {
+                @Override
+                public void run() {
+                    stage = new Stage(v, new SpriteBatch());
+
+                    // update view and stuff
+                    initialiseViewAndController();
+                }
+            });
         }
     }
 
     public void redo() {
         if (historian.canRedo()) {
             game = historian.redo();
-            //TODO update view
+            Gdx.app.log("game", game.toString());
+
+            // clear stage
+            final Viewport v = stage.getViewport();
+            stage.clear();
+            Gdx.app.postRunnable(new Runnable() {
+                @Override
+                public void run() {
+                    stage = new Stage(v, new SpriteBatch());
+
+                    // update view and stuff
+                    initialiseViewAndController();
+                }
+            });
         }
     }
 }
