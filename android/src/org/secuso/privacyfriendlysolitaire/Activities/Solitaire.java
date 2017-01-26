@@ -88,9 +88,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
     final GLSurfaceView20 gameView =
                 (GLSurfaceView20) initializeForView(application, new AndroidApplicationConfiguration());
-//        cfg.useGLSurfaceView20API18 = false;
-
-        final GLSurfaceView20 gameView = (GLSurfaceView20) initializeForView(application, cfg);
 
 
         LinearLayout outerLayout = (LinearLayout) findViewById(R.id.outer);
@@ -102,10 +99,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 //            glView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
 //            glView.setZOrderOnTop(true);
 //        }
-        // TODO: get from settings/config
-        int cardDrawMode = Constants.MODE_ONE_CARD_DEALT;
-        int scoreMode = Constants.MODE_STANDARD;
-        application.customConstructor(cardDrawMode, scoreMode);
 
 
         final boolean sound = mSharedPreferences.getBoolean("pref_sound_switch", true);
@@ -210,8 +203,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     }
 
 
-
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -222,7 +213,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         }
     }
 
-    //  protected int getNavigationDrawerID() {return 0;}
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -322,10 +312,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        //TODO: macht es einen Unterschied, wenn diese If-Bedinung nicht drin ist?
-        //if (getSupportActionBar() == null) {
-        //     setSupportActionBar(toolbar);
-        // }
+
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
