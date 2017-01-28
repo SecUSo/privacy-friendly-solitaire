@@ -1,5 +1,7 @@
 package org.secuso.privacyfriendlysolitaire.Activities;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -12,12 +14,14 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,8 +30,10 @@ import android.widget.Toast;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.surfaceview.GLSurfaceView20;
+import com.badlogic.gdx.graphics.Color;
 
 import org.secuso.privacyfriendlysolitaire.CallBackListener;
+import org.secuso.privacyfriendlysolitaire.Utils.Config;
 import org.secuso.privacyfriendlysolitaire.game.Application;
 import org.secuso.privacyfriendlysolitaire.R;
 import org.secuso.privacyfriendlysolitaire.game.Constants;
@@ -42,6 +48,8 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     Timer timer;
     TimerTask timerTask;
     TextView timerView;
+    Button alertButton;
+    final Context context = this;
 
     // delay to launch nav drawer item, to allow close animation to play
     static final int NAVDRAWER_LAUNCH_DELAY = 250;
@@ -72,15 +80,17 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
         setContentView(R.layout.game_layout);
 
-
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mHandler = new Handler();
         overridePendingTransition(0, 0);
 
 
-        // create Application object and initialize  view
         final Application application = new Application();
         application.registerCallBackListener(this);
+
+//        Config config = new Config(getApplicationContext());
+        AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
+//        cfg.r = cfg.g = cfg.b = cfg.a = 8;
 
         final GLSurfaceView20 gameView =
                 (GLSurfaceView20) initializeForView(application, new AndroidApplicationConfiguration());
@@ -90,7 +100,14 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         outerLayout.addView(gameView);
 
 
-        // read settings
+//        if (graphics.getView() instanceof SurfaceView) {
+//            SurfaceView glView = (SurfaceView) graphics.getView();
+//            glView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+//            glView.setZOrderOnTop(true);
+//        }
+
+
+        //settings, which were set by the player
         final boolean sound = mSharedPreferences.getBoolean("pref_sound_switch", true);
         final boolean shake = mSharedPreferences.getBoolean("pref_shake_switch", true);
         final boolean waste = mSharedPreferences.getBoolean("pref_waste", true);
@@ -119,7 +136,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
             scoreMode = Constants.MODE_STANDARD;
         }
 
-        // set buttons
         ImageButton undo = (ImageButton) findViewById(R.id.undo);
         undo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,14 +155,18 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
         // TODO: set color from settings
         // caution: this is libgdx Color, not Android Color
-        com.badlogic.gdx.graphics.Color c = com.badlogic.gdx.graphics.Color.LIME;
+        com.badlogic.gdx.graphics.Color c = Color.GOLD;
 
         // start game
         application.customConstructor(cardDrawMode, scoreMode, c);
 
-        // start timer
+
         timerView = (TextView) findViewById(R.id.timerView);
         startTimer();
+
+
+
+       
     }
 
     //Timer
