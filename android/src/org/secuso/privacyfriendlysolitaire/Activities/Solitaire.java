@@ -18,6 +18,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 
+import android.text.Html;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.surfaceview.GLSurfaceView20;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.utils.StringBuilder;
 
 import org.secuso.privacyfriendlysolitaire.CallBackListener;
 import org.secuso.privacyfriendlysolitaire.Utils.Config;
@@ -48,6 +50,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     Timer timer;
     TimerTask timerTask;
     TextView timerView;
+    TextView pointsView;
     Button alertButton;
     final Context context = this;
 
@@ -67,7 +70,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     protected SharedPreferences mSharedPreferences;
 
 
-    private AppCompatDelegate mDelegate;
 
 
     //private AppCompatDelegate delegate;
@@ -75,8 +77,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //    getDelegate().installViewFactory();
-        //  getDelegate().onCreate(savedInstanceState);
 
         setContentView(R.layout.game_layout);
 
@@ -111,7 +111,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         final boolean sound = mSharedPreferences.getBoolean("pref_sound_switch", true);
         final boolean shake = mSharedPreferences.getBoolean("pref_shake_switch", true);
         final boolean waste = mSharedPreferences.getBoolean("pref_waste", true);
-        final boolean points = mSharedPreferences.getBoolean("pref_count_point", true);
+        boolean points = mSharedPreferences.getBoolean("pref_count_point", true);
 
         if (mSharedPreferences != null && sound) {
             //TODO: Sound an schalten
@@ -140,8 +140,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         undo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                application.undo();
-
+              application.undo();
             }
         });
 
@@ -160,13 +159,14 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         // start game
         application.customConstructor(cardDrawMode, scoreMode, c);
 
-
+        //start timer for game
         timerView = (TextView) findViewById(R.id.timerView);
         startTimer();
 
+        //pointsView
 
+        pointsView = (TextView) findViewById(R.id.points);
 
-       
     }
 
     //Timer
@@ -181,14 +181,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         timer.schedule(timerTask, 0, 1000); //
     }
 
-    public void stoptimertask(View v) {
-
-        //stop the timer, if it's not already null
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
-        }
-    }
 
     int time = 0;
 
@@ -206,12 +198,73 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
                             timerView.setText(String.valueOf(time / 60) + ":" + String.valueOf(time % 60));
                         }
                     }
-
                 });
             }
         };
     }
 
+    public void stoptimertask(View v) {
+        //stop the timer, if it's not already null
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
+
+
+    //display time   in Alertbox
+    String timeAlert;
+    public String timeForAlert(int t){
+
+        if(t == 0) {
+            timeAlert = String.valueOf(t);
+        }
+        else if( (t < 60) && (t%60 <10)){
+            timeAlert=String.valueOf("0:0" + t) ;
+        }
+        else if( (t < 60) && (t%60 >10)){
+            timeAlert=String.valueOf("0:" + t) ;
+        }
+        else if( (t > 60) && (t%60 >10)){
+            timeAlert=String.valueOf(((t - (t%60))/60) +":" + (t%60));
+        }
+        else if( (t > 60) && (t%60 <10)) {
+            timeAlert=String.valueOf(((t - (t%60))/60) + ":0"+ (t%60)) ;
+        }
+        return timeAlert;
+    }
+
+
+    //Alert box for won a game which prints the total time and the reached points
+    public void alertBoxWonMessage() {
+
+        alertButton = (Button) findViewById(R.id.buttonAlert);
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        context);
+
+        String alertContent= "Total time: "+String.valueOf(time) +"/n" + "Total Points: " ;
+        // set title
+        alertDialogBuilder.setTitle("You won!");
+                // set dialog message
+                alertDialogBuilder
+                        //TODO: füge Points noch in AlertBox ein!!
+                        .setMessage(Html.fromHtml( "Total time: "+timeForAlert(time) + "<br>"+ "Total Points: " ))
+                        .setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // if this button is clicked, close
+                                // current activity
+                                Solitaire.this.finish();
+                            }
+                        });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+    }
 
     @Override
     public void onBackPressed() {
@@ -355,6 +408,9 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
                 Toast toast = Toast.makeText(getApplicationContext(), "You won", Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.BOTTOM, 0, 0);
                 toast.show();
+                 stoptimertask(timerView);
+                 alertBoxWonMessage();
+
             }
         });
     }
