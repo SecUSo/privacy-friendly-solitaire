@@ -238,7 +238,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     //Alert box for won a game which prints the total time and the reached points
     public void alertBoxWonMessage() {
 
-        alertButton = (Button) findViewById(R.id.buttonAlert);
+        //    alertButton = (Button) findViewById(R.id.buttonAlert);
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         context);
@@ -411,6 +411,27 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
                  stoptimertask(timerView);
                  alertBoxWonMessage();
 
+            }
+        });
+    }
+
+    @Override
+    public void possibleActionsHistorian(final boolean canUndo, final boolean canRedo) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //TODO change undo-button and redo-button images here so that user knows if action is possible
+            }
+        });
+    }
+
+
+    @Override
+    public void score(final int score) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((TextView) findViewById(R.id.points)).setText(String.valueOf(score));
             }
         });
     }

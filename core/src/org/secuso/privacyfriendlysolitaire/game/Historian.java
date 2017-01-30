@@ -94,7 +94,7 @@ public class Historian implements Observer {
         this.historianListener = historianListener;
     }
 
-    private void notifyListener() {
+    void notifyListener() {
         if (historianListener != null) {
             historianListener.possibleActions(canUndo(), canRedo());
         }

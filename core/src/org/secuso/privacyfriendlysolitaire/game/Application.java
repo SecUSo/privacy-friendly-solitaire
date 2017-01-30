@@ -25,7 +25,7 @@ import jdk.nashorn.internal.codegen.CompilerConstants;
  * the outer application, holding everything together (model, view, controller)
  * it is responsible for creating and redrawing the stage and is the contact point from the Android app
  */
-public class Application extends ApplicationAdapter {
+public class Application extends ApplicationAdapter implements ScoreListener, HistorianListener {
     private Stage stage;
 
     private CallBackListener listener;
@@ -64,19 +64,24 @@ public class Application extends ApplicationAdapter {
     }
 
     private void initialiseViewAndController() {
-//        Gdx.app.log("stage", stage.toString());
+        Gdx.app.log("stage", stage.toString());
         view = new View(game, stage);
         game.addObserver(view);
-        if (scoreMode == Constants.MODE_STANDARD && false) {
+
+        if (scoreMode == Constants.MODE_STANDARD) {
             scorer = new StandardScorer();
-        } else if (scoreMode == Constants.MODE_VEGAS || true) {
+        } else if (scoreMode == Constants.MODE_VEGAS) {
             scorer = new VegasScorer();
         }
         game.addObserver(scorer);
+        scorer.registerScoreListener(this);
         scorer.update(game, null);
+
         historian = new Historian();
         game.addObserver(historian);
+        historian.registerHistorianListener(this);
         historian.update(game, null);
+
         controller = new Controller(game, view);
     }
 
@@ -109,17 +114,11 @@ public class Application extends ApplicationAdapter {
         this.listener = listener;
     }
 
-    public void registerHistorianListener(HistorianListener historianListener) {
-        this.historian.registerHistorianListener(historianListener);
-    }
-
-    public void registerScoreListener(ScoreListener scoreListener) {
-        this.scorer.registerScoreListener(scoreListener);
-    }
-
     public void undo() {
         if (historian.canUndo()) {
             game = historian.undo();
+            scorer.update(game, null);
+            historian.notifyListener();
 
             // clear stage
             final Viewport v = stage.getViewport();
@@ -138,6 +137,8 @@ public class Application extends ApplicationAdapter {
     public void redo() {
         if (historian.canRedo()) {
             game = historian.redo();
+            scorer.update(game, null);
+            historian.notifyListener();
 
             // clear stage
             final Viewport v = stage.getViewport();
@@ -157,5 +158,15 @@ public class Application extends ApplicationAdapter {
         view = new View(game, stage);
         game.addObserver(view);
         controller = new Controller(game, view);
+    }
+
+    @Override
+    public void possibleActions(boolean canUndo, boolean canRedo) {
+        listener.possibleActionsHistorian(canUndo, canRedo);
+    }
+
+    @Override
+    public void score(int score) {
+        listener.score(score);
     }
 }
