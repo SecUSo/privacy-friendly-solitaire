@@ -4,7 +4,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -16,9 +15,6 @@ import org.secuso.privacyfriendlysolitaire.CallBackListener;
 import org.secuso.privacyfriendlysolitaire.HistorianListener;
 import org.secuso.privacyfriendlysolitaire.ScoreListener;
 import org.secuso.privacyfriendlysolitaire.generator.GeneratorSolitaireInstance;
-
-
-import jdk.nashorn.internal.codegen.CompilerConstants;
 
 /**
  * @author: I. Dix
@@ -52,19 +48,18 @@ public class Application extends ApplicationAdapter implements ScoreListener, Hi
     @Override
     public void create() {
         stage = new Stage();
-        initialiseModelViewAndController();
+        initMVC();
     }
 
-    private void initialiseModelViewAndController() {
+    private void initMVC() {
         game = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(cardDrawMode, scoreMode);
 
-        initialiseViewAndController();
+        initVC();
 
         Gdx.input.setInputProcessor(new GestureDetector(controller));
     }
 
-    private void initialiseViewAndController() {
-        Gdx.app.log("stage", stage.toString());
+    private void initVC() {
         view = new View(game, stage);
         game.addObserver(view);
 
@@ -106,19 +101,17 @@ public class Application extends ApplicationAdapter implements ScoreListener, Hi
         }
     }
 
-    public void print() {
-        Gdx.app.log("debug", game.toString());
-    }
-
     public void registerCallBackListener(CallBackListener listener) {
         this.listener = listener;
     }
 
     public void undo() {
         if (historian.canUndo()) {
+//            game.deleteObservers();
+//            game = null;
+//            System.gc();
             game = historian.undo();
-            scorer.update(game, null);
-            historian.notifyListener();
+            reinitGameObservers();
 
             // clear stage
             final Viewport v = stage.getViewport();
@@ -136,9 +129,9 @@ public class Application extends ApplicationAdapter implements ScoreListener, Hi
 
     public void redo() {
         if (historian.canRedo()) {
+            game.deleteObservers();
             game = historian.redo();
-            scorer.update(game, null);
-            historian.notifyListener();
+            reinitGameObservers();
 
             // clear stage
             final Viewport v = stage.getViewport();
@@ -154,10 +147,23 @@ public class Application extends ApplicationAdapter implements ScoreListener, Hi
         }
     }
 
+
     private void reinitViewAndController() {
+//        view = null;
+//        controller = null;
+//        System.gc();
         view = new View(game, stage);
+        Gdx.app.log("reinit ", game.toString());
         game.addObserver(view);
         controller = new Controller(game, view);
+    }
+
+    private void reinitGameObservers() {
+        game.deleteObservers();
+        game.addObserver(scorer);
+        game.addObserver(historian);
+        scorer.update(game, null);
+        historian.notifyListener();
     }
 
     @Override

@@ -47,6 +47,8 @@ public class Controller implements GestureDetector.GestureListener {
     public boolean tap(float x, float y, int count, int button) {
         y = invertHeight(y);
 
+        Gdx.app.log("game in controller ", game.toString());
+
         Action actionForClick = view.getActionForTap(x, y);
 
         if (actionForClick != null && actionForClick.getGameObject() != null &&

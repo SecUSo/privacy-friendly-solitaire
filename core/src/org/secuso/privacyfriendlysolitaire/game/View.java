@@ -197,6 +197,8 @@ public class View implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
+        Gdx.app.log("update ", "update ");
+//        Gdx.app.log("observable ", o.toString());
         SolitaireGame game = (SolitaireGame) o;
 
         Action prevAction = game.getPrevAction();
@@ -231,6 +233,7 @@ public class View implements Observer {
         else {
             // with successful or invalid move, remove marker
             marker.setVisible(false);
+            Gdx.app.log("game ", game.toString());
 
             try {
                 if (!game.wasInvalidMove()) {
@@ -563,6 +566,7 @@ public class View implements Observer {
             smallestYForTableau.put(stackIndex, ViewConstants.TableauBaseY -
                     (nrOfCardsInTableau - 1) * ViewConstants.offsetHeightBetweenCards);
         }
+//        Gdx.app.log("smallest y für stack " + stackIndex, "gesetzt auf " + smallestYForTableau.get(stackIndex));
     }
 
     private void makeMoveWasteToTableau(String sourceCardTextureString, String targetCardTextureString,
@@ -798,6 +802,7 @@ public class View implements Observer {
      * which foundation/tableau was tapped and which card in this tableau
      */
     protected Action getActionForTap(float x, float y) {
+        // TODO: bei 3 Karten auf Deck anpassen
 //        Gdx.app.log("Debug", " ");
 //        Gdx.app.log("Debug", "-----------getActionForTap-----------");
         GameObject gameObject = null;
