@@ -61,21 +61,21 @@ public class Application extends ApplicationAdapter implements ScoreListener, Hi
 
     private void initVC() {
         view = new View(game, stage);
-        game.addObserver(view);
+        game.registerGameListener(view);
 
         if (scoreMode == Constants.MODE_STANDARD) {
             scorer = new StandardScorer();
         } else if (scoreMode == Constants.MODE_VEGAS) {
             scorer = new VegasScorer();
         }
-        game.addObserver(scorer);
+        game.registerGameListener(scorer);
         scorer.registerScoreListener(this);
-        scorer.update(game, null);
+        scorer.update(game);
 
         historian = new Historian();
-        game.addObserver(historian);
+        game.registerGameListener(historian);
         historian.registerHistorianListener(this);
-        historian.update(game, null);
+        historian.update(game);
 
         controller = new Controller(game, view);
     }
@@ -107,11 +107,11 @@ public class Application extends ApplicationAdapter implements ScoreListener, Hi
 
     public void undo() {
         if (historian.canUndo()) {
-//            game.deleteObservers();
+            game.deleteGameListeners();
 //            game = null;
 //            System.gc();
             game = historian.undo();
-            reinitGameObservers();
+            reinitGameListeners();
 
             // clear stage
             final Viewport v = stage.getViewport();
@@ -129,9 +129,9 @@ public class Application extends ApplicationAdapter implements ScoreListener, Hi
 
     public void redo() {
         if (historian.canRedo()) {
-            game.deleteObservers();
+            game.deleteGameListeners();
             game = historian.redo();
-            reinitGameObservers();
+            reinitGameListeners();
 
             // clear stage
             final Viewport v = stage.getViewport();
@@ -152,17 +152,20 @@ public class Application extends ApplicationAdapter implements ScoreListener, Hi
 //        view = null;
 //        controller = null;
 //        System.gc();
+        Gdx.app.log("view hash before setting new view", String.valueOf(view.hashCode()));
         view = new View(game, stage);
+        Gdx.app.log("view hash after setting new view", String.valueOf(view.hashCode()));
         Gdx.app.log("reinit ", game.toString());
-        game.addObserver(view);
+        game.registerGameListener(view);
+        Gdx.app.log("controller hash before setting new controller", String.valueOf(controller.hashCode()));
         controller = new Controller(game, view);
+        Gdx.app.log("controller hash after setting new controller", String.valueOf(controller.hashCode()));
     }
 
-    private void reinitGameObservers() {
-        game.deleteObservers();
-        game.addObserver(scorer);
-        game.addObserver(historian);
-        scorer.update(game, null);
+    private void reinitGameListeners() {
+        game.registerGameListener(scorer);
+        game.registerGameListener(historian);
+        scorer.update(game);
         historian.notifyListener();
     }
 

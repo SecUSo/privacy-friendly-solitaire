@@ -6,7 +6,7 @@ import java.util.Vector;
  * @author: M. Fischer
  */
 
-public class Foundation implements Cloneable {
+public class Foundation {
 
     /**
      * the Suit of this Foundation
@@ -111,22 +111,6 @@ public class Foundation implements Cloneable {
 
     public String toString() {
         return cards.toString();
-    }
-
-    @Override
-    public Foundation clone() {
-        Foundation dolly;
-        try {
-            dolly = (Foundation) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new Error();
-        }
-        //deep copy of cards
-        dolly.setCards(new Vector<Card>());
-        for (Card c : this.cards) {
-            dolly.getCards().add(c.clone());
-        }
-        return dolly;
     }
 
 }

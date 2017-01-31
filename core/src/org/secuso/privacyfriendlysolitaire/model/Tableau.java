@@ -6,7 +6,7 @@ import java.util.Vector;
  * @author: M. Fischer
  */
 
-public class Tableau implements Cloneable {
+public class Tableau {
     /**
      * the cards lying face down on this tableau
      */
@@ -149,28 +149,6 @@ public class Tableau implements Cloneable {
 
     public String toString() {
         return "Face-Down: " + faceDown.toString() + "; Face-Up: " + faceUp.toString();
-    }
-
-    @Override
-    public Tableau clone() {
-        Tableau dolly;
-        try {
-            dolly = (Tableau) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new Error();
-        }
-        //deep copy...
-        //...of face down
-        dolly.setFaceDown(new Vector<Card>());
-        for (Card c : this.faceDown) {
-            dolly.getFaceDown().add(c.clone());
-        }
-        //...of face up
-        dolly.setFaceUp(new Vector<Card>());
-        for (Card c : this.faceUp) {
-            dolly.getFaceUp().add(c.clone());
-        }
-        return dolly;
     }
 
 }

@@ -1,5 +1,6 @@
 package org.secuso.privacyfriendlysolitaire.game;
 
+import org.secuso.privacyfriendlysolitaire.GameListener;
 import org.secuso.privacyfriendlysolitaire.ScoreListener;
 import org.secuso.privacyfriendlysolitaire.model.Move;
 
@@ -10,7 +11,7 @@ import java.util.Vector;
  * @author: M. Fischer
  */
 
-public abstract class Scorer implements Observer {
+public abstract class Scorer implements GameListener {
 
     private int score;
 

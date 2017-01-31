@@ -4,7 +4,7 @@ package org.secuso.privacyfriendlysolitaire.model;
  * @author M. Fischer
  */
 
-public class Card implements Cloneable {
+public class Card {
 
     /**
      * the rank of the card
@@ -66,17 +66,6 @@ public class Card implements Cloneable {
 
     public String toString() {
         return rank + " of " + suit;
-    }
-
-    @Override
-    public Card clone() {
-        Card dolly;
-        try {
-            dolly = (Card) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new Error();
-        }
-        return dolly;
     }
 
 }

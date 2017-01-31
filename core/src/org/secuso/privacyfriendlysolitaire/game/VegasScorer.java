@@ -18,8 +18,7 @@ public class VegasScorer extends Scorer {
     }
 
     @Override
-    public void update(Observable observable, Object o) {
-        SolitaireGame game = (SolitaireGame) observable;
+    public void update(SolitaireGame game) {
         if (game.getPrevAction() == null) {
             setScore(-52);
             for (Move m : game.getMoves()) {

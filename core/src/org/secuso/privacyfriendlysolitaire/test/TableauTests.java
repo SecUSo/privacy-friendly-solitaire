@@ -100,40 +100,4 @@ public class TableauTests {
         assertTrue("last element of face up of tableau should be TEN of HEARTS", t.getFaceUp().lastElement().getRank() == Rank.TEN);
         assertTrue("last element of face up of tableau should be TEN of HEARTS", t.getFaceUp().lastElement().getSuit() == Suit.HEARTS);
     }
-
-    @Test
-    public void cloneTest() {
-        Tableau t1 = new Tableau();
-        t1.setFaceDown(clubs);
-        t1.setFaceUp(hearts);
-        Tableau t2 = t1.clone();
-        assertEquals(t1.getFaceDown().size(), t2.getFaceDown().size());
-        assertEquals(t1.getFaceUp().size(), t2.getFaceUp().size());
-        if (t1.getFaceDown().size() == t2.getFaceDown().size()) {
-            for (int i = 0; i < t1.getFaceDown().size(); i++) {
-                assertEquals(t1.getFaceDown().get(i).getSuit(), t2.getFaceDown().get(i).getSuit());
-                assertEquals(t1.getFaceDown().get(i).getRank(), t2.getFaceDown().get(i).getRank());
-            }
-        }
-        if (t1.getFaceUp().size() == t2.getFaceUp().size()) {
-            for (int i = 0; i < t1.getFaceUp().size(); i++) {
-                assertEquals(t1.getFaceUp().get(i).getSuit(), t2.getFaceUp().get(i).getSuit());
-                assertEquals(t1.getFaceUp().get(i).getRank(), t2.getFaceUp().get(i).getRank());
-            }
-        }
-        t2.setFaceDown(hearts);
-        t2.setFaceUp(clubs);
-        assertEquals(t1.getFaceDown().size(), t2.getFaceDown().size());
-        assertEquals(t1.getFaceUp().size(), t2.getFaceUp().size());
-        if (t1.getFaceDown().size() == t2.getFaceDown().size()) {
-            for (int i = 0; i < t1.getFaceDown().size(); i++) {
-                assertNotEquals(t1.getFaceDown().get(i).getSuit(), t2.getFaceDown().get(i).getSuit());
-            }
-        }
-        if (t1.getFaceUp().size() == t2.getFaceUp().size()) {
-            for (int i = 0; i < t1.getFaceUp().size(); i++) {
-                assertNotEquals(t1.getFaceUp().get(i).getSuit(), t2.getFaceUp().get(i).getSuit());
-            }
-        }
-    }
 }

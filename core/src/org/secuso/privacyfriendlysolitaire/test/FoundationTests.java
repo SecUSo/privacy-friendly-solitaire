@@ -37,26 +37,4 @@ public class FoundationTests {
         assertTrue("TWO of SPADES should have been added", f1.getCards().get(1).getRank() == Rank.TWO);
         assertTrue("TWO of SPADES should have been added", f1.getCards().get(1).getSuit() == Suit.SPADES);
     }
-
-    @Test
-    public void cloneTest() {
-        f1 = new Foundation();
-        for (Rank r : Rank.values()) {
-            f1.getCards().add(new Card(r, Suit.CLUBS));
-        }
-        Foundation f2 = f1.clone();
-        assertEquals(f1.getCards().size(), f2.getCards().size());
-        if (f1.getCards().size() == f2.getCards().size()) {
-            for (int i = 0; i < f1.getCards().size(); i++) {
-                assertEquals(f1.getCards().get(i).getRank(), f2.getCards().get(i).getRank());
-                assertEquals(f1.getCards().get(i).getSuit(), f2.getCards().get(i).getSuit());
-            }
-        }
-        for (Card c : f2.getCards()) {
-            c.setSuit(Suit.DIAMONDS);
-        }
-        for (int i = 0; i < f1.getCards().size(); i++) {
-            assertNotEquals(f1.getCards().get(i).getSuit(), f2.getCards().get(i).getSuit());
-        }
-    }
 }

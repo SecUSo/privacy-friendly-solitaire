@@ -3,8 +3,6 @@ package org.secuso.privacyfriendlysolitaire.game;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Vector;
 
 import com.badlogic.gdx.Gdx;
@@ -13,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
+import org.secuso.privacyfriendlysolitaire.GameListener;
 import org.secuso.privacyfriendlysolitaire.model.Action;
 import org.secuso.privacyfriendlysolitaire.model.Card;
 import org.secuso.privacyfriendlysolitaire.model.DeckWaste;
@@ -29,7 +28,7 @@ import org.secuso.privacyfriendlysolitaire.model.Tableau;
  * The newly arranged actors are then drawn by the application
  */
 
-public class View implements Observer {
+public class View implements GameListener {
     private boolean widthHeightOfCardSet = false;
     private final ImageLoader loader = new ImageLoader();
 
@@ -192,14 +191,12 @@ public class View implements Observer {
     /**
      * method to react to changes in the model
      *
-     * @param o   the observed object (in this case a solitairegame)
-     * @param arg some argument, which is unused at the moment
+     * @param game   the observed object (in this case a solitairegame)
      */
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(SolitaireGame game) {
         Gdx.app.log("update ", "update ");
-//        Gdx.app.log("observable ", o.toString());
-        SolitaireGame game = (SolitaireGame) o;
+//        Gdx.app.log("observable ", game.toString());
 
         Action prevAction = game.getPrevAction();
 

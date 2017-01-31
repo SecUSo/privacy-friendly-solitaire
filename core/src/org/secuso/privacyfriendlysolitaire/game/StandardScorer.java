@@ -16,8 +16,7 @@ public class StandardScorer extends Scorer {
     }
 
     @Override
-    public void update(Observable observable, Object o) {
-        SolitaireGame game = (SolitaireGame) observable;
+    public void update(SolitaireGame game) {
         if (game.getPrevAction() == null) {
             setScore(0);
             for (Move m : game.getMoves()) {
@@ -35,7 +34,7 @@ public class StandardScorer extends Scorer {
                     if (m.getAction2().getGameObject() == GameObject.TABLEAU) {
                         addScore(-15);
                     }
-                } else if (((SolitaireGame) observable).getDeckWaste().getNumTurnOver() == 1) {
+                } else if (game.getDeckWaste().getNumTurnOver() == 1) {
                     if (m.getAction2() != null) {
                         if (m.getAction1().getGameObject() == GameObject.DECK && m.getAction2().getGameObject() == GameObject.DECK) {
                             addScore(-100);
@@ -43,7 +42,7 @@ public class StandardScorer extends Scorer {
                     }
                 }
             }
-            addScore(((SolitaireGame) observable).getTurnedOverTableau() * 5);
+            addScore(game.getTurnedOverTableau() * 5);
             if (getScore() < 0) {
                 setScore(0);
             }

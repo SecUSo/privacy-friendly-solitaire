@@ -7,7 +7,7 @@ package org.secuso.privacyfriendlysolitaire.model;
  * represents a move in the game
  */
 
-public class Move implements Cloneable {
+public class Move {
     private Action action1;
     private Action action2;
 
@@ -32,14 +32,4 @@ public class Move implements Cloneable {
         this.action2 = action2;
     }
 
-    @Override
-    public Move clone() {
-        Move dolly;
-        try {
-            dolly = (Move) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new Error();
-        }
-        return dolly;
-    }
 }

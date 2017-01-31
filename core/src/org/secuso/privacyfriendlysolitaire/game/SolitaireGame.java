@@ -1,5 +1,6 @@
 package org.secuso.privacyfriendlysolitaire.game;
 
+import org.secuso.privacyfriendlysolitaire.GameListener;
 import org.secuso.privacyfriendlysolitaire.model.Action;
 import org.secuso.privacyfriendlysolitaire.model.Card;
 import org.secuso.privacyfriendlysolitaire.model.DeckWaste;
@@ -11,7 +12,6 @@ import org.secuso.privacyfriendlysolitaire.model.Tableau;
 
 
 import java.util.ArrayList;
-import java.util.Observable;
 import java.util.Vector;
 
 /**
@@ -20,7 +20,7 @@ import java.util.Vector;
  * represents the solitaire game (its current state and all actions to invoke in order to do an action)
  */
 
-public class SolitaireGame extends Observable implements Cloneable {
+public class SolitaireGame {
     private DeckWaste deckAndWaste;
     private ArrayList<Foundation> foundations;
     private ArrayList<Tableau> tableaus;
@@ -40,7 +40,6 @@ public class SolitaireGame extends Observable implements Cloneable {
      */
     private int turnedOverTableau = 0;
 
-
     /**
      * indicated whether the last move was invalid (e.g. moving a card on itself)
      */
@@ -50,6 +49,8 @@ public class SolitaireGame extends Observable implements Cloneable {
      * indicates if the last move allowed turning over a face down tableau card
      */
     private boolean lastMoveturnedOverTableau = false;
+
+    private Vector<GameListener> gameListeners = new Vector<GameListener>();
 
     public SolitaireGame(DeckWaste initialDeck, ArrayList<Foundation> initialFoundations,
                          ArrayList<Tableau> initialTableaus) {
@@ -123,6 +124,26 @@ public class SolitaireGame extends Observable implements Cloneable {
         return lastMoveturnedOverTableau;
     }
 
+    public Vector<GameListener> getGameListeners() {
+        return gameListeners;
+    }
+
+    public void setTurnedOverTableau(int turnedOverTableau) {
+        this.turnedOverTableau = turnedOverTableau;
+    }
+
+    public void setInvalidMove(boolean invalidMove) {
+        this.invalidMove = invalidMove;
+    }
+
+    public void setLastMoveturnedOverTableau(boolean lastMoveturnedOverTableau) {
+        this.lastMoveturnedOverTableau = lastMoveturnedOverTableau;
+    }
+
+    public boolean isInvalidMove() {
+        return invalidMove;
+    }
+
     /**
      * @param action the action that shall be handled
      * @return true if the action was valid and succesfully handled
@@ -168,7 +189,7 @@ public class SolitaireGame extends Observable implements Cloneable {
     private boolean handleWaste(Action action) {
         if (this.prevAction == null) {
             saveAction(action);
-            customNotify();
+            notifyListeners();
             return true;
         }
         failMove();
@@ -183,7 +204,7 @@ public class SolitaireGame extends Observable implements Cloneable {
         if (this.prevAction == null) {
             if (action.getCardIndex() != -1) {
                 saveAction(action);
-                customNotify();
+                notifyListeners();
                 return true;
             }
         } else if (this.prevAction.getGameObject() == GameObject.TABLEAU) {
@@ -213,7 +234,7 @@ public class SolitaireGame extends Observable implements Cloneable {
     private boolean handleFoundation(Action action) {
         if (this.prevAction == null) {
             saveAction(action);
-            customNotify();
+            notifyListeners();
             return true;
         } else if (this.prevAction.getGameObject() == GameObject.TABLEAU) {
             if (handleTableauToFoundation(action)) {
@@ -237,7 +258,7 @@ public class SolitaireGame extends Observable implements Cloneable {
      */
     private void saveAction(Action action) {
         this.prevAction = action;
-//        customNotify();
+//        notifyListeners();
     }
 
     /**
@@ -257,7 +278,7 @@ public class SolitaireGame extends Observable implements Cloneable {
         }
         this.moves.add(new Move(prevAction, action));
         this.prevAction = null;
-        customNotify();
+        notifyListeners();
     }
 
 
@@ -268,7 +289,7 @@ public class SolitaireGame extends Observable implements Cloneable {
     private void failMove() {
         invalidMove = true;
         this.prevAction = null;
-        customNotify();
+        notifyListeners();
     }
 
     /**
@@ -396,9 +417,10 @@ public class SolitaireGame extends Observable implements Cloneable {
         return sb.toString();
     }
 
-    public void customNotify() {
-        setChanged();
-        notifyObservers();
+    public void notifyListeners() {
+        for (GameListener gl : gameListeners) {
+            gl.update(this);
+        }
     }
 
     /**
@@ -418,39 +440,13 @@ public class SolitaireGame extends Observable implements Cloneable {
         return allKings;
     }
 
-    @Override
-    public SolitaireGame clone() {
-        SolitaireGame dolly;
-        try {
-            dolly = (SolitaireGame) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new Error();
-        }
-        //deep copy...
-        //...of deckAndWaste
-        dolly.setDeckAndWaste(this.deckAndWaste.clone());
-        //...of foundations
-        dolly.setFoundations(new ArrayList<Foundation>());
-        for (Foundation f : this.foundations) {
-            dolly.getFoundations().add(f.clone());
-        }
-        //...of tableaus
-        dolly.setTableaus(new ArrayList<Tableau>());
-        for (Tableau t : this.tableaus) {
-            dolly.getTableaus().add(t.clone());
-        }
-        //...of previous action
-        if (this.prevAction != null) {
-            dolly.setPrevAction(this.prevAction.clone());
-        } else {
-            dolly.setPrevAction(null);
-        }
-        //...of moves
-        dolly.setMoves(new Vector<Move>());
-        for (Move m : this.moves) {
-            dolly.getMoves().add(m.clone());
-        }
-        return dolly;
+    public void registerGameListener(GameListener gameListener) {
+        this.gameListeners.add(gameListener);
     }
+
+    public void deleteGameListeners() {
+        this.gameListeners = new Vector<GameListener>();
+    }
+
 
 }
