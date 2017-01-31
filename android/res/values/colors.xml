@@ -14,5 +14,10 @@
     <color name="yellow">#f6d126</color>
     <color name="red">#B71C1C</color>
     <color name="green">#388E3C</color>
+    <color name="cyan">#00ffff</color>
+    <color name="brown">#d2b48c</color>
+    <color name="forest">#228b22 </color>
+
+
 
 </resources>

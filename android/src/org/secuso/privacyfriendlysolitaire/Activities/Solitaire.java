@@ -53,6 +53,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     TextView pointsView;
     Button alertButton;
     final Context context = this;
+    BackgroundActivity backAc = new BackgroundActivity();
 
     // delay to launch nav drawer item, to allow close animation to play
     static final int NAVDRAWER_LAUNCH_DELAY = 250;
@@ -153,10 +154,27 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         });
 
         // TODO: set color from settings
-        // caution: this is libgdx Color, not Android Color
-        com.badlogic.gdx.graphics.Color c = Color.GOLD;
 
-        // start game
+
+        com.badlogic.gdx.graphics.Color c =Color.CYAN;
+        if( mSharedPreferences.getString("pref_color", "green").equals("green")){
+             c = Color.FOREST;
+
+        }else if(mSharedPreferences.getString("pref_color", "gray").equals("gray")){
+            c = Color.GRAY;
+
+        }else if(mSharedPreferences.getString("pref_color", "blue").equals("blue")) {
+            c = Color.CYAN;
+
+        }
+        else if(mSharedPreferences.getString("pref_color", "brown").equals("brown")) {
+            c = Color.TAN;
+
+        } else {
+            c =Color.GRAY;
+        }
+
+            // start game
         application.customConstructor(cardDrawMode, scoreMode, c);
 
         //start timer for game
@@ -238,7 +256,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     //Alert box for won a game which prints the total time and the reached points
     public void alertBoxWonMessage() {
 
-        //    alertButton = (Button) findViewById(R.id.buttonAlert);
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         context);
@@ -248,8 +265,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         alertDialogBuilder.setTitle("You won!");
                 // set dialog message
                 alertDialogBuilder
-                        //TODO: füge Points noch in AlertBox ein!!
-                        .setMessage(Html.fromHtml( "Total time: "+timeForAlert(time) + "<br>"+ "Total Points: " ))
+                        .setMessage(Html.fromHtml( "Total time: "+timeForAlert(time) + "<br>"+ "Total Points: " +  pointsView.getText().toString()))
                         .setCancelable(false)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -340,7 +356,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     private void callDrawerItem(final int itemId) {
         Intent intent;
 
-//        TODO: nevigation_drawer erweitern
         switch (itemId) {
             case R.id.nav_example:
                 intent = new Intent(this, MainActivity.class);
@@ -431,7 +446,9 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ((TextView) findViewById(R.id.points)).setText(String.valueOf(score));
+          //      ((TextView) findViewById(R.id.points)).setText(String.valueOf(score));
+                pointsView.setText(String.valueOf(score));
+
             }
         });
     }

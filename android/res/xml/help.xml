@@ -14,7 +14,6 @@
 
 
 
-
            <Preference android:title="@string/help_undo"
                android:selectable="false"
                android:icon="@drawable/glyphicons_undo"
@@ -34,6 +33,12 @@
                android:selectable="false"
                android:icon="@drawable/glyphicons_robot"
                android:summary="@string/help_hint_summary"/>
+
+        <Preference android:title="@string/sel_card"
+            android:selectable="false"
+            android:icon="@drawable/select_card"
+            android:summary="@string/sel_card_summary"/>
+
 
 
 

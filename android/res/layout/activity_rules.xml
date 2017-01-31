@@ -25,24 +25,58 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="left"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
         android:text="@string/rules" />
 
 
+    <TextView
+        android:text="@string/rules_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rules_description" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:text="@string/rules_point" />
+
+
+    <TextView
+        android:text="@string/rules_point_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rules_point_desc" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/standard_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:src="@drawable/playfield" />
+        android:src="@drawable/standard_point_countung" />
+    </LinearLayout>
+
+    <TextView
+        android:text="@string/rules_point_desc_vegas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rules_point_desc_vegas" />
+
 
 
 </LinearLayout>
-
-
-
 
 
 </ScrollView>
