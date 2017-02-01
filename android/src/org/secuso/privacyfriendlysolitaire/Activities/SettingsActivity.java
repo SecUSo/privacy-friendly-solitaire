@@ -4,11 +4,13 @@ package org.secuso.privacyfriendlysolitaire.Activities;
  * Created by meric-doga on 27.11.16.
  */
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,9 +33,6 @@ import android.widget.Toast;
 import org.secuso.privacyfriendlysolitaire.R;
 
 public class SettingsActivity extends BaseActivity {
-
-SwitchPreference ton, shake, language, waste, point;
-
 
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
@@ -96,11 +96,11 @@ SwitchPreference ton, shake, language, waste, point;
         setContentView(R.layout.activity_settings);
 
 
-
         //setupActionBar();
 
 
         overridePendingTransition(0, 0);
+
 
 
     }
@@ -169,12 +169,16 @@ SwitchPreference ton, shake, language, waste, point;
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName);
     }
 
+
+
+
+
     /**
      * This fragment shows general preferences only. It is used when the
      * activity is showing a two-pane settings UI.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class GeneralPreferenceFragment extends PreferenceFragment {
+    public  static class GeneralPreferenceFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -187,6 +191,9 @@ SwitchPreference ton, shake, language, waste, point;
             // guidelines.
             //bindPreferenceSummaryToValue(findPreference("example_text"));
             //bindPreferenceSummaryToValue(findPreference("example_list"));
+
+
+
         }
 
         @Override

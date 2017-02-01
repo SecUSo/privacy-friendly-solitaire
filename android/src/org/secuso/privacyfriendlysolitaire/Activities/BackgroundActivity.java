@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -25,9 +26,9 @@ import java.util.Set;
 
 public class BackgroundActivity extends AppCompatActivity {
 
-    private RadioButton green, blue, grey, brown;
+    public RadioButton green, blue, grey, brown, selecdetColor;
 
-
+    Boolean gr, bl, gra, bro;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +36,7 @@ public class BackgroundActivity extends AppCompatActivity {
 
         final SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-    final SharedPreferences.Editor edit = mSharedPreferences.edit();
+        final SharedPreferences.Editor edit = mSharedPreferences.edit();
 
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
@@ -57,8 +58,6 @@ public class BackgroundActivity extends AppCompatActivity {
         brown = (RadioButton) findViewById(R.id.checkbox_brown);
 
 
-
-
         green.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,12 +65,10 @@ public class BackgroundActivity extends AppCompatActivity {
                 blue.setChecked(false);
                 grey.setChecked(false);
                 brown.setChecked(false);
-
                 edit.putString("pref_color", "green");
                 edit.commit();
             }
         });
-
 
         grey.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +81,6 @@ public class BackgroundActivity extends AppCompatActivity {
                 edit.commit();
             }
         });
-
 
         blue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,6 +106,30 @@ public class BackgroundActivity extends AppCompatActivity {
             }
         });
 
+
+//TODO: checkbox checks müssen noch hier gesetzt werden
+       if(green.isEnabled()){
+           green.setChecked(true);
+           brown.setChecked(false);
+           blue.setChecked(false);
+           grey.setChecked(false);
+        }
+        else if(blue.isEnabled()){
+           blue.setChecked(true);
+           green.setChecked(false);
+           brown.setChecked(false);
+           grey.setChecked(false);
+       }else if(grey.isEnabled()){
+           grey.setChecked(true);
+           green.setChecked(false);
+           blue.setChecked(false);
+           brown.setChecked(false);
+       }else if(brown.isEnabled()){
+           brown.setChecked(true);
+           green.setChecked(false);
+           blue.setChecked(false);
+           grey.setChecked(false);
+       }
     }
 
 }

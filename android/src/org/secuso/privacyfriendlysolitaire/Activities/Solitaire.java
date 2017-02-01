@@ -36,6 +36,7 @@ import com.badlogic.gdx.utils.StringBuilder;
 
 import org.secuso.privacyfriendlysolitaire.CallBackListener;
 import org.secuso.privacyfriendlysolitaire.Utils.Config;
+import org.secuso.privacyfriendlysolitaire.Utils.Constant;
 import org.secuso.privacyfriendlysolitaire.game.Application;
 import org.secuso.privacyfriendlysolitaire.R;
 import org.secuso.privacyfriendlysolitaire.game.Constants;
@@ -51,9 +52,9 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     TimerTask timerTask;
     TextView timerView;
     TextView pointsView;
-    Button alertButton;
     final Context context = this;
-    BackgroundActivity backAc = new BackgroundActivity();
+
+    SettingsActivity Sett_Ac = new SettingsActivity();
 
     // delay to launch nav drawer item, to allow close animation to play
     static final int NAVDRAWER_LAUNCH_DELAY = 250;
@@ -109,33 +110,43 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
 
         //settings, which were set by the player
-        final boolean sound = mSharedPreferences.getBoolean("pref_sound_switch", true);
-        final boolean shake = mSharedPreferences.getBoolean("pref_shake_switch", true);
-        final boolean waste = mSharedPreferences.getBoolean("pref_waste", true);
-        boolean points = mSharedPreferences.getBoolean("pref_count_point", true);
+       final boolean sound = mSharedPreferences.getBoolean(getString(R.string.pref_sound_switch), true );
+        final boolean shake = mSharedPreferences.getBoolean(getString(R.string.pref_shake_switch), true);
+        final boolean waste = mSharedPreferences.getBoolean(getString(R.string.pref_waste), true);
+        boolean points = mSharedPreferences.getBoolean(getString(R.string.pref_count_point), true);
 
-        if (mSharedPreferences != null && sound) {
+        if (sound) {
             //TODO: Sound an schalten
-        } else {
+        }
+        else{
             //TODO: Sound aus schalten
         }
 
-        if (mSharedPreferences != null && shake) {
+        if (shake) {
             //TODO: Shake animation on
         } else {
             //TODO: Shake animation off
         }
 
+
+
+
         // default modes for cardDraw and score
         int cardDrawMode = Constants.MODE_ONE_CARD_DEALT;
         int scoreMode = Constants.MODE_VEGAS;
 
-        if (mSharedPreferences != null && waste) {
+        if ( waste) {
             cardDrawMode = Constants.MODE_THREE_CARDS_DEALT;
+        }else {
+            cardDrawMode =Constants.MODE_ONE_CARD_DEALT;
         }
-        if (mSharedPreferences != null && points) {
+        if (points) {
+            scoreMode = Constants.MODE_VEGAS;
+        }else {
             scoreMode = Constants.MODE_STANDARD;
         }
+
+
 
         ImageButton undo = (ImageButton) findViewById(R.id.undo);
         undo.setOnClickListener(new View.OnClickListener() {
@@ -153,13 +164,11 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
             }
         });
 
-        // TODO: set color from settings
 
 
-        com.badlogic.gdx.graphics.Color c =Color.CYAN;
+        com.badlogic.gdx.graphics.Color c;
         if( mSharedPreferences.getString("pref_color", "green").equals("green")){
              c = Color.FOREST;
-
         }else if(mSharedPreferences.getString("pref_color", "gray").equals("gray")){
             c = Color.GRAY;
 

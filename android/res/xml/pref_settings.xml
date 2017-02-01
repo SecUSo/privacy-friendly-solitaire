@@ -24,21 +24,21 @@
             android:title="@string/pref_language"
             android:summaryOn="@string/pref_language_summary_on"
             android:summaryOff="@string/pref_language_summary_off"
-            android:defaultValue="@string/pref_language_summary_off"/>
+            android:defaultValue="false"/>
 
         <SwitchPreference
             android:key="@string/pref_count_point"
             android:title="@string/pref_count_point"
             android:summaryOn="@string/pref_point_summary_on"
             android:summaryOff="@string/pref_point_summary_off"
-            android:defaultValue="@string/pref_point_summary_off"/>
+           />
 
         <SwitchPreference
            android:key="@string/pref_waste"
            android:title="@string/pref_waste"
            android:summaryOn="@string/pref_waste_summary_on"
            android:summaryOff="@string/pref_waste_summary_off"
-           android:defaultValue="@string/pref_waste_summary_off"/>
+          />
 
 
         <Preference android:title="Backgroundcolor"
