@@ -9,7 +9,7 @@ import org.secuso.privacyfriendlysolitaire.model.Move;
 import java.util.Vector;
 
 /**
- * @author: M. Fischer
+ * @author M. Fischer
  */
 
 public class MoveFinder {

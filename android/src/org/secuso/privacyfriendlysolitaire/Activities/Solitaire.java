@@ -416,7 +416,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     }
 
     @Override
-    public void possibleActionsHistorian(final boolean canUndo, final boolean canRedo) {
+    public void isUndoRedoPossible(final boolean canUndo, final boolean canRedo) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

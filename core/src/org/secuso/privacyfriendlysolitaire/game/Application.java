@@ -4,35 +4,31 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import org.secuso.privacyfriendlysolitaire.CallBackListener;
-import org.secuso.privacyfriendlysolitaire.HistorianListener;
 import org.secuso.privacyfriendlysolitaire.ScoreListener;
 import org.secuso.privacyfriendlysolitaire.generator.GeneratorSolitaireInstance;
 
 /**
- * @author: I. Dix
+ * @author I. Dix
  * the outer application, holding everything together (model, view, controller)
  * it is responsible for creating and redrawing the stage and is the contact point from the Android app
  */
-public class Application extends ApplicationAdapter implements ScoreListener, HistorianListener {
+public class Application extends ApplicationAdapter implements ScoreListener {
     private Stage stage;
 
     private CallBackListener listener;
 
     // state of game
     private SolitaireGame game;
-    private View view;
+    //  private View view;
     private Controller controller;
 
     private Scorer scorer;
-    private Historian historian;
 
     private int cardDrawMode;
     private int scoreMode;
@@ -60,7 +56,7 @@ public class Application extends ApplicationAdapter implements ScoreListener, Hi
     }
 
     private void initVC() {
-        view = new View(game, stage);
+        View view = new View(game, stage);
         game.registerGameListener(view);
 
         if (scoreMode == Constants.MODE_STANDARD) {
@@ -72,10 +68,7 @@ public class Application extends ApplicationAdapter implements ScoreListener, Hi
         scorer.registerScoreListener(this);
         scorer.update(game);
 
-        historian = new Historian();
-        game.registerGameListener(historian);
-        historian.registerHistorianListener(this);
-        historian.update(game);
+        game.registerCallBackListener(listener);
 
         controller = new Controller(game, view);
     }
@@ -106,72 +99,15 @@ public class Application extends ApplicationAdapter implements ScoreListener, Hi
     }
 
     public void undo() {
-        if (historian.canUndo()) {
-            game.deleteGameListeners();
-//            game = null;
-//            System.gc();
-            game = historian.undo();
-            reinitGameListeners();
-
-            // clear stage
-            final Viewport v = stage.getViewport();
-            stage.clear();
-            Gdx.app.postRunnable(new Runnable() {
-                @Override
-                public void run() {
-                    stage = new Stage(v, new SpriteBatch());
-
-                    reinitViewAndController();
-                }
-            });
+        if (game.canUndo()) {
+            game.undo();
         }
     }
 
     public void redo() {
-        if (historian.canRedo()) {
-            game.deleteGameListeners();
-            game = historian.redo();
-            reinitGameListeners();
-
-            // clear stage
-            final Viewport v = stage.getViewport();
-            stage.clear();
-            Gdx.app.postRunnable(new Runnable() {
-                @Override
-                public void run() {
-                    stage = new Stage(v, new SpriteBatch());
-
-                    reinitViewAndController();
-                }
-            });
+        if (game.canRedo()) {
+            game.redo();
         }
-    }
-
-
-    private void reinitViewAndController() {
-//        view = null;
-//        controller = null;
-//        System.gc();
-        Gdx.app.log("view hash before setting new view", String.valueOf(view.hashCode()));
-        view = new View(game, stage);
-        Gdx.app.log("view hash after setting new view", String.valueOf(view.hashCode()));
-        Gdx.app.log("reinit ", game.toString());
-        game.registerGameListener(view);
-        Gdx.app.log("controller hash before setting new controller", String.valueOf(controller.hashCode()));
-        controller = new Controller(game, view);
-        Gdx.app.log("controller hash after setting new controller", String.valueOf(controller.hashCode()));
-    }
-
-    private void reinitGameListeners() {
-        game.registerGameListener(scorer);
-        game.registerGameListener(historian);
-        scorer.update(game);
-        historian.notifyListener();
-    }
-
-    @Override
-    public void possibleActions(boolean canUndo, boolean canRedo) {
-        listener.possibleActionsHistorian(canUndo, canRedo);
     }
 
     @Override

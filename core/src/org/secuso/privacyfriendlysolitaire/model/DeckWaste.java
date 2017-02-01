@@ -123,6 +123,13 @@ public class DeckWaste {
         }
     }
 
+    public void undoTurnOver(int oldFanSize) {
+        for (int i = 0; i < numTurnOver; i++) {
+            deck.add(removeWasteTop());
+        }
+        setFanSize(oldFanSize);
+    }
+
     /**
      * @return true if the waste is empty
      */
@@ -162,6 +169,15 @@ public class DeckWaste {
      */
     public boolean canReset() {
         return this.deck.isEmpty() && !this.waste.isEmpty();
+    }
+
+    public void undoReset(int origFansize) {
+        if (isWasteEmpty() && !deck.isEmpty()) {
+            while (canTurnOver()) {
+                turnOver();
+            }
+            setFanSize(origFansize);
+        }
     }
 
     /**

@@ -1,5 +1,6 @@
 package org.secuso.privacyfriendlysolitaire.game;
 
+import org.secuso.privacyfriendlysolitaire.CallBackListener;
 import org.secuso.privacyfriendlysolitaire.GameListener;
 import org.secuso.privacyfriendlysolitaire.model.Action;
 import org.secuso.privacyfriendlysolitaire.model.Card;
@@ -10,12 +11,12 @@ import org.secuso.privacyfriendlysolitaire.model.Move;
 import org.secuso.privacyfriendlysolitaire.model.Rank;
 import org.secuso.privacyfriendlysolitaire.model.Tableau;
 
-
 import java.util.ArrayList;
 import java.util.Vector;
 
 /**
- * @author: I. Dix
+ * @author I. Dix
+ * @author M. Fischer
  * <p>
  * represents the solitaire game (its current state and all actions to invoke in order to do an action)
  */
@@ -52,6 +53,13 @@ public class SolitaireGame {
 
     private Vector<GameListener> gameListeners = new Vector<GameListener>();
 
+    private CallBackListener callBackListener;
+
+    /**
+     * index of the last move executed in vector moves
+     */
+    private int movePointer = -1;
+
     public SolitaireGame(DeckWaste initialDeck, ArrayList<Foundation> initialFoundations,
                          ArrayList<Tableau> initialTableaus) {
         deckAndWaste = initialDeck;
@@ -65,10 +73,6 @@ public class SolitaireGame {
         return deckAndWaste;
     }
 
-    public void setDeckAndWaste(DeckWaste deckAndWaste) {
-        this.deckAndWaste = deckAndWaste;
-    }
-
     public Foundation getFoundationAtPos(int n) {
         return foundations.get(n);
     }
@@ -77,87 +81,51 @@ public class SolitaireGame {
         return tableaus.get(n);
     }
 
-    public ArrayList<Tableau> getTableaus() {
+    ArrayList<Tableau> getTableaus() {
         return tableaus;
     }
 
-    public int getTurnedOverTableau() {
+    int getTurnedOverTableau() {
         return turnedOverTableau;
     }
 
-    public ArrayList<Foundation> getFoundations() {
+    ArrayList<Foundation> getFoundations() {
         return foundations;
-    }
-
-    public void setFoundations(ArrayList<Foundation> foundations) {
-        this.foundations = foundations;
-    }
-
-    public void setTableaus(ArrayList<Tableau> tableaus) {
-        this.tableaus = tableaus;
-    }
-
-    public void setMoves(Vector<Move> moves) {
-        this.moves = moves;
-    }
-
-    public void setPrevAction(Action prevAction) {
-        this.prevAction = prevAction;
     }
 
     /**
      * @return the previous action the game received, only marks of cards as source of a move
      * will be saved here
      */
-    public Action getPrevAction() {
+    Action getPrevAction() {
         return prevAction;
     }
 
     /**
      * @return the vector of moves that were made in this game so far
      */
-    public Vector<Move> getMoves() {
+    Vector<Move> getMoves() {
         return moves;
     }
 
-    public boolean isLastMoveturnedOverTableau() {
+    boolean isLastMoveturnedOverTableau() {
         return lastMoveturnedOverTableau;
-    }
-
-    public Vector<GameListener> getGameListeners() {
-        return gameListeners;
-    }
-
-    public void setTurnedOverTableau(int turnedOverTableau) {
-        this.turnedOverTableau = turnedOverTableau;
-    }
-
-    public void setInvalidMove(boolean invalidMove) {
-        this.invalidMove = invalidMove;
-    }
-
-    public void setLastMoveturnedOverTableau(boolean lastMoveturnedOverTableau) {
-        this.lastMoveturnedOverTableau = lastMoveturnedOverTableau;
-    }
-
-    public boolean isInvalidMove() {
-        return invalidMove;
     }
 
     /**
      * @param action the action that shall be handled
      * @return true if the action was valid and succesfully handled
      */
-    public boolean handleAction(Action action) {
+    boolean handleAction(Action action, boolean redoMove) {
         switch (action.getGameObject()) {
             case DECK:
-                return handleDeck(action);
+                return handleDeck(action, redoMove);
             case WASTE:
                 return handleWaste(action);
             case TABLEAU:
-                return handleTableau(action);
+                return handleTableau(action, redoMove);
             case FOUNDATION:
-                return handleFoundation(action);
+                return handleFoundation(action, redoMove);
         }
         return false;
     }
@@ -166,16 +134,17 @@ public class SolitaireGame {
      * @param action the action regarding the deck that shall be handled
      * @return true if the action was valid and succesfully handled
      */
-    private boolean handleDeck(Action action) {
+    private boolean handleDeck(Action action, boolean redoMove) {
         this.saveAction(action);
+        int oldFanSize = deckAndWaste.getFanSize();
         if (this.deckAndWaste.canTurnOver()) {
             if (this.deckAndWaste.turnOver()) {
-                makeMove(null);
+                makeMove(null, redoMove, oldFanSize);
                 return true;
             }
         } else if (this.deckAndWaste.canReset()) {
             if (this.deckAndWaste.reset()) {
-                makeMove(action);
+                makeMove(action, redoMove, oldFanSize);
                 return true;
             }
         }
@@ -200,7 +169,7 @@ public class SolitaireGame {
      * @param action the action regarding a tableau that shall be handled
      * @return true if the action was valid and succesfully handled
      */
-    private boolean handleTableau(Action action) {
+    private boolean handleTableau(Action action, boolean redoMove) {
         if (this.prevAction == null) {
             if (action.getCardIndex() != -1) {
                 saveAction(action);
@@ -209,17 +178,17 @@ public class SolitaireGame {
             }
         } else if (this.prevAction.getGameObject() == GameObject.TABLEAU) {
             if (handleTableauToTableau(action)) {
-                makeMove(action);
+                makeMove(action, redoMove);
                 return true;
             }
         } else if (this.prevAction.getGameObject() == GameObject.WASTE) {
             if (handleWasteToTableau(action)) {
-                makeMove(action);
+                makeMove(action, redoMove);
                 return true;
             }
         } else if (this.prevAction.getGameObject() == GameObject.FOUNDATION) {
             if (handleFoundationToTableau(action)) {
-                makeMove(action);
+                makeMove(action, redoMove);
                 return true;
             }
         }
@@ -231,19 +200,19 @@ public class SolitaireGame {
      * @param action the action regarding a foundation that shall be handled
      * @return true if the action was valid and succesfully handled
      */
-    private boolean handleFoundation(Action action) {
+    private boolean handleFoundation(Action action, boolean redoMove) {
         if (this.prevAction == null) {
             saveAction(action);
             notifyListeners();
             return true;
         } else if (this.prevAction.getGameObject() == GameObject.TABLEAU) {
             if (handleTableauToFoundation(action)) {
-                makeMove(action);
+                makeMove(action, redoMove);
                 return true;
             }
         } else if (this.prevAction.getGameObject() == GameObject.WASTE) {
             if (handleWasteToFoundation(action)) {
-                makeMove(action);
+                makeMove(action, redoMove);
                 return true;
             }
         }
@@ -267,7 +236,7 @@ public class SolitaireGame {
      *
      * @param action the action that specifies the target of this move
      */
-    private void makeMove(Action action) {
+    private void makeMove(Action action, boolean redoMove) {
         lastMoveturnedOverTableau = false;
         //if source of move was a tableau, try to turn over this tableau
         if (prevAction.getGameObject() == GameObject.TABLEAU) {
@@ -276,9 +245,40 @@ public class SolitaireGame {
                 lastMoveturnedOverTableau = true;
             }
         }
-        this.moves.add(new Move(prevAction, action));
+        if (!redoMove) {
+            cleanUpMoves();
+            this.moves.add(new Move(prevAction, action, lastMoveturnedOverTableau));
+        }
+        movePointer++;
         this.prevAction = null;
         notifyListeners();
+        notifyCallBackListener();
+    }
+
+    /**
+     * constructs a new move based on prevAction and the parameter action and saves it to the
+     * recentMove variable, resets prevAction and notifies observers
+     *
+     * @param action the action that specifies the target of this move
+     */
+    private void makeMove(Action action, boolean redoMove, int oldFanSize) {
+        lastMoveturnedOverTableau = false;
+        //if source of move was a tableau, try to turn over this tableau
+        if (prevAction.getGameObject() == GameObject.TABLEAU) {
+            if (getTableauAtPos(prevAction.getStackIndex()).turnOver()) {
+                turnedOverTableau++;
+                lastMoveturnedOverTableau = true;
+            }
+        }
+        if (!redoMove) {
+            cleanUpMoves();
+            this.moves.add(new Move(prevAction, action, lastMoveturnedOverTableau));
+            moves.lastElement().setOldfanSize(oldFanSize);
+        }
+        movePointer++;
+        this.prevAction = null;
+        notifyListeners();
+        notifyCallBackListener();
     }
 
 
@@ -295,7 +295,7 @@ public class SolitaireGame {
     /**
      * @return whether the last move was invalid
      */
-    protected boolean wasInvalidMove() {
+    boolean wasInvalidMove() {
         if (invalidMove) {
             invalidMove = false;
             return true;
@@ -315,6 +315,7 @@ public class SolitaireGame {
             Vector<Card> toBeMoved = this.getTableauAtPos(prevAction.getStackIndex()).getCopyFaceUpVector(prevAction.getCardIndex());
             //check if they can be added to the target tableau
             if (this.getTableauAtPos(action.getStackIndex()).isAddingFaceUpVectorPossible(toBeMoved)) {
+                action.setCardIndex(getTableauAtPos(action.getStackIndex()).getFaceUp().size());
                 this.getTableauAtPos(action.getStackIndex()).addFaceUpVector(this.getTableauAtPos(prevAction.getStackIndex()).removeFaceUpVector(prevAction.getCardIndex()));
                 return true;
             }
@@ -417,7 +418,7 @@ public class SolitaireGame {
         return sb.toString();
     }
 
-    public void notifyListeners() {
+    private void notifyListeners() {
         for (GameListener gl : gameListeners) {
             gl.update(this);
         }
@@ -426,7 +427,7 @@ public class SolitaireGame {
     /**
      * @return true if the game is won
      */
-    public boolean isWon() {
+    boolean isWon() {
         boolean allKings = true;
         for (Foundation f : foundations) {
             if (!f.isEmpty()) {
@@ -440,13 +441,181 @@ public class SolitaireGame {
         return allKings;
     }
 
-    public void registerGameListener(GameListener gameListener) {
+    void registerGameListener(GameListener gameListener) {
         this.gameListeners.add(gameListener);
     }
 
-    public void deleteGameListeners() {
-        this.gameListeners = new Vector<GameListener>();
+    void registerCallBackListener(CallBackListener callBackListener) {
+        this.callBackListener = callBackListener;
     }
 
+    private void notifyCallBackListener() {
+        if (callBackListener != null) {
+            callBackListener.isUndoRedoPossible(canUndo(), canRedo());
+        }
+    }
 
+    /**
+     * removes all moves which indices are greater than the movePointer
+     */
+    private void cleanUpMoves() {
+        if (movePointer < moves.size() - 1) {
+            for (int i = moves.size() - 1; i > movePointer; --i) {
+                moves.removeElementAt(i);
+            }
+        }
+    }
+
+    /**
+     * @return true if undoing is possible
+     */
+    boolean canUndo() {
+        return movePointer >= 0;
+    }
+
+    /**
+     * @return true if redoing is possible
+     */
+    boolean canRedo() {
+        return movePointer < moves.size() - 1;
+    }
+
+    void undo() {
+        if (canUndo()) {
+            Move toUndo = moves.elementAt(movePointer);
+            if (toUndo.getAction1().getGameObject() == GameObject.DECK) {
+                undoDeck(toUndo);
+            } else if (toUndo.getAction2().getGameObject() == GameObject.TABLEAU) {
+                undoTableau(toUndo);
+            } else if (toUndo.getAction2().getGameObject() == GameObject.FOUNDATION) {
+                undoFoundation(toUndo);
+            } else {
+                //TODO remove this
+                throw new Error("UNDO broke, due to invalid action");
+            }
+            movePointer--;
+            notifyListeners();
+            notifyCallBackListener();
+        }
+
+    }
+
+    /**
+     * undoes a deck move
+     *
+     * @param toUndo the move to be undone
+     */
+    private void undoDeck(Move toUndo) {
+        if (toUndo.getAction2() != null) {
+            deckAndWaste.undoReset(toUndo.getOldfanSize());
+        } else {
+            deckAndWaste.undoTurnOver(toUndo.getOldfanSize());
+        }
+    }
+
+    /**
+     * undoes a move which target was a Tableau
+     *
+     * @param toUndo the move to be reversed
+     */
+    private void undoTableau(Move toUndo) {
+        switch (toUndo.getAction1().getGameObject()) {
+            case TABLEAU:
+                undoTableauTableau(toUndo);
+                break;
+            case WASTE:
+                undoTableauWaste(toUndo);
+                break;
+            case FOUNDATION:
+                undoTableauFoundation(toUndo);
+                break;
+        }
+    }
+
+    /**
+     * undoes a move which source and target were tableaus
+     *
+     * @param toUndo the move to be reversed
+     */
+    private void undoTableauTableau(Move toUndo) {
+        Tableau sourceT = getTableauAtPos(toUndo.getAction1().getStackIndex());
+        Tableau targetT = getTableauAtPos(toUndo.getAction2().getStackIndex());
+        if (toUndo.isTurnOver()) {
+            sourceT.undoturnOver();
+            turnedOverTableau--;
+        }
+        sourceT.addFaceUpVector(targetT.removeFaceUpVector(toUndo.getAction2().getCardIndex()));
+    }
+
+    /**
+     * undoes a move which source was the Waste and which target was a Tableau
+     *
+     * @param toUndo the move to be reversed
+     */
+    private void undoTableauWaste(Move toUndo) {
+        Tableau targetT = getTableauAtPos(toUndo.getAction2().getStackIndex());
+        deckAndWaste.getWaste().add(targetT.removeFaceUpVector(targetT.getFaceUp().size() - 1).firstElement());
+        deckAndWaste.setFanSize(toUndo.getOldfanSize());
+    }
+
+    /**
+     * undoes a move which source was a Foundation and which target was a Tableau
+     *
+     * @param toUndo the move to be reversed
+     */
+    private void undoTableauFoundation(Move toUndo) {
+        Tableau targetT = getTableauAtPos(toUndo.getAction2().getStackIndex());
+        Foundation sourceF = getFoundationAtPos(toUndo.getAction1().getStackIndex());
+        sourceF.addCard(targetT.removeFaceUpVector(targetT.getFaceUp().size() - 1).lastElement());
+    }
+
+    /**
+     * undoes a move which target was a Foundation
+     *
+     * @param toUndo the move to be reversed
+     */
+    private void undoFoundation(Move toUndo) {
+        if (toUndo.getAction1().getGameObject() == GameObject.TABLEAU) {
+            undoFoundationTableau(toUndo);
+        } else if (toUndo.getAction1().getGameObject() == GameObject.WASTE) {
+            undoFoundationWaste(toUndo);
+        }
+    }
+
+    /**
+     * undoes a move which source was a Tableau and which target was a Foundation
+     *
+     * @param toUndo the move to be reversed
+     */
+    private void undoFoundationTableau(Move toUndo) {
+        Foundation targetF = getFoundationAtPos(toUndo.getAction2().getStackIndex());
+        Tableau sourceT = getTableauAtPos(toUndo.getAction1().getStackIndex());
+        if (toUndo.isTurnOver()) {
+            sourceT.undoturnOver();
+            turnedOverTableau--;
+        }
+        sourceT.addFaceUp(targetF.removeFoundationTop());
+    }
+
+    /**
+     * undoes a move which source was the Waste and which target was a Foundation
+     *
+     * @param toUndo the move to be reversed
+     */
+    private void undoFoundationWaste(Move toUndo) {
+        Foundation targetF = getFoundationAtPos(toUndo.getAction2().getStackIndex());
+        deckAndWaste.getWaste().add(targetF.removeFoundationTop());
+        deckAndWaste.setFanSize(toUndo.getOldfanSize());
+    }
+
+    /**
+     * redoes a move that was undone before
+     */
+    void redo() {
+        if (canRedo()) {
+            Move toRedo = moves.elementAt(movePointer + 1);
+            handleAction(toRedo.getAction1(), true);
+            handleAction(toRedo.getAction2(), true);
+        }
+    }
 }

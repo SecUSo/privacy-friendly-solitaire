@@ -10,10 +10,18 @@ package org.secuso.privacyfriendlysolitaire.model;
 public class Move {
     private Action action1;
     private Action action2;
+    private boolean turnOver = false;
+    private int oldfanSize = -1;
 
     public Move(Action action1, Action action2) {
         this.action1 = action1;
         this.action2 = action2;
+    }
+
+    public Move(Action action1, Action action2, boolean turnOver) {
+        this.action1 = action1;
+        this.action2 = action2;
+        this.turnOver = turnOver;
     }
 
     public Action getAction1() {
@@ -32,4 +40,15 @@ public class Move {
         this.action2 = action2;
     }
 
+    public boolean isTurnOver() {
+        return turnOver;
+    }
+
+    public int getOldfanSize() {
+        return oldfanSize;
+    }
+
+    public void setOldfanSize(int oldfanSize) {
+        this.oldfanSize = oldfanSize;
+    }
 }

@@ -66,6 +66,16 @@ public class Tableau {
     }
 
     /**
+     * undoes turning over a card from face down to face up
+     */
+    public void undoturnOver() {
+        if (faceUp.size() == 1) {
+            faceDown.add(faceUp.remove(0));
+        }
+    }
+
+
+    /**
      * @param card the card to be added on top of the face down cards
      */
     public void addFaceDown(Card card) {
@@ -84,11 +94,11 @@ public class Tableau {
      * @return true if the cards could be added to the tableau
      */
     public boolean addFaceUpVector(Vector<Card> vecCards) {
-        if (isAddingFaceUpVectorPossible(vecCards)) {
-            this.faceUp.addAll(vecCards);
-            return true;
-        }
-        return false;
+
+        return this.faceUp.addAll(vecCards);
+
+
+
     }
 
     /**

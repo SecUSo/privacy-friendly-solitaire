@@ -43,7 +43,7 @@ public class View implements GameListener {
 
     public View(SolitaireGame game, Stage stage) {
         this.stage = stage;
-
+        //Gdx.app.log("game hash view", String.valueOf(game.hashCode()));
         initialiseViewConstants();
 
         // add mark and make it invisible
