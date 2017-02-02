@@ -60,6 +60,15 @@ public class SolitaireGame {
      */
     private int movePointer = -1;
 
+    public void setUndoMove(boolean undoMove) {
+        this.undoMove = undoMove;
+    }
+
+    /**
+     * indicates that a move was undone
+     */
+    private boolean undoMove = false;
+
     public SolitaireGame(DeckWaste initialDeck, ArrayList<Foundation> initialFoundations,
                          ArrayList<Tableau> initialTableaus) {
         deckAndWaste = initialDeck;
@@ -111,6 +120,15 @@ public class SolitaireGame {
     boolean isLastMoveturnedOverTableau() {
         return lastMoveturnedOverTableau;
     }
+
+    public boolean wasUndoMove() {
+        return undoMove;
+    }
+
+    public int getMovePointer() {
+        return movePointer;
+    }
+
 
     /**
      * @param action the action that shall be handled
@@ -251,6 +269,7 @@ public class SolitaireGame {
         }
         movePointer++;
         this.prevAction = null;
+        undoMove = false;
         notifyListeners();
         notifyCallBackListener();
     }
@@ -277,6 +296,7 @@ public class SolitaireGame {
         }
         movePointer++;
         this.prevAction = null;
+        undoMove = false;
         notifyListeners();
         notifyCallBackListener();
     }
@@ -494,6 +514,8 @@ public class SolitaireGame {
                 throw new Error("UNDO broke, due to invalid action");
             }
             movePointer--;
+            undoMove = true;
+            prevAction = null;
             notifyListeners();
             notifyCallBackListener();
         }
