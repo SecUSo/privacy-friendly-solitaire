@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 /**
- * @author I. Dix
  * @author M. Fischer
  * <p>
  * represents the solitaire game (its current state and all actions to invoke in order to do an action)

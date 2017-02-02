@@ -21,7 +21,7 @@ import org.secuso.privacyfriendlysolitaire.model.Move;
 import org.secuso.privacyfriendlysolitaire.model.Tableau;
 
 /**
- * @author: I. Dix
+ * @author I. Dix
  * <p>
  * the view manages the actors on stage (the stage is given to it by the application). It observes
  * the model (SolitaireGame game) and reacts to changes in the model by re-arranging the actors.
@@ -191,7 +191,7 @@ public class View implements GameListener {
     /**
      * method to react to changes in the model
      *
-     * @param game   the observed object (in this case a solitairegame)
+     * @param game the observed object (in this case a solitairegame)
      */
     @Override
     public void update(SolitaireGame game) {
@@ -234,8 +234,15 @@ public class View implements GameListener {
 
             try {
                 if (!game.wasInvalidMove()) {
-                    Move prevMove = game.getMoves().lastElement();
-                    handleMove(prevMove, game);
+                    if (!game.wasUndoMove()) {
+                        // usual move
+                        Move prevMove = game.getMoves().lastElement();
+                        handleMove(prevMove, game);
+                    } else {
+                        // undo move
+                        Move undoMove = game.getMoves().elementAt(game.getMovePointer() + 1);
+                        handleUndoMove(undoMove, game);
+                    }
                 }
             } catch (Exception e) {
                 Gdx.app.log("Error", e.getClass().toString() + ": " + e.getMessage() + ", probably an invalid move");
@@ -362,6 +369,12 @@ public class View implements GameListener {
 
                 // ------------------------ T -> T ------------------------
                 if (ac2.getGameObject().equals(GameObject.TABLEAU)) {
+                    int nrOfFaceDownInTargetTableau = tabAtTargetStack.getFaceDown().size();
+                    // distinguish empty target tab from tab with exactly one card
+                    // TODO: bei f->t auch beachten
+//                    targetCard = nrOfFaceDownInTargetTableau == 0 ? -1 : targetCard;
+                    targetCard--;
+
                     List<String> textureStringsMovedCards = new ArrayList<String>();
                     for (int i = targetCard + 1; i < tabAtTargetStack.getFaceUp().size(); i++) {
                         Card cardToBeMoved = tabAtTargetStack.getFaceUp().get(i);
@@ -378,7 +391,6 @@ public class View implements GameListener {
                     if (targetOldTopCard != null) {
                         textureStringOldTableauTop = loader.getCardTextureName(targetOldTopCard);
                     }
-                    int nrOfFaceDownInTargetTableau = tabAtTargetStack.getFaceDown().size();
 
                     makeMoveTableauToTableau(textureStringsMovedCards, textureStringOldTableauTop,
                             cardBeneathSource, sourceStack, sourceCard, targetStack, targetCard,
@@ -437,11 +449,11 @@ public class View implements GameListener {
     /**
      * paints the waste in its current state
      *
-     * @param deckWaste        the deckWaste object from the game
-     * @param isInitialization a boolean depicting whether this was called by paintInitialDeckWaste
-     *                         (true) or turnDeckCard (false)
-     * @param isInitialization a boolean depicting whether this was called by paintInitialDeckWaste
-     *                         (true) or turnDeckCard (false)
+     * @param deckWaste              the deckWaste object from the game
+     * @param isInitialization       a boolean depicting whether this was called by paintInitialDeckWaste
+     *                               (true) or turnDeckCard (false)
+     * @param fanCardsToBeRearranged a boolean depicting whether this was called by paintInitialDeckWaste
+     *                               (true) or turnDeckCard (false)
      */
     private void paintWaste(DeckWaste deckWaste, boolean isInitialization,
                             boolean fanCardsToBeRearranged) {
@@ -563,7 +575,7 @@ public class View implements GameListener {
             smallestYForTableau.put(stackIndex, ViewConstants.TableauBaseY -
                     (nrOfCardsInTableau - 1) * ViewConstants.offsetHeightBetweenCards);
         }
-//        Gdx.app.log("smallest y für stack " + stackIndex, "gesetzt auf " + smallestYForTableau.get(stackIndex));
+        Gdx.app.log("smallest y für stack " + stackIndex, "gesetzt auf " + smallestYForTableau.get(stackIndex));
     }
 
     private void makeMoveWasteToTableau(String sourceCardTextureString, String targetCardTextureString,
@@ -772,6 +784,26 @@ public class View implements GameListener {
     }
 
 
+    private void makeUndoMoveTableauToWaste(String sourceCardTextureString) {
+        // find correct card that should be moved and card to move it to
+        ImageWrapper sourceCard = faceUpCards.get(sourceCardTextureString);
+
+
+        if (sourceCard != null) {
+            // make movement
+            // TODO: x-coord checken
+            moveCard(ViewConstants.WasteX1Fan,
+                    ViewConstants.WasteDeckFoundationY, sourceCard, 5, true);
+
+            // set meta-information
+            sourceCard.setGameObject(GameObject.WASTE);
+            sourceCard.setWrapperCardIndex(-1);
+        } else {
+            throw new RuntimeException("source or target of move could not be found");
+        }
+    }
+
+
     /**
      * @param targetX new x-position
      * @param targetY new y-position
@@ -786,6 +818,90 @@ public class View implements GameListener {
             card.setPosition(targetX, targetY);
         }
         card.setWrapperStackIndex(targetStack);
+    }
+
+
+    // ---------------------------- UNDO MOVES ----------------------------
+    private void handleUndoMove(Move move, SolitaireGame game) {
+        Action ac1 = move.getAction1();
+        Action ac2 = move.getAction2();
+
+        // CAUTION: target and source are inverted (as if the undo move was a valid move from
+        // target to source
+        int targetStack = ac1.getStackIndex();
+        int targetCard = ac1.getCardIndex();
+        int sourceStack = -1, sourceCard = -1;
+        if (ac2 != null) {
+            sourceStack = ac2.getStackIndex();
+            sourceCard = ac2.getCardIndex();
+        }
+
+
+        // click on deck
+        if (ac2 == null) {
+            // TODO: click on deck
+        } else {
+            // works analogous to handleMove (game has already done the undo)
+            // plus: if an action was X->Y, we have to perform the inverse move Y->X
+            switch (ac2.getGameObject()) {
+                // possibilities: Tableau -> Tableau, Tableau -> Foundation
+                case TABLEAU:
+                    Tableau tabAtSourceStack = game.getTableauAtPos(sourceStack);
+                    int nrOfFaceDownInSourceTableauAfterChange =
+                            tabAtSourceStack.getFaceDown().size();
+                    String sourceCardTextureString;
+
+                    // ------------------------ T -> F ------------------------
+                    if (ac1.getGameObject().equals(GameObject.FOUNDATION)) {
+                        sourceCardTextureString = loader.getCardTextureName(
+                                game.getFoundationAtPos(targetStack).getFoundationTop());
+
+                        makeMoveTableauToFoundation(sourceCardTextureString, null,
+                                sourceStack, sourceCard, targetStack, nrOfFaceDownInSourceTableauAfterChange);
+                    }
+
+                    // ------------------------ T -> T ------------------------
+                    else if (ac1.getGameObject().equals(GameObject.TABLEAU)) {
+
+
+                        // TODO
+//
+//                        List<String> textureStringsMovedCards = new ArrayList<String>();
+//                        for (int i = targetCard + 1; i < tabAtTargetStack.getFaceUp().size(); i++) {
+//                            Card cardToBeMoved = tabAtTargetStack.getFaceUp().get(i);
+//                            textureStringsMovedCards.add(loader.getCardTextureName(cardToBeMoved));
+//                        }
+//
+//                        Card targetOldTopCard = null;
+//                        String textureStringOldTableauTop = null;
+//                        try {
+//                            targetOldTopCard = tabAtTargetStack.getFaceUp().get(targetCard);
+//                        } catch (Exception e) {
+//                        }
+
+                    }
+                    // ------------------------ T -> W ------------------------
+                    else if (ac1.getGameObject().equals(GameObject.WASTE)) {
+                        sourceCardTextureString = loader.getCardTextureName(
+                                game.getDeckWaste().getWasteTop());
+
+                        makeUndoMoveTableauToWaste(sourceCardTextureString);
+
+                        paintWaste(game.getDeckWaste(), false, true);
+                    }
+
+
+                    // set new smallestY for source
+                    setNewSmallestY(sourceStack, tabAtSourceStack);
+
+                    break;
+
+                // possibilities: Foundation -> Tableau
+                case FOUNDATION:
+                    // TODO
+                    break;
+            }
+        }
     }
 
     // ------------------------------------ getActionForTap for Controller ------------------------------------
