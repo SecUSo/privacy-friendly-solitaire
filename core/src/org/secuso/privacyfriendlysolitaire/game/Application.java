@@ -9,12 +9,16 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import org.secuso.privacyfriendlysolitaire.CallBackListener;
 import org.secuso.privacyfriendlysolitaire.HistorianListener;
 import org.secuso.privacyfriendlysolitaire.ScoreListener;
 import org.secuso.privacyfriendlysolitaire.generator.GeneratorSolitaireInstance;
+import org.secuso.privacyfriendlysolitaire.model.Move;
+
+import static java.lang.Thread.*;
 
 /**
  * @author: I. Dix
@@ -53,7 +57,6 @@ public class Application extends ApplicationAdapter implements ScoreListener, Hi
 
     private void initMVC() {
         game = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(cardDrawMode, scoreMode);
-
         initVC();
 
         Gdx.input.setInputProcessor(new GestureDetector(controller));
@@ -174,5 +177,23 @@ public class Application extends ApplicationAdapter implements ScoreListener, Hi
     @Override
     public void score(int score) {
         listener.score(score);
+    }
+
+    public void autoFoundations() {
+        Move move;
+        while (true) {
+            move = MoveFinder.findMoveTableauToFoundation(game);
+            if (move == null) {
+                break;
+            }
+            game.handleAction(move.getAction1());
+            game.handleAction(move.getAction2());
+
+            try {
+                sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
