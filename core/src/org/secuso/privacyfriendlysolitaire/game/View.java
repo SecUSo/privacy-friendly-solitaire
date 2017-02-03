@@ -807,7 +807,7 @@ public class View implements GameListener {
     }
 
 
-    private void makeUndoMoveTableauToWaste(String sourceCardTextureString) {
+    private void makeUndoMoveXToWaste(String sourceCardTextureString) {
         // find correct card that should be moved and card to move it to
         ImageWrapper sourceCard = faceUpCards.get(sourceCardTextureString);
 
@@ -908,7 +908,7 @@ public class View implements GameListener {
                         sourceCardTextureString = loader.getCardTextureName(
                                 game.getDeckWaste().getWasteTop());
 
-                        makeUndoMoveTableauToWaste(sourceCardTextureString);
+                        makeUndoMoveXToWaste(sourceCardTextureString);
 
                         paintWaste(game.getDeckWaste(), false, true);
                     }
@@ -924,6 +924,12 @@ public class View implements GameListener {
 
                     // ------------------------ F -> W ------------------------
                     if (ac1.getGameObject().equals(GameObject.WASTE)) {
+                        sourceCardTextureString = loader.getCardTextureName(
+                                game.getDeckWaste().getWasteTop());
+
+                        makeUndoMoveXToWaste(sourceCardTextureString);
+
+                        paintWaste(game.getDeckWaste(), false, true);
 
                     }
                     // ------------------------ F -> T ------------------------
