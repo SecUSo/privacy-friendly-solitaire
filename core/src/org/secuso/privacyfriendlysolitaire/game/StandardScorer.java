@@ -3,15 +3,13 @@ package org.secuso.privacyfriendlysolitaire.game;
 import org.secuso.privacyfriendlysolitaire.model.GameObject;
 import org.secuso.privacyfriendlysolitaire.model.Move;
 
-import java.util.Observable;
-
 /**
- * @author: M. Fischer
+ * @author M. Fischer
  */
 
-public class StandardScorer extends Scorer {
+class StandardScorer extends Scorer {
 
-    public StandardScorer() {
+    StandardScorer() {
         setScore(0);
     }
 
@@ -19,7 +17,8 @@ public class StandardScorer extends Scorer {
     public void update(SolitaireGame game) {
         if (game.getPrevAction() == null) {
             setScore(0);
-            for (Move m : game.getMoves()) {
+            for (int i = 0; i < game.getMovePointer() + 1; i++) {
+                Move m = game.getMoves().get(i);
                 if (m.getAction1().getGameObject() == GameObject.WASTE) {
                     if (m.getAction2().getGameObject() == GameObject.TABLEAU) {
                         addScore(5);

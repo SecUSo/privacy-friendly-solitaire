@@ -2,45 +2,41 @@ package org.secuso.privacyfriendlysolitaire.game;
 
 import org.secuso.privacyfriendlysolitaire.GameListener;
 import org.secuso.privacyfriendlysolitaire.ScoreListener;
-import org.secuso.privacyfriendlysolitaire.model.Move;
-
-import java.util.Observer;
-import java.util.Vector;
 
 /**
- * @author: M. Fischer
+ * @author M. Fischer
  */
 
-public abstract class Scorer implements GameListener {
+abstract class Scorer implements GameListener {
 
     private int score;
 
     private ScoreListener listener;
 
-    public int getScore() {
+    int getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    void setScore(int score) {
         this.score = score;
     }
 
-    public ScoreListener getListener() {
+    private ScoreListener getListener() {
         return listener;
     }
 
     /**
      * @param x the value that is added to the current score, negative values result in subtraction
      */
-    public void addScore(int x) {
+    void addScore(int x) {
         this.score += x;
     }
 
-    public void registerScoreListener(ScoreListener scoreListener) {
+    void registerScoreListener(ScoreListener scoreListener) {
         this.listener = scoreListener;
     }
 
-    public void notifyListener() {
+    void notifyListener() {
         if (getListener() != null) {
             getListener().score(getScore());
         }
