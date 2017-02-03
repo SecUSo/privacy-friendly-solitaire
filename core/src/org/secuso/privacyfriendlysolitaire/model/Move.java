@@ -51,4 +51,14 @@ public class Move {
     public void setOldfanSize(int oldfanSize) {
         this.oldfanSize = oldfanSize;
     }
+
+    @Override
+    public String toString() {
+        return "Move{" +
+                "action1=" + action1 +
+                ", action2=" + action2 +
+                ", turnOver=" + turnOver +
+                ", oldfanSize=" + oldfanSize +
+                '}';
+    }
 }

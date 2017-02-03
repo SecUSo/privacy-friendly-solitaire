@@ -414,8 +414,14 @@ public class View implements GameListener {
                         tabAtTargetStack.getFaceUp().get(targetCard + 1));
                 // ------------------------ F -> T ------------------------
                 if (ac2.getGameObject().equals(GameObject.TABLEAU)) {
-                    String textureStringTableauTarget = loader.getCardTextureName(
-                            tabAtTargetStack.getFaceUp().get(targetCard));
+                    Gdx.app.log("F => T", "F => T");
+                    Gdx.app.log("targetCard ", String.valueOf(targetCard));
+                    Gdx.app.log("tabAtTargetStack ", tabAtTargetStack.toString());
+                    String textureStringTableauTarget = null;
+                    if (tabAtTargetStack.getNrOfAllCards() != 1) {
+                        textureStringTableauTarget = loader.getCardTextureName(
+                                tabAtTargetStack.getFaceUp().get(targetCard));
+                    }
                     int nrOfFaceDownInTargetTableau =
                             tabAtTargetStack.getFaceDown().size();
 
@@ -928,26 +934,31 @@ public class View implements GameListener {
                     }
                     // ------------------------ F -> T ------------------------
                     else if (ac1.getGameObject().equals(GameObject.TABLEAU)) {
+                        Gdx.app.log("F => T", "F => T");
 
                         // was a card turned over?
                         boolean wasTurnOver = move.isTurnOver();
 
                         // get texture string of card that was moved
                         Tableau tabAtTargetStack = game.getTableauAtPos(targetStack);
+                        boolean emptyTargetStack = tabAtTargetStack.getNrOfAllCards() == 1;
+                        Gdx.app.log("tabAtTargetStack ", tabAtTargetStack.toString());
+                        Gdx.app.log("move ", move.toString());
+                        Gdx.app.log("targetCard ", String.valueOf(targetCard));
+                        Gdx.app.log("wasTurnOver ", String.valueOf(wasTurnOver));
 
                         // if the target stack is empty, we set the targetCardIndex to -1 (in
                         // order to distinguish between empty stack and stack with just one card)
-                        if (tabAtTargetStack.getFaceDown().size() +
-                                tabAtTargetStack.getFaceUp().size() == 1
-                                || wasTurnOver) {
+                        if (emptyTargetStack || wasTurnOver) {
                             targetCard--;
                         }
+                        Gdx.app.log("targetCard ", String.valueOf(targetCard) + "\n\n");
 
                         String textureStringFoundationSource = loader.getCardTextureName(
                                 tabAtTargetStack.getFaceUp().get(targetCard + 1));
 
                         String textureStringTableauTargetTop = null;
-                        if (!wasTurnOver) {
+                        if (!wasTurnOver && !emptyTargetStack) {
                             // either this was the card tapped on and it was and is still open
                             textureStringTableauTargetTop = loader.getCardTextureName(
                                     tabAtTargetStack.getFaceUp().get(targetCard));

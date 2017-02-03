@@ -45,6 +45,10 @@ public class Tableau {
         return faceUp;
     }
 
+    public int getNrOfAllCards(){
+        return faceDown.size()+faceUp.size();
+    }
+
     /**
      * @param faceUp the vector of cards to be set as lying face up on this tableau
      */
