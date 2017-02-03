@@ -199,8 +199,9 @@ public class SolitaireGame {
                 return true;
             }
         } else if (this.prevAction.getGameObject() == GameObject.WASTE) {
+            int oldFanSize = deckAndWaste.getFanSize();
             if (handleWasteToTableau(action)) {
-                makeMove(action, redoMove);
+                makeMove(action, redoMove, oldFanSize);
                 return true;
             }
         } else if (this.prevAction.getGameObject() == GameObject.FOUNDATION) {
@@ -228,8 +229,9 @@ public class SolitaireGame {
                 return true;
             }
         } else if (this.prevAction.getGameObject() == GameObject.WASTE) {
+            int oldFanSize = deckAndWaste.getFanSize();
             if (handleWasteToFoundation(action)) {
-                makeMove(action, redoMove);
+                makeMove(action, redoMove, oldFanSize);
                 return true;
             }
         }
