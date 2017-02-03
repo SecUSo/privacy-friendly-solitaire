@@ -10,15 +10,13 @@ import org.secuso.privacyfriendlysolitaire.model.Suit;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertEquals;
 /**
  * @author M. Fischer
  */
 
 public class FoundationTests {
 
-    Foundation f1;
+    private Foundation f1;
 
     @Test
     public void addCardTests() {

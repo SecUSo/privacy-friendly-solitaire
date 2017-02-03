@@ -7,9 +7,7 @@ import org.secuso.privacyfriendlysolitaire.model.DeckWaste;
 import org.secuso.privacyfriendlysolitaire.model.Rank;
 import org.secuso.privacyfriendlysolitaire.model.Suit;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Vector;

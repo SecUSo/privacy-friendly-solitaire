@@ -76,7 +76,7 @@ public class Controller implements GestureDetector.GestureListener {
             }
         }
 
-        return actionForClick == null ? false : game.handleAction(actionForClick, false);
+        return actionForClick != null && game.handleAction(actionForClick, false);
     }
 
     @Override

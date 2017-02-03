@@ -50,7 +50,7 @@ public class MoveFinder {
      * @param game the SolitaireGame in which a Move from Tableau to Foundation shall be found
      * @return a possible Move from Tableau to Foundation or null if none could be found
      */
-    public static Move findMoveTableauToFoundation(SolitaireGame game) {
+    private static Move findMoveTableauToFoundation(SolitaireGame game) {
         for (int t = 0; t < game.getTableaus().size(); t++) {
             if (game.getTableauAtPos(t).getFaceUp().isEmpty()) {
                 continue;

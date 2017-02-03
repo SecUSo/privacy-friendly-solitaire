@@ -319,6 +319,7 @@ public class View implements GameListener {
                     try {
                         targetOldTopCard = game.getTableauAtPos(targetStack).getFaceUp().get(targetCard);
                     } catch (Exception e) {
+                        // leave at null
                     }
 
                     if (targetOldTopCard != null) {
@@ -357,6 +358,7 @@ public class View implements GameListener {
                 try {
                     cardBeneathSource = tabAtSourceStack.getFaceUp().get(ac1.getCardIndex());
                 } catch (ArrayIndexOutOfBoundsException e) {
+                    // leave at null
                 }
 
                 // ------------------------ T -> T ------------------------
@@ -376,6 +378,7 @@ public class View implements GameListener {
                     try {
                         targetOldTopCard = faceUpAtTargetStack.get(targetCard);
                     } catch (Exception e) {
+                        // leave at null
                     }
 
                     if (targetOldTopCard != null) {
@@ -1147,7 +1150,7 @@ public class View implements GameListener {
     /**
      * set the scaling, position and add the card to the stage, so every image is svaled the same
      *
-     * @param cardImage
+     * @param cardImage image whose parameters are set and which is added to the stage
      * @param x         the x-coordinate of the position
      * @param y         the y-coordinate of the position
      */

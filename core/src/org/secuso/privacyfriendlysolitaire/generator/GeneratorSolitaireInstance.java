@@ -1,7 +1,5 @@
 package org.secuso.privacyfriendlysolitaire.generator;
 
-import com.badlogic.gdx.Gdx;
-
 import org.secuso.privacyfriendlysolitaire.game.SolitaireGame;
 import org.secuso.privacyfriendlysolitaire.model.Card;
 import org.secuso.privacyfriendlysolitaire.model.Rank;
