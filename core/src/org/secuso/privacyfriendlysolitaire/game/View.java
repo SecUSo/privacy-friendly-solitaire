@@ -43,7 +43,6 @@ public class View implements GameListener {
 
     public View(SolitaireGame game, Stage stage) {
         this.stage = stage;
-        //Gdx.app.log("game hash view", String.valueOf(game.hashCode()));
         initialiseViewConstants();
 
         // add mark and make it invisible
@@ -191,8 +190,6 @@ public class View implements GameListener {
      */
     @Override
     public void update(SolitaireGame game) {
-//        Gdx.app.log("update ", "update ");
-
         Action prevAction = game.getPrevAction();
 
         // get whether this was a marking action
@@ -225,7 +222,6 @@ public class View implements GameListener {
         else {
             // with successful or invalid move, remove marker
             marker.setVisible(false);
-//            Gdx.app.log("game ", game.toString());
 
             try {
                 if (!game.wasInvalidMove()) {
@@ -351,6 +347,7 @@ public class View implements GameListener {
             case TABLEAU:
                 Tableau tabAtSourceStack = game.getTableauAtPos(sourceStack);
                 Tableau tabAtTargetStack = game.getTableauAtPos(targetStack);
+                Vector<Card> faceUpAtTargetStack = tabAtTargetStack.getFaceUp();
 
                 nrOfFaceDownInSourceTableauAfterChange =
                         tabAtSourceStack.getFaceDown().size();
@@ -369,15 +366,15 @@ public class View implements GameListener {
                     targetCard--;
 
                     List<String> textureStringsMovedCards = new ArrayList<String>();
-                    for (int i = targetCard + 1; i < tabAtTargetStack.getFaceUp().size(); i++) {
-                        Card cardToBeMoved = tabAtTargetStack.getFaceUp().get(i);
+                    for (int i = targetCard + 1; i < faceUpAtTargetStack.size(); i++) {
+                        Card cardToBeMoved = faceUpAtTargetStack.get(i);
                         textureStringsMovedCards.add(loader.getCardTextureName(cardToBeMoved));
                     }
 
                     Card targetOldTopCard = null;
                     String textureStringOldTableauTop = null;
                     try {
-                        targetOldTopCard = tabAtTargetStack.getFaceUp().get(targetCard);
+                        targetOldTopCard = faceUpAtTargetStack.get(targetCard);
                     } catch (Exception e) {
                     }
 
@@ -408,19 +405,18 @@ public class View implements GameListener {
             // possibilities: Foundation -> Tableau
             case FOUNDATION:
                 tabAtTargetStack = game.getTableauAtPos(targetStack);
+                faceUpAtTargetStack = tabAtTargetStack.getFaceUp();
+
                 // after moving the card the old foundation top is now on top the tableau
                 // (on top the targetCard)
                 String textureStringFoundationSource = loader.getCardTextureName(
-                        tabAtTargetStack.getFaceUp().get(targetCard + 1));
+                        faceUpAtTargetStack.get(targetCard + 1));
                 // ------------------------ F -> T ------------------------
                 if (ac2.getGameObject().equals(GameObject.TABLEAU)) {
-                    Gdx.app.log("F => T", "F => T");
-                    Gdx.app.log("targetCard ", String.valueOf(targetCard));
-                    Gdx.app.log("tabAtTargetStack ", tabAtTargetStack.toString());
                     String textureStringTableauTarget = null;
                     if (tabAtTargetStack.getNrOfAllCards() != 1) {
                         textureStringTableauTarget = loader.getCardTextureName(
-                                tabAtTargetStack.getFaceUp().get(targetCard));
+                                faceUpAtTargetStack.get(targetCard));
                     }
                     int nrOfFaceDownInTargetTableau =
                             tabAtTargetStack.getFaceDown().size();
@@ -459,7 +455,6 @@ public class View implements GameListener {
                             boolean fanCardsToBeRearranged) {
         // draw first few cards before the open fan
         Vector<Card> waste = deckWaste.getWaste();
-//        Gdx.app.log("paintWaste, fanSize ", String.valueOf(deckWaste.getFanSize()));
         for (int i = 0; i < waste.size() - deckWaste.getFanSize(); i++) {
             Card c = waste.get(i);
             String textureName = loader.getCardTextureName(c);
@@ -819,7 +814,6 @@ public class View implements GameListener {
 
         if (sourceCard != null) {
             // make movement
-            // TODO: x-coord checken
             moveCard(ViewConstants.WasteX1Fan,
                     ViewConstants.WasteDeckFoundationY, sourceCard, 5, true);
 
@@ -896,15 +890,15 @@ public class View implements GameListener {
                         // TODO
 //
 //                        List<String> textureStringsMovedCards = new ArrayList<String>();
-//                        for (int i = targetCard + 1; i < tabAtTargetStack.getFaceUp().size(); i++) {
-//                            Card cardToBeMoved = tabAtTargetStack.getFaceUp().get(i);
+//                        for (int i = targetCard + 1; i < faceUpAtTargetStack.size(); i++) {
+//                            Card cardToBeMoved = faceUpAtTargetStack.get(i);
 //                            textureStringsMovedCards.add(loader.getCardTextureName(cardToBeMoved));
 //                        }
 //
 //                        Card targetOldTopCard = null;
 //                        String textureStringOldTableauTop = null;
 //                        try {
-//                            targetOldTopCard = tabAtTargetStack.getFaceUp().get(targetCard);
+//                            targetOldTopCard = faceUpAtTargetStack.get(targetCard);
 //                        } catch (Exception e) {
 //                        }
 
@@ -934,40 +928,33 @@ public class View implements GameListener {
                     }
                     // ------------------------ F -> T ------------------------
                     else if (ac1.getGameObject().equals(GameObject.TABLEAU)) {
-                        Gdx.app.log("F => T", "F => T");
 
                         // was a card turned over?
                         boolean wasTurnOver = move.isTurnOver();
 
                         // get texture string of card that was moved
                         Tableau tabAtTargetStack = game.getTableauAtPos(targetStack);
+                        Vector<Card> faceUpAtTargetStack = tabAtTargetStack.getFaceUp();
                         boolean emptyTargetStack = tabAtTargetStack.getNrOfAllCards() == 1;
-                        Gdx.app.log("tabAtTargetStack ", tabAtTargetStack.toString());
-                        Gdx.app.log("move ", move.toString());
-                        Gdx.app.log("targetCard ", String.valueOf(targetCard));
-                        Gdx.app.log("wasTurnOver ", String.valueOf(wasTurnOver));
 
-                        // if the target stack is empty, we set the targetCardIndex to -1 (in
-                        // order to distinguish between empty stack and stack with just one card)
-                        if (emptyTargetStack || wasTurnOver) {
-                            targetCard--;
-                        }
-                        Gdx.app.log("targetCard ", String.valueOf(targetCard) + "\n\n");
+                        // for an undo move, we have to decrement the targetCard
+                        targetCard--;
 
                         String textureStringFoundationSource = loader.getCardTextureName(
-                                tabAtTargetStack.getFaceUp().get(targetCard + 1));
+                                faceUpAtTargetStack.lastElement());
 
                         String textureStringTableauTargetTop = null;
                         if (!wasTurnOver && !emptyTargetStack) {
                             // either this was the card tapped on and it was and is still open
                             textureStringTableauTargetTop = loader.getCardTextureName(
-                                    tabAtTargetStack.getFaceUp().get(targetCard));
+                                    faceUpAtTargetStack.get(targetCard));
                         } else {
                             try {
                                 // or this was an undo of a turn over, so the prior top of the stack
                                 // is now the last element in the facedown list
                                 textureStringTableauTargetTop = loader.getCardTextureName(
                                         tabAtTargetStack.getFaceDown().lastElement());
+
                             } catch (Exception e) {
                                 // leave textureString at null
                             }
