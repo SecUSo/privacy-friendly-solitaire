@@ -299,7 +299,7 @@ public class View implements GameListener {
                 if (game.getDeckWaste().isWasteEmpty()) {
                     resetDeck();
                 } else {
-                    turnDeckCard(game);
+                    turnOrUnturnDeckCard(game);
                 }
                 break;
 
@@ -432,13 +432,28 @@ public class View implements GameListener {
         }
     }
 
+    private void turnOrUnturnDeckCard(SolitaireGame game) {
+        turnOrUnturnDeckCard(game, null);
+    }
 
-    private void turnDeckCard(SolitaireGame game) {
-        paintWaste(game.getDeckWaste(), false, false);
+
+    private void turnOrUnturnDeckCard(SolitaireGame game, Vector<String> cardsToBeUnturned) {
+        DeckWaste deckWaste = game.getDeckWaste();
+
+        paintWaste(deckWaste, false, false);
+
+        if (cardsToBeUnturned != null) {
+            Gdx.app.log("cardsToBeUnturned", cardsToBeUnturned.toString());
+            for (String texString : cardsToBeUnturned) {
+                faceUpCards.get(texString).setVisible(false);
+            }
+        }
 
         // check if this was the last
-        if (game.getDeckWaste().getDeck().isEmpty()) {
+        if (deckWaste.getDeck().isEmpty()) {
             backsideCardOnDeck.setVisible(false);
+        } else {
+            backsideCardOnDeck.setVisible(true);
         }
     }
 
@@ -447,9 +462,9 @@ public class View implements GameListener {
      *
      * @param deckWaste              the deckWaste object from the game
      * @param isInitialization       a boolean depicting whether this was called by paintInitialDeckWaste
-     *                               (true) or turnDeckCard (false)
+     *                               (true) or turnOrUnturnDeckCard (false)
      * @param fanCardsToBeRearranged a boolean depicting whether this was called by paintInitialDeckWaste
-     *                               (true) or turnDeckCard (false)
+     *                               (true) or turnOrUnturnDeckCard (false)
      */
     private void paintWaste(DeckWaste deckWaste, boolean isInitialization,
                             boolean fanCardsToBeRearranged) {
@@ -553,6 +568,18 @@ public class View implements GameListener {
             ImageWrapper potentiallyWasteCard = faceUpCards.get(textureName);
             if (potentiallyWasteCard.getGameObject().equals(GameObject.WASTE)) {
                 potentiallyWasteCard.setVisible(false);
+            }
+        }
+    }
+
+    private void resetWaste() {
+        backsideCardOnDeck.setVisible(false);
+
+        // set all waste-cards invisible
+        for (String textureName : faceUpCards.keySet()) {
+            ImageWrapper potentiallyWasteCard = faceUpCards.get(textureName);
+            if (potentiallyWasteCard.getGameObject().equals(GameObject.WASTE)) {
+                potentiallyWasteCard.setVisible(true);
             }
         }
     }
@@ -687,8 +714,6 @@ public class View implements GameListener {
                         sourceCardIndex + nrOfFaceDownInSourceTableau);
 
                 backsideImage.setVisible(false);
-//                faceDownCards.remove(backsideImage);
-//                backsideImage.remove();
 
 
                 // add asset for newly turned card
@@ -737,8 +762,6 @@ public class View implements GameListener {
                         sourceCardIndex + nrOfFaceDownInSourceTableau);
 
                 backsideImage.setVisible(false);
-//                faceDownCards.remove(backsideImage);
-//                backsideImage.remove();
 
 
                 // ---------- add asset for newly turned card ----------
@@ -817,6 +840,8 @@ public class View implements GameListener {
             moveCard(ViewConstants.WasteX1Fan,
                     ViewConstants.WasteDeckFoundationY, sourceCard, 5, true);
 
+            sourceCard.toFront();
+
             // set meta-information
             sourceCard.setGameObject(GameObject.WASTE);
             sourceCard.setWrapperCardIndex(-1);
@@ -860,8 +885,22 @@ public class View implements GameListener {
 
 
         // click on deck
-        if (ac2 == null) {
-            // TODO: click on deck
+        if (ac2 == null ||
+                (ac2.getGameObject().equals(GameObject.DECK)) &&
+                        (ac1.getGameObject().equals(GameObject.DECK))) {
+            Vector<Card> deck = game.getDeckWaste().getDeck();
+
+            if (game.getDeckWaste().isWasteEmpty()) {
+                resetDeck();
+            } else if (deck.isEmpty()) {
+                resetWaste();
+            } else {
+                Vector<String> cardsToBeMadeUnturned = new Vector<String>(3);
+                for (int i = deck.size() - move.getOldfanSize(); i < deck.size(); i++) {
+                    cardsToBeMadeUnturned.add(loader.getCardTextureName(deck.get(i)));
+                }
+                turnOrUnturnDeckCard(game, cardsToBeMadeUnturned);
+            }
         } else {
             // works analogous to handleMove (game has already done the undo)
             // plus: if an action was X->Y, we have to perform the inverse move Y->X
@@ -921,7 +960,6 @@ public class View implements GameListener {
 
 
                 case FOUNDATION:
-
                     // ------------------------ F -> W ------------------------
                     if (ac1.getGameObject().equals(GameObject.WASTE)) {
                         sourceCardTextureString = loader.getCardTextureName(
@@ -930,7 +968,6 @@ public class View implements GameListener {
                         makeUndoMoveXToWaste(sourceCardTextureString);
 
                         paintWaste(game.getDeckWaste(), false, true);
-
                     }
                     // ------------------------ F -> T ------------------------
                     else if (ac1.getGameObject().equals(GameObject.TABLEAU)) {
@@ -977,7 +1014,6 @@ public class View implements GameListener {
                         // set new smallestY for target
                         setNewSmallestY(targetStack, tabAtTargetStack);
                     }
-                    // TODO
                     break;
             }
         }
