@@ -243,6 +243,7 @@ public class View implements GameListener {
         }
     }
 
+
     // ---------------------------- ACTIONS ----------------------------
     private void markCards(List<String> textureStrings) {
         List<ImageWrapper> cardsToBeMarked = new ArrayList<ImageWrapper>(textureStrings.size());
@@ -424,7 +425,7 @@ public class View implements GameListener {
                     int nrOfFaceDownInTargetTableau =
                             tabAtTargetStack.getFaceDown().size();
 
-                    makeMoveFoundationToTableau(textureStringFoundationSource, false,
+                    makeMoveFoundationToTableau(textureStringFoundationSource,
                             textureStringTableauTarget, targetStack, targetCard,
                             nrOfFaceDownInTargetTableau);
 
@@ -434,6 +435,7 @@ public class View implements GameListener {
                 break;
         }
     }
+
 
     private void turnOrUnturnDeckCard(SolitaireGame game) {
         turnOrUnturnDeckCard(game, null);
@@ -446,7 +448,6 @@ public class View implements GameListener {
         paintWaste(deckWaste, false, false);
 
         if (cardsToBeUnturned != null) {
-            Gdx.app.log("cardsToBeUnturned", cardsToBeUnturned.toString());
             for (String texString : cardsToBeUnturned) {
                 faceUpCards.get(texString).setVisible(false);
             }
@@ -563,6 +564,12 @@ public class View implements GameListener {
         }
     }
 
+
+    /**
+     * reset the deck by 'moving all cards from waste to deck'
+     * in our case this means simply setting the backsideCard on the deck visible and
+     * all waste cards invisible
+     */
     private void resetDeck() {
         backsideCardOnDeck.setVisible(true);
 
@@ -575,6 +582,11 @@ public class View implements GameListener {
         }
     }
 
+
+    /**
+     * the inverse of resetDeck, sets all waste cards visible and the backside of the deck invisible
+     * is the undo of resetDeck
+     */
     private void resetWaste() {
         backsideCardOnDeck.setVisible(false);
 
@@ -603,6 +615,17 @@ public class View implements GameListener {
         }
     }
 
+    /**
+     * move W->T
+     *
+     * @param sourceCardTextureString     the texture string of the card to be moved
+     * @param targetCardTextureString     analogous to the sourceCardTextureString (may be null, if
+     *                                    the target is an empty tableau)
+     * @param targetStack                 the index of the target stack (in [0,6])
+     * @param targetCardIndex             the index of the target card in the faceUp cards of that
+     *                                    stack
+     * @param nrOfFaceDownInTargetTableau the number of face-down cards in the target tableau
+     */
     private void makeMoveWasteToTableau(String sourceCardTextureString, String targetCardTextureString,
                                         int targetStack, int targetCardIndex, int nrOfFaceDownInTargetTableau) {
         ImageWrapper sourceCard = faceUpCards.get(sourceCardTextureString);
@@ -633,6 +656,12 @@ public class View implements GameListener {
         }
     }
 
+    /**
+     * move W->F
+     *
+     * @param sourceCardTextureString the texture string of the card to be moved
+     * @param targetStack             the index of the target stack (in [0,6])
+     */
     private void makeMoveWasteToFoundation(String sourceCardTextureString, int targetStack) {
         ImageWrapper sourceCard = faceUpCards.get(sourceCardTextureString);
 
@@ -650,10 +679,10 @@ public class View implements GameListener {
     }
 
     /**
-     * make a move tab -> tab: involves the actual move as well as the turning of the card below
-     * the moved one
+     * move T->T: involves the actual move as well as the turning of the card below the moved one
      *
-     * @param cardsToBeMovedTextureStrings the texture name of the source-card
+     * @param cardsToBeMovedTextureStrings the texture strings of the cards to be moved
+     * @param wasTurnOver                  whether the action we inverted, was a turn over
      * @param targetCardTextureString      analogous to the sourceCardTextureString (may be null, if
      *                                     the target is an empty tableau)
      * @param beneathSourceCard            the card beneath the source card (may be null, if the
@@ -665,10 +694,9 @@ public class View implements GameListener {
      * @param targetStack                  analogous to the sourceStack
      * @param targetCardIndex              analogous to the sourceCardIndex
      * @param nrOfFaceDownInSourceTableau  the number of face-down cards in the source tableau
-     *                                     (after the change)
      * @param nrOfFaceDownInTargetTableau  analogous to the nrOfFaceDownInSourceTableau
      */
-    private void makeMoveTableauToTableau(List<String> cardsToBeMovedTextureStrings,
+    private void makeMoveTableauToTableau(List<String> cardsToBeMovedTextureStrings, boolean wasTurnOver,
                                           String targetCardTextureString, Card beneathSourceCard,
                                           int sourceStack, int sourceCardIndex, int targetStack,
                                           int targetCardIndex, int nrOfFaceDownInSourceTableau,
@@ -690,6 +718,21 @@ public class View implements GameListener {
 
         if (!sourceCards.isEmpty() && !(targetCard == null && nrOfFaceDownInTargetTableau + targetCardIndex == 0)) {
             boolean targetCardExists = targetCard != null;
+
+            // if the action, that we are currently inverting turned the card beneath the
+            // one we are now putting back, we have to turn it back around
+            if (wasTurnOver) {
+
+                if (targetCardExists) {
+                    // set it invisible, if the card is turned again,
+                    // it does not have to be loaded again
+                    targetCard.setVisible(false);
+
+                    ImageWrapper faceDownCard = getBackSideCardForStackAndCardIndex(targetStack,
+                            nrOfFaceDownInTargetTableau - 1);
+                    faceDownCard.setVisible(true);
+                }
+            }
 
             // make movements
             for (int i = 0; i < sourceCards.size(); i++) {
@@ -735,7 +778,39 @@ public class View implements GameListener {
         }
     }
 
+    private void makeMoveTableauToTableau(List<String> cardsToBeMovedTextureStrings,
+                                          String targetCardTextureString, Card beneathSourceCard,
+                                          int sourceStack, int sourceCardIndex, int targetStack,
+                                          int targetCardIndex, int nrOfFaceDownInSourceTableau,
+                                          int nrOfFaceDownInTargetTableau) {
+        makeMoveTableauToTableau(cardsToBeMovedTextureStrings, false, targetCardTextureString,
+                beneathSourceCard, sourceStack, sourceCardIndex, targetStack, targetCardIndex,
+                nrOfFaceDownInSourceTableau, nrOfFaceDownInTargetTableau);
+    }
 
+    private void makeMoveTableauToTableau(List<String> cardsToBeMovedTextureStrings,
+                                          boolean wasTurnOver, String targetCardTextureString,
+                                          int sourceStack, int sourceCardIndex, int targetStack,
+                                          int targetCardIndex, int nrOfFaceDownInSourceTableau,
+                                          int nrOfFaceDownInTargetTableau) {
+        makeMoveTableauToTableau(cardsToBeMovedTextureStrings, wasTurnOver, targetCardTextureString,
+                null, sourceStack, sourceCardIndex, targetStack, targetCardIndex,
+                nrOfFaceDownInSourceTableau, nrOfFaceDownInTargetTableau);
+    }
+
+    /**
+     * move T->F: involves the actual move as well as the turning of the card below the moved one
+     *
+     * @param sourceCardTextureString     the texture string of the card to be moved
+     * @param beneathSourceCard           the card beneath the source card (may be null, if the
+     *                                    source card was the last one); is needed to be turned
+     *                                    after making the actual move
+     * @param sourceStack                 the index of the source stack (in [0,6])
+     * @param sourceCardIndex             the index of the source card in the faceUp cards of that
+     *                                    stack
+     * @param targetStack                 analogous to the sourceStack
+     * @param nrOfFaceDownInSourceTableau the number of face-down cards in the source tableau
+     */
     private void makeMoveTableauToFoundation(String sourceCardTextureString, Card beneathSourceCard,
                                              int sourceStack, int sourceCardIndex, int targetStack,
                                              int nrOfFaceDownInSourceTableau) {
@@ -782,7 +857,26 @@ public class View implements GameListener {
         }
     }
 
+    private void makeMoveTableauToFoundation(String sourceCardTextureString, int sourceStack,
+                                             int sourceCardIndex, int targetStack,
+                                             int nrOfFaceDownInSourceTableau) {
+        makeMoveTableauToFoundation(sourceCardTextureString, null, sourceStack, sourceCardIndex,
+                targetStack, nrOfFaceDownInSourceTableau);
+    }
 
+    /**
+     * move F->T: can be used for do or undo, in case of undo, we have to save, whether the move
+     * we are currently inverting was a turn over and we have to undo the turn as well
+     *
+     * @param sourceCardTextureString     the texture string of the card to be moved
+     * @param wasTurnOver                 whether the action we inverted, was a turn over
+     * @param textureStringTableauTarget  analogous to the sourceCardTextureString (may be null, if
+     *                                    the target is an empty tableau)
+     * @param targetStack                 the index of the target stack (in [0,6])
+     * @param targetCardIndex             the index of the target card in the faceUp cards of that
+     *                                    stack
+     * @param nrOfFaceDownInTargetTableau the number of face-down cards in the target tableau
+     */
     private void makeMoveFoundationToTableau(String sourceCardTextureString, boolean wasTurnOver,
                                              String textureStringTableauTarget, int targetStack,
                                              int targetCardIndex, int nrOfFaceDownInTargetTableau) {
@@ -833,6 +927,18 @@ public class View implements GameListener {
     }
 
 
+    private void makeMoveFoundationToTableau(String sourceCardTextureString,
+                                             String textureStringTableauTarget, int targetStack,
+                                             int targetCardIndex, int nrOfFaceDownInTargetTableau) {
+        makeMoveFoundationToTableau(sourceCardTextureString, false, textureStringTableauTarget,
+                targetStack, targetCardIndex, nrOfFaceDownInTargetTableau);
+    }
+
+    /**
+     * undo move X->W (T->W and F->W)
+     *
+     * @param sourceCardTextureString the texture string of the card to be moved
+     */
     private void makeUndoMoveXToWaste(String sourceCardTextureString) {
         // find correct card that should be moved and card to move it to
         ImageWrapper sourceCard = faceUpCards.get(sourceCardTextureString);
@@ -851,23 +957,6 @@ public class View implements GameListener {
         } else {
             throw new RuntimeException("source or target of move could not be found");
         }
-    }
-
-
-    /**
-     * @param targetX new x-position
-     * @param targetY new y-position
-     * @param card    the ImageWrapper-object to be moved
-     * @param animate whether to animate the moving or not
-     */
-    private void moveCard(float targetX, float targetY, ImageWrapper card, int targetStack,
-                          boolean animate) {
-        if (animate) {
-            card.addAction(Actions.moveTo(targetX, targetY, 0.2f));
-        } else {
-            card.setPosition(targetX, targetY);
-        }
-        card.setWrapperStackIndex(targetStack);
     }
 
 
@@ -909,7 +998,6 @@ public class View implements GameListener {
             // plus: if an action was X->Y, we have to perform the inverse move Y->X
             switch (ac2.getGameObject()) {
 
-
                 case TABLEAU:
                     Tableau tabAtSourceStack = game.getTableauAtPos(sourceStack);
                     int nrOfFaceDownInSourceTableauAfterChange =
@@ -921,29 +1009,44 @@ public class View implements GameListener {
                         sourceCardTextureString = loader.getCardTextureName(
                                 game.getFoundationAtPos(targetStack).getFoundationTop());
 
-                        makeMoveTableauToFoundation(sourceCardTextureString, null,
-                                sourceStack, sourceCard, targetStack, nrOfFaceDownInSourceTableauAfterChange);
+                        makeMoveTableauToFoundation(sourceCardTextureString, sourceStack,
+                                sourceCard, targetStack, nrOfFaceDownInSourceTableauAfterChange);
                     }
 
                     // ------------------------ T -> T ------------------------
                     else if (ac1.getGameObject().equals(GameObject.TABLEAU)) {
+                        // was a card turned over?
+                        boolean wasTurnOver = move.isTurnOver();
 
+                        // get texture string of cards that were moved
+                        Tableau tabAtTargetStack = game.getTableauAtPos(targetStack);
+                        Vector<Card> faceUpAtTargetStack = tabAtTargetStack.getFaceUp();
+                        int nrOfFaceDownInTargetTableau = tabAtTargetStack.getFaceDown().size();
+                        targetCard--;
 
-                        // TODO
-//
-//                        List<String> textureStringsMovedCards = new ArrayList<String>();
-//                        for (int i = targetCard + 1; i < faceUpAtTargetStack.size(); i++) {
-//                            Card cardToBeMoved = faceUpAtTargetStack.get(i);
-//                            textureStringsMovedCards.add(loader.getCardTextureName(cardToBeMoved));
-//                        }
-//
-//                        Card targetOldTopCard = null;
-//                        String textureStringOldTableauTop = null;
-//                        try {
-//                            targetOldTopCard = faceUpAtTargetStack.get(targetCard);
-//                        } catch (Exception e) {
-//                        }
+                        List<String> cardsToBeMovedTextureStrings = new ArrayList<String>();
+                        for (int i = targetCard + 1; i < faceUpAtTargetStack.size(); i++) {
+                            Card cardToBeMoved = faceUpAtTargetStack.get(i);
+                            cardsToBeMovedTextureStrings.add(loader.getCardTextureName(cardToBeMoved));
+                        }
 
+                        // get targetCard, options:
+                        // 1) move to a tableau, where we need to unturn a card (wasTurnOver and cardIndex==-1)
+                        // 2) move to a tableau with valid cardIndex, simple move T->T
+                        // 3) move to an empty tab (!wasTurnOver, but cardIndex==-1)
+                        String textureStringOldTableauTop = null;
+                        if (wasTurnOver && targetCard == -1) {
+                            textureStringOldTableauTop =
+                                    loader.getCardTextureName(tabAtTargetStack.getFaceDown().lastElement());
+                        } else if (targetCard != -1) {
+                            textureStringOldTableauTop = loader.getCardTextureName(
+                                    faceUpAtTargetStack.get(targetCard));
+                        }
+
+                        makeMoveTableauToTableau(cardsToBeMovedTextureStrings, wasTurnOver,
+                                textureStringOldTableauTop, sourceStack, sourceCard, targetStack,
+                                targetCard, nrOfFaceDownInSourceTableauAfterChange,
+                                nrOfFaceDownInTargetTableau);
                     }
                     // ------------------------ T -> W ------------------------
                     else if (ac1.getGameObject().equals(GameObject.WASTE)) {
@@ -1022,6 +1125,23 @@ public class View implements GameListener {
         }
     }
 
+
+    /**
+     * @param targetX new x-position
+     * @param targetY new y-position
+     * @param card    the ImageWrapper-object to be moved
+     * @param animate whether to animate the moving or not
+     */
+    private void moveCard(float targetX, float targetY, ImageWrapper card, int targetStack,
+                          boolean animate) {
+        if (animate) {
+            card.addAction(Actions.moveTo(targetX, targetY, 0.2f));
+        } else {
+            card.setPosition(targetX, targetY);
+        }
+        card.setWrapperStackIndex(targetStack);
+    }
+
     // ------------------------------------ getActionForTap for Controller ------------------------------------
 
     /**
@@ -1033,7 +1153,6 @@ public class View implements GameListener {
      * which foundation/tableau was tapped and which card in this tableau
      */
     protected Action getActionForTap(float x, float y) {
-        // TODO: bei 3 Karten auf Deck anpassen
         GameObject gameObject = null;
         int stackIndex = getStackIndexForX(x);      // caution can be -1
         int cardIndex = -1;
