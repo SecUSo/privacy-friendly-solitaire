@@ -20,6 +20,9 @@ import org.secuso.privacyfriendlysolitaire.model.GameObject;
 import org.secuso.privacyfriendlysolitaire.model.Move;
 import org.secuso.privacyfriendlysolitaire.model.Tableau;
 
+import static org.secuso.privacyfriendlysolitaire.game.Constants.NR_OF_FOUNDATIONS;
+import static org.secuso.privacyfriendlysolitaire.game.Constants.NR_OF_TABLEAUS;
+
 /**
  * @author I. Dix
  *         <p>
@@ -241,6 +244,107 @@ public class View implements GameListener {
                 // maybe an invalid move
             }
         }
+
+        // TODO: delete later, only for debug reasons
+        checkModelAndViewCorrect(game);
+    }
+
+
+    private void checkModelAndViewCorrect(SolitaireGame game) {
+        Vector<Card> waste = game.getDeckWaste().getWaste();
+        Vector<Card> deck = game.getDeckWaste().getDeck();
+
+        // check deck
+        for (Card deckC : deck) {
+            String texString = loader.getCardTextureName(deckC);
+            ImageWrapper card = faceUpCards.get(texString);
+
+            if (card != null && card.isVisible()) {
+                try {
+                    throw new RuntimeException("Karte " + texString + " ist sichtbar, " +
+                            "aber sollte unsichtbar sein");
+                } catch (Exception e) {
+                    Gdx.app.log("Exception ", e.getMessage());
+                }
+            }
+        }
+
+        // check waste
+        for (Card wasteC : waste) {
+            String texString = loader.getCardTextureName(wasteC);
+            ImageWrapper card = faceUpCards.get(texString);
+
+            if (card == null) {
+                throw new RuntimeException("Karte " + texString + " war null");
+            } else if (!card.isVisible()) {
+                throw new RuntimeException("Karte " + texString + " ist unsichtbar, " +
+                        "aber sollte sichtbar sein");
+            }
+        }
+
+        // check foundations
+        for (int stack = 0; stack < NR_OF_FOUNDATIONS; stack++) {
+            Foundation found = game.getFoundationAtPos(stack);
+
+            for (Card foundC : found.getCards()) {
+                String texString = loader.getCardTextureName(foundC);
+                ImageWrapper card = faceUpCards.get(texString);
+
+                if (card == null) {
+                    throw new RuntimeException("Karte " + texString + " war null");
+                } else {
+                    assert (card.isVisible());
+                    assert (card.getWrapperStackIndex() == stack);
+                    assert (card.getGameObject().equals(GameObject.FOUNDATION));
+                    assert (Math.abs(card.getX() - ViewConstants.TableauFoundationX[stack]) <= 1);
+                    assert (Math.abs(card.getY() - ViewConstants.WasteDeckFoundationY) <= 1);
+                }
+            }
+        }
+
+        // check tableaus
+        for (int stack = 0; stack < NR_OF_TABLEAUS; stack++) {
+            Tableau tab = game.getTableauAtPos(stack);
+            Vector<Card> faceDowns = tab.getFaceDown();
+            Vector<Card> faceUps = tab.getFaceUp();
+
+            for (int cardIndex = 0; cardIndex < faceDowns.size(); cardIndex++) {
+                ImageWrapper backside = getBackSideCardForStackAndCardIndex(stack, cardIndex);
+                if (backside == null) {
+                    throw new RuntimeException("Backside an stack=" + stack + " und card=" +
+                            cardIndex + " war null");
+                } else {
+                    assert (backside.isVisible());
+                    assert (backside.getGameObject().equals(GameObject.TABLEAU));
+                    assert (Math.abs(backside.getX() - ViewConstants.TableauFoundationX[stack]) <= 1);
+                    float shouldBeY = ViewConstants.TableauBaseY -
+                            (cardIndex * ViewConstants.offsetHeightBetweenCards);
+                    assert (Math.abs(backside.getY() - shouldBeY) <= 1);
+                }
+            }
+
+
+            for (int cardIndex = 0; cardIndex < faceUps.size(); cardIndex++) {
+                Card faceU = faceUps.get(cardIndex);
+                String texString = loader.getCardTextureName(faceU);
+                ImageWrapper card = faceUpCards.get(texString);
+
+                if (card == null) {
+                    throw new RuntimeException("Karte " + texString + " war null");
+                } else {
+                    assert (card.isVisible());
+                    assert (card.getWrapperStackIndex() == stack);
+                    assert (card.getWrapperCardIndex() == cardIndex);
+                    assert (card.getGameObject().equals(GameObject.TABLEAU));
+                    assert (Math.abs(card.getX() - ViewConstants.TableauFoundationX[stack]) <= 1);
+                    float shouldBeY = ViewConstants.TableauBaseY -
+                            ((cardIndex + faceDowns.size()) * ViewConstants.offsetHeightBetweenCards);
+                    assert (Math.abs(card.getY() - shouldBeY) <= 1);
+                }
+            }
+        }
+
+
     }
 
 
@@ -716,7 +820,8 @@ public class View implements GameListener {
             beneathSourceCardImageWrapper = faceUpCards.get(beneathSourceCardTextureString);
         }
 
-        if (!sourceCards.isEmpty() && !(targetCard == null && nrOfFaceDownInTargetTableau + targetCardIndex == 0)) {
+        if (!sourceCards.isEmpty() && !(targetCard == null
+                && nrOfFaceDownInTargetTableau + targetCardIndex == 0)) {
             boolean targetCardExists = targetCard != null;
 
             // if the action, that we are currently inverting turned the card beneath the
@@ -982,18 +1087,26 @@ public class View implements GameListener {
                         (ac1.getGameObject().equals(GameObject.DECK))) {
             Vector<Card> deck = game.getDeckWaste().getDeck();
 
+//            Gdx.app.log("Deck-Move", move.toString());
+
             if (game.getDeckWaste().isWasteEmpty()) {
+//                Gdx.app.log("resetDeck", "_");
                 resetDeck();
             } else if (deck.isEmpty()) {
+//                Gdx.app.log("resetWaste", "_");
                 resetWaste();
             } else {
                 Vector<String> cardsToBeMadeUnturned = new Vector<String>(3);
-                for (int i = deck.size() - move.getOldfanSize(); i < deck.size(); i++) {
+//                Gdx.app.log("move.oldFanSize() ", )
+                int oldFanSize = move.getOldfanSize() > 1 ? move.getOldfanSize() : 1;
+                for (int i = deck.size() - oldFanSize; i < deck.size(); i++) {
                     cardsToBeMadeUnturned.add(loader.getCardTextureName(deck.get(i)));
                 }
+//                Gdx.app.log("cardsToBeMadeUnturned ", cardsToBeMadeUnturned.toString());
                 turnOrUnturnDeckCard(game, cardsToBeMadeUnturned);
             }
         } else {
+//            Gdx.app.log("Move", move.toString());
             // works analogous to handleMove (game has already done the undo)
             // plus: if an action was X->Y, we have to perform the inverse move Y->X
             switch (ac2.getGameObject()) {
