@@ -123,21 +123,21 @@
     <string name="pref_sound_switch_summary_on">Ton ausschalten</string>
     <string name="pref_sound_switch_summary_off">Ton anschalten</string>
 
-    <string name="pref_shake_switch">Shake function </string>
-    <string name="pref_shake_switch_summary_on">shaking On</string>
-    <string name="pref_shake_switch_summary_off">Shaking Off</string>
+    <string name="pref_shake_switch">Schüttelfunktion </string>
+    <string name="pref_shake_switch_summary_on">An</string>
+    <string name="pref_shake_switch_summary_off">Aus</string>
 
-    <string name="pref_language">Select Language</string>
-    <string name="pref_language_summary_on">English</string>
+    <string name="pref_language">Sprachauswahl</string>
+    <string name="pref_language_summary_on">Englisch</string>
     <string name="pref_language_summary_off">Deutsch</string>
 
-    <string name="pref_count_point">Counting Points</string>
+    <string name="pref_count_point">Punkte</string>
     <string name="pref_point_summary_off">Stantard</string>
     <string name="pref_point_summary_on">Vegas</string>
 
-    <string name="pref_waste">Number of cards on Waste</string>
-    <string name="pref_waste_summary_off">One card</string>
-    <string name="pref_waste_summary_on">Three cards</string>
+    <string name="pref_waste">Karte ziehen</string>
+    <string name="pref_waste_summary_off">Eine Karte</string>
+    <string name="pref_waste_summary_on">Drei Karten</string>
 
 
     <!-- Backgroundcolor-->

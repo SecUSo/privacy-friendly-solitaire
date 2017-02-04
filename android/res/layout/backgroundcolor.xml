@@ -33,21 +33,11 @@
             tools:context=".Activities.BackgroundActivity"
             >
 
-            <TextView
-                android:layout_width="match_parent"
-                android:text="Background color"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/button_text_size"
-                android:id="@+id/colortext"
-                android:layout_height="50dp"
-                android:gravity="center"/>
-
             <RadioGroup
                 android:layout_width="fill_parent"
                 android:orientation="vertical"
                 android:id="@+id/radio_group1"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@id/colortext"
                 android:layout_height="210dp">
 
 

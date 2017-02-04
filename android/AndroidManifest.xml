@@ -56,7 +56,7 @@
 
         <activity
             android:name=".Activities.BackgroundActivity"
-            android:label="@string/rules"
+            android:label="@string/sp_key_background_color"
             android:parentActivityName=".Activities.SettingsActivity"
             android:screenOrientation="portrait">
             <meta-data
