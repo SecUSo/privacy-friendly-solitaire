@@ -103,32 +103,36 @@ public class BackgroundActivity extends AppCompatActivity {
                 brown.setChecked(true);
                 edit.putString("pref_color", "brown");
                 edit.commit();
+
             }
         });
 
 
 //TODO: checkbox checks müssen noch hier gesetzt werden
-       if(green.isEnabled()){
+       if(mSharedPreferences.getBoolean(String.valueOf(R.id.checkbox_green), green.isChecked())){
            green.setChecked(true);
            brown.setChecked(false);
            blue.setChecked(false);
            grey.setChecked(false);
         }
-        else if(blue.isEnabled()){
+        else if(mSharedPreferences.getBoolean(String.valueOf(R.id.checkbox_blue),blue.isChecked())){
            blue.setChecked(true);
            green.setChecked(false);
            brown.setChecked(false);
            grey.setChecked(false);
-       }else if(grey.isEnabled()){
+       }
+       else if(mSharedPreferences.getBoolean(String.valueOf(R.id.checkbox_grey),grey.isChecked())){
            grey.setChecked(true);
            green.setChecked(false);
            blue.setChecked(false);
            brown.setChecked(false);
-       }else if(brown.isEnabled()){
+       }
+       else if( mSharedPreferences.getBoolean(String.valueOf(R.id.checkbox_brown),brown.isChecked())){
            brown.setChecked(true);
            green.setChecked(false);
            blue.setChecked(false);
            grey.setChecked(false);
+
        }
     }
 

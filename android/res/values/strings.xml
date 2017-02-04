@@ -44,8 +44,9 @@
     <string name="sel_card_summary">Eine ausgewählte Karte in dem Spiel wird durch das gelbe Rechteck um die Karte veranschaulicht</string>
 
     <string name="rules">Spielregeln</string>
-    <string name="rules_description">Es werden sieben verdeckte Kartenstapel (Tableau Piles) von links nach recht nebeneinander gelegt. Die obersten Karten dieser Tableau Piles werden umgedreht.
-Die Karten dürfen auf den sieben Tableaus in absteigender Reihenfolge angelegt werden, allerdings nur im Wechsel von Rot und Schwarz. \n Die Karten des Decks werden je nach Einstellung eine nach der anderen oder drei Karten gleichzeitig auf dem Waste umgedreht.
+    <string name="rules_description">Es werden sieben verdeckte Kartenstapel (Tableau Piles) von links nach rechts nebeneinandergelegt. Die obersten Karten dieser Tableau Piles werden umgedreht.
+        Die Karten dürfen auf den sieben Tableaus in absteigender Reihenfolge angelegt werden, allerdings nur im Wechsel von Rot und Schwarz.
+        \n Die Karten des Decks werden je nach Einstellung eine nach der anderen oder drei Karten gleichzeitig auf dem Waste umgedreht.
         Dabei können mögliche Karten auf die jeweiligen Tabelaus sortiert werden oder direkt auf einen der vier Foundations abgelegt werden. Das Deck darf beliebig oft wieder umgedreht und erneut durchgeguckt werden.
             \n Um Solitär zu gewinnen, müssen alle Karten in aufsteigender Reihenfolge (beginnend mit dem Ass, dann 2, 3 usw.) und nach Farben (Karo, Herz, Pik, Kreuz) sortiert auf die vier horizontal markierten Plätze (Foundations) abgelegt werden. Das Spiel ist gewonnen, wenn alle Karten auf den passenden Foundations liegen, oder verloren, wenn es keine Zugmöglichkeiten mehr gibt bzw. der Spieler aufgibt.</string>
 
@@ -148,6 +149,21 @@ Die Karten dürfen auf den sieben Tableaus in absteigender Reihenfolge angelegt 
     <string name="gray">GRAY</string>
     <string name="brown">BROWN</string>
 
+
+    <string-array name="color_palete">
+        <item name="color_p_green">GREEN</item>
+        <item name="color_p_blue">BLUE</item>
+        <item name="color_p_gray">GRAY</item>
+        <item name="color_p_brown">BROWN</item>
+    </string-array>
+
+
+    <string-array name="color_palete_value">
+        <item name="green">#228b22</item>
+        <item name="blue">#00ffff</item>
+        <item name="gray">#A8A8A8</item>
+        <item name="brown">#d2b48c</item>
+    </string-array>
 
     <!-- ### WELCOME DIALOG ### -->
     <!-- TODO: The welcome screen should introduce the app and the key elements of the start page.-->
