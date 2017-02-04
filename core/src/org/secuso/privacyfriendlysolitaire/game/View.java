@@ -1047,6 +1047,9 @@ public class View implements GameListener {
                                 textureStringOldTableauTop, sourceStack, sourceCard, targetStack,
                                 targetCard, nrOfFaceDownInSourceTableauAfterChange,
                                 nrOfFaceDownInTargetTableau);
+
+                        // set new smallestY for target
+                        setNewSmallestY(targetStack, tabAtTargetStack);
                     }
                     // ------------------------ T -> W ------------------------
                     else if (ac1.getGameObject().equals(GameObject.WASTE)) {
