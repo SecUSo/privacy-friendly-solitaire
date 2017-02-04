@@ -241,6 +241,8 @@ public class View implements GameListener {
             } catch (Exception e) {
                 Gdx.app.log("Error", e.getClass().toString() + ": " + e.getMessage() + ", probably an invalid move");
                 e.printStackTrace();
+
+                Gdx.app.log("game after ", game.toString());
                 // maybe an invalid move
             }
         }
@@ -265,6 +267,8 @@ public class View implements GameListener {
                             "aber sollte unsichtbar sein");
                 } catch (Exception e) {
                     Gdx.app.log("Exception ", e.getMessage());
+                    Gdx.app.log("Deck ", deck.toString());
+                    Gdx.app.log("Waste ", waste.toString());
                 }
             }
         }
@@ -805,6 +809,13 @@ public class View implements GameListener {
                                           int sourceStack, int sourceCardIndex, int targetStack,
                                           int targetCardIndex, int nrOfFaceDownInSourceTableau,
                                           int nrOfFaceDownInTargetTableau) {
+        Gdx.app.log("cardsToBeMovedTextureStrings ", cardsToBeMovedTextureStrings.toString());
+        if (targetCardTextureString != null) {
+            Gdx.app.log("targetCardTextureString ", targetCardTextureString);
+        } else {
+            Gdx.app.log("targetCardTextureString ", "null");
+        }
+
         // find correct card that should be moved and card to move it to
         List<ImageWrapper> sourceCards = new ArrayList<ImageWrapper>(cardsToBeMovedTextureStrings.size());
         for (int i = 0; i < cardsToBeMovedTextureStrings.size(); i++) {
@@ -1085,25 +1096,27 @@ public class View implements GameListener {
         if (ac2 == null ||
                 (ac2.getGameObject().equals(GameObject.DECK)) &&
                         (ac1.getGameObject().equals(GameObject.DECK))) {
-            Vector<Card> deck = game.getDeckWaste().getDeck();
-
-//            Gdx.app.log("Deck-Move", move.toString());
+            DeckWaste deckWaste = game.getDeckWaste();
+            Vector<Card> deck = deckWaste.getDeck();
 
             if (game.getDeckWaste().isWasteEmpty()) {
-//                Gdx.app.log("resetDeck", "_");
                 resetDeck();
             } else if (deck.isEmpty()) {
-//                Gdx.app.log("resetWaste", "_");
                 resetWaste();
             } else {
-                Vector<String> cardsToBeMadeUnturned = new Vector<String>(3);
-//                Gdx.app.log("move.oldFanSize() ", )
-                int oldFanSize = move.getOldfanSize() > 1 ? move.getOldfanSize() : 1;
-                for (int i = deck.size() - oldFanSize; i < deck.size(); i++) {
-                    cardsToBeMadeUnturned.add(loader.getCardTextureName(deck.get(i)));
+                Vector<String> cardsToBeUnturned = new Vector<String>(3);
+
+                // i don't currently know how to get how many cards to unturn
+                // (since I only know the old fanSize, but not the current one (before
+                // the undo was done in the game, but how it is currently in the view)
+                for (int i = deck.size() - 3; i < deck.size(); i++) {
+                    try {
+                        cardsToBeUnturned.add(loader.getCardTextureName(deck.get(i)));
+                    } catch (Exception E) {
+                        // if this does not exist, don't add it
+                    }
                 }
-//                Gdx.app.log("cardsToBeMadeUnturned ", cardsToBeMadeUnturned.toString());
-                turnOrUnturnDeckCard(game, cardsToBeMadeUnturned);
+                turnOrUnturnDeckCard(game, cardsToBeUnturned);
             }
         } else {
 //            Gdx.app.log("Move", move.toString());
@@ -1136,6 +1149,8 @@ public class View implements GameListener {
                         Vector<Card> faceUpAtTargetStack = tabAtTargetStack.getFaceUp();
                         int nrOfFaceDownInTargetTableau = tabAtTargetStack.getFaceDown().size();
                         targetCard--;
+
+                        Gdx.app.log("targetCard ", String.valueOf(targetCard));
 
                         List<String> cardsToBeMovedTextureStrings = new ArrayList<String>();
                         for (int i = targetCard + 1; i < faceUpAtTargetStack.size(); i++) {
