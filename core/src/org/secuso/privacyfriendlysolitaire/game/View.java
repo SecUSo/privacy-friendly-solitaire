@@ -258,8 +258,8 @@ public class View implements GameListener {
 
             if (card != null && card.isVisible()) {
 //                try {
-                    throw new RuntimeException("Karte " + texString + " ist sichtbar, " +
-                            "aber sollte unsichtbar sein");
+                throw new RuntimeException("Karte " + texString + " ist sichtbar, " +
+                        "aber sollte unsichtbar sein");
 //                } catch (Exception e) {
 //                    Gdx.app.log("Exception ", e.getMessage());
 //                    Gdx.app.log("Deck ", deck.toString());
@@ -360,10 +360,9 @@ public class View implements GameListener {
             marker.setPosition(topElement.getX() - 4, topElement.getY() - 5);
             // TODO: hier nochmal an den Zahlen frickeln
             int nrOfOffsets = cardsToBeMarked.size() - 1;
-//            marker.setHeight(ViewConstants.heightCard +
-            marker.setHeight(topElement.getHeight() - 3 +
-                    (nrOfOffsets * ViewConstants.offsetHeightBetweenCards *
-                            (0.68f - 1 / (14f * nrOfOffsets + 1))
+            marker.setHeight(ViewConstants.heightCard * 1.05f +
+                    (nrOfOffsets * ViewConstants.offsetHeightBetweenCards * 1.1f
+//                            (0.7f - 1 / (16f * nrOfOffsets + 1))
                     ));
             marker.setVisible(true);
             marker.toFront();
@@ -1518,7 +1517,7 @@ public class View implements GameListener {
         private static float scalingWidthCard = 2.3f;
         private static float scalingHeightCard = 4f;
         private static float scalingWidthMarker = 2.4f;
-        private static float scalingHeightMarker = 4.3f;
+        private static float scalingHeightMarker = 4.5f;
 
         private static float DeckX;
 
