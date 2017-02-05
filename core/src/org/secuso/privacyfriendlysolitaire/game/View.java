@@ -50,9 +50,8 @@ public class View implements GameListener {
 
         // add mark and make it invisible
         marker = loader.getMarkImage();
-        marker.setScale(1.4f);
-        marker.setScaleX(ViewConstants.scaleXMarkerOneCard);
-        marker.setScaleY(ViewConstants.scaleYMarkerOneCard);
+        marker.setWidth(ViewConstants.scalingWidthMarker * ViewConstants.widthOneSpace);
+        marker.setHeight(ViewConstants.scalingHeightMarker * ViewConstants.heightOneSpace);
         marker.setVisible(false);
         stage.addActor(marker);
 
@@ -92,10 +91,6 @@ public class View implements GameListener {
             ViewConstants.TableauFoundationX[i] = (2 + i * (1 + 3)) * ViewConstants.widthOneSpace;
         }
         ViewConstants.TableauBaseY = 10.5f * ViewConstants.heightOneSpace;
-        ViewConstants.scaleXMarkerOneCard = 1.68f;
-        ViewConstants.scaleYMarkerOneCard = 1.5f;
-        ViewConstants.scaleCard = 1.4f;
-        ViewConstants.scaleXCard = 1.6f;
     }
 
 
@@ -242,7 +237,7 @@ public class View implements GameListener {
                 Gdx.app.log("Error", e.getClass().toString() + ": " + e.getMessage() + ", probably an invalid move");
                 e.printStackTrace();
 
-                Gdx.app.log("game after ", game.toString());
+//                Gdx.app.log("game after ", game.toString());
                 // maybe an invalid move
             }
         }
@@ -262,14 +257,14 @@ public class View implements GameListener {
             ImageWrapper card = faceUpCards.get(texString);
 
             if (card != null && card.isVisible()) {
-                try {
+//                try {
                     throw new RuntimeException("Karte " + texString + " ist sichtbar, " +
                             "aber sollte unsichtbar sein");
-                } catch (Exception e) {
-                    Gdx.app.log("Exception ", e.getMessage());
-                    Gdx.app.log("Deck ", deck.toString());
-                    Gdx.app.log("Waste ", waste.toString());
-                }
+//                } catch (Exception e) {
+//                    Gdx.app.log("Exception ", e.getMessage());
+//                    Gdx.app.log("Deck ", deck.toString());
+//                    Gdx.app.log("Waste ", waste.toString());
+//                }
             }
         }
 
@@ -809,12 +804,12 @@ public class View implements GameListener {
                                           int sourceStack, int sourceCardIndex, int targetStack,
                                           int targetCardIndex, int nrOfFaceDownInSourceTableau,
                                           int nrOfFaceDownInTargetTableau) {
-        Gdx.app.log("cardsToBeMovedTextureStrings ", cardsToBeMovedTextureStrings.toString());
-        if (targetCardTextureString != null) {
-            Gdx.app.log("targetCardTextureString ", targetCardTextureString);
-        } else {
-            Gdx.app.log("targetCardTextureString ", "null");
-        }
+//        Gdx.app.log("cardsToBeMovedTextureStrings ", cardsToBeMovedTextureStrings.toString());
+//        if (targetCardTextureString != null) {
+//            Gdx.app.log("targetCardTextureString ", targetCardTextureString);
+//        } else {
+//            Gdx.app.log("targetCardTextureString ", "null");
+//        }
 
         // find correct card that should be moved and card to move it to
         List<ImageWrapper> sourceCards = new ArrayList<ImageWrapper>(cardsToBeMovedTextureStrings.size());
@@ -1150,7 +1145,7 @@ public class View implements GameListener {
                         int nrOfFaceDownInTargetTableau = tabAtTargetStack.getFaceDown().size();
                         targetCard--;
 
-                        Gdx.app.log("targetCard ", String.valueOf(targetCard));
+//                        Gdx.app.log("targetCard ", String.valueOf(targetCard));
 
                         List<String> cardsToBeMovedTextureStrings = new ArrayList<String>();
                         for (int i = targetCard + 1; i < faceUpAtTargetStack.size(); i++) {
@@ -1409,17 +1404,17 @@ public class View implements GameListener {
                                                                             float x, float y,
                                                                             int stackIndex, int cardIndex) {
         cardImage.setPosition(x, y);
-        cardImage.setScale(ViewConstants.scaleCard);
-        cardImage.setScaleX(ViewConstants.scaleXCard);
+        cardImage.setWidth(ViewConstants.scalingWidthCard * ViewConstants.widthOneSpace);
+        cardImage.setHeight(ViewConstants.scalingHeightCard * ViewConstants.heightOneSpace);
         cardImage.setWrapperStackIndex(stackIndex);
         cardImage.setWrapperCardIndex(cardIndex);
         cardImage.setGameObject(gameObject);
         stage.addActor(cardImage);
 
         if (!widthHeightOfCardSet) {
-            // for some reason only this works :P
-            ViewConstants.heightCard = cardImage.getHeight() * ViewConstants.scaleCard;
-            ViewConstants.widthCard = cardImage.getWidth() * ViewConstants.scaleXCard;
+            // for some reason only this works
+            ViewConstants.widthCard = ViewConstants.scalingWidthCard * ViewConstants.widthOneSpace;
+            ViewConstants.heightCard = ViewConstants.scalingHeightCard * ViewConstants.heightOneSpace;
             widthHeightOfCardSet = true;
         }
     }
@@ -1520,11 +1515,10 @@ public class View implements GameListener {
         private static float heightCard;
         private static float widthCard;
 
-        private static float scaleCard;
-        private static float scaleXCard;
-
-        private static float scaleXMarkerOneCard;
-        private static float scaleYMarkerOneCard;
+        private static float scalingWidthCard = 2.3f;
+        private static float scalingHeightCard = 4f;
+        private static float scalingWidthMarker = 2.4f;
+        private static float scalingHeightMarker = 4.3f;
 
         private static float DeckX;
 
