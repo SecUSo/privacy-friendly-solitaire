@@ -8,8 +8,6 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import org.secuso.privacyfriendlysolitaire.CallBackListener;
 import org.secuso.privacyfriendlysolitaire.ScoreListener;
@@ -127,8 +125,8 @@ public class Application extends ApplicationAdapter implements ScoreListener {
             if (move == null) {
                 break;
             }
-            game.handleAction(move.getAction1());
-            game.handleAction(move.getAction2());
+            game.handleAction(move.getAction1(), false);
+            game.handleAction(move.getAction2(), false);
 
             try {
                 sleep(300);

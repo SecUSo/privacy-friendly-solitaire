@@ -3,7 +3,7 @@ package org.secuso.privacyfriendlysolitaire.model;
 import java.util.Vector;
 
 /**
- * @author: M. Fischer
+ * @author M. Fischer
  */
 
 public class Foundation {
@@ -32,19 +32,11 @@ public class Foundation {
         return suit;
     }
 
-    public void setSuit(Suit suit) {
-        this.suit = suit;
-    }
-
     /**
      * @return the Vector of Cards in this Foundation
      */
     public Vector<Card> getCards() {
         return cards;
-    }
-
-    public void setCards(Vector<Card> cards) {
-        this.cards = cards;
     }
 
     public boolean isEmpty() {

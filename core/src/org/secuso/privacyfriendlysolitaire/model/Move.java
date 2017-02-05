@@ -2,7 +2,7 @@ package org.secuso.privacyfriendlysolitaire.model;
 
 
 /**
- * @author: M. Fischer
+ * @author M. Fischer
  * <p>
  * represents a move in the game
  */
@@ -28,16 +28,8 @@ public class Move {
         return action1;
     }
 
-    public void setAction1(Action action1) {
-        this.action1 = action1;
-    }
-
     public Action getAction2() {
         return action2;
-    }
-
-    public void setAction2(Action action2) {
-        this.action2 = action2;
     }
 
     public boolean isTurnOver() {

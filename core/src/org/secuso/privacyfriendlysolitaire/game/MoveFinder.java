@@ -12,7 +12,7 @@ import java.util.Vector;
  * @author M. Fischer
  */
 
-public class MoveFinder {
+class MoveFinder {
 
     /**
      * @param game the SolitaireGame in which a Move shall be found
@@ -50,7 +50,7 @@ public class MoveFinder {
      * @param game the SolitaireGame in which a Move from Tableau to Foundation shall be found
      * @return a possible Move from Tableau to Foundation or null if none could be found
      */
-    private static Move findMoveTableauToFoundation(SolitaireGame game) {
+    static Move findMoveTableauToFoundation(SolitaireGame game) {
         for (int t = 0; t < game.getTableaus().size(); t++) {
             if (game.getTableauAtPos(t).getFaceUp().isEmpty()) {
                 continue;

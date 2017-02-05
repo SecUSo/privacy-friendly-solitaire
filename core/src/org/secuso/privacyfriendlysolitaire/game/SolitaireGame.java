@@ -59,10 +59,6 @@ public class SolitaireGame {
      */
     private int movePointer = -1;
 
-    public void setUndoMove(boolean undoMove) {
-        this.undoMove = undoMove;
-    }
-
     /**
      * indicates that a move was undone
      */
@@ -120,11 +116,11 @@ public class SolitaireGame {
         return lastMoveturnedOverTableau;
     }
 
-    public boolean wasUndoMove() {
+    boolean wasUndoMove() {
         return undoMove;
     }
 
-    public int getMovePointer() {
+    int getMovePointer() {
         return movePointer;
     }
 
