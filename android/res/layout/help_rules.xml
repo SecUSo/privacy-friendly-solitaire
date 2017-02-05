@@ -4,17 +4,18 @@
     android:layout_height="match_parent">
 
 
-
     <TextView
-        android:layout_width="match_parent"
         android:text="@string/rules"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/white"
         android:textSize="@dimen/button_text_size"
         android:gravity="center"
         android:textStyle="bold"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="10"
-        android:shadowColor="@color/middleblue"
-        android:layout_height="94dp"/>
+        android:shadowColor="@color/colorPrimaryDark"
+        android:layout_height="94dp"
+        android:background="@drawable/border"
+        android:layout_width="350dp"
+        android:layout_gravity="center_horizontal"/>
 </LinearLayout>

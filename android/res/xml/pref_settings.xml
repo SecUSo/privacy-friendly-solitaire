@@ -24,42 +24,50 @@
             android:title="@string/pref_language"
             android:summaryOn="@string/pref_language_summary_on"
             android:summaryOff="@string/pref_language_summary_off"
-            android:defaultValue="@string/pref_language_summary_off"/>
+            android:defaultValue="false"/>
 
         <SwitchPreference
             android:key="@string/pref_count_point"
             android:title="@string/pref_count_point"
             android:summaryOn="@string/pref_point_summary_on"
             android:summaryOff="@string/pref_point_summary_off"
-            android:defaultValue="@string/pref_point_summary_off"/>
+           />
 
         <SwitchPreference
            android:key="@string/pref_waste"
            android:title="@string/pref_waste"
            android:summaryOn="@string/pref_waste_summary_on"
            android:summaryOff="@string/pref_waste_summary_off"
-           android:defaultValue="@string/pref_waste_summary_off"/>
+          />
+
+        <!--     <ListPreference
+               android:key="@string/sp_key_background_color"
+               android:title="Backgroundcolor"
+               android:icon="@drawable/icon_backroundcolor"
+               android:entries="@array/color_palete"
+               android:entryValues="@array/color_palete_value"/>
+                 -->
+
+           <Preference android:title="Backgroundcolor"
+               android:icon="@drawable/icon_backroundcolor"
+               android:key="rule"
+               android:layout="@layout/setting_color"
+               android:selectable="true">
+               <intent android:action="org.secuso.privacyfriendlyexample.BackgroundActivity" />
+           </Preference>
 
 
-        <Preference android:title="Backgroundcolor"
-            android:icon="@drawable/icon_backroundcolor"
-            android:key="rule"
-            android:layout="@layout/setting_color"
-            android:selectable="true">
-            <intent android:action="org.secuso.privacyfriendlyexample.BackgroundActivity" />
-        </Preference>
 
-
-        <!--      <ListPreference
-                   android:key="@string/sp_key_background_color"
-                   android:title="Background Color"
-                   android:entries="@array/background_color_names_array"
-                   android:entryValues="@array/background_color_values_array"
-                   android:icon="@drawable/icon_backroundcolor"
-                   android:summary="@string/summary_backroundcolor"
-                   android:defaultValue="@color/white"
-                   />
-                   -->
+           <!--      <ListPreference
+                      android:key="@string/sp_key_background_color"
+                      android:title="Background Color"
+                      android:entries="@array/background_color_names_array"
+                      android:entryValues="@array/background_color_values_array"
+                      android:icon="@drawable/icon_backroundcolor"
+                      android:summary="@string/summary_backroundcolor"
+                      android:defaultValue="@color/white"
+                      />
+                      -->
 
          </PreferenceCategory>
 

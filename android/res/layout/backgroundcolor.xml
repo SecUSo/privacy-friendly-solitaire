@@ -30,24 +30,14 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
             android:paddingBottom="@dimen/activity_vertical_margin"
-            tools:context=".MainActivity"
+            tools:context=".Activities.BackgroundActivity"
             >
-
-            <TextView
-                android:layout_width="match_parent"
-                android:text="Background color"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/button_text_size"
-                android:id="@+id/colortext"
-                android:layout_height="50dp"
-                android:gravity="center"/>
 
             <RadioGroup
                 android:layout_width="fill_parent"
                 android:orientation="vertical"
                 android:id="@+id/radio_group1"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@id/colortext"
                 android:layout_height="210dp">
 
 
@@ -57,36 +47,26 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:textSize="@dimen/button_text_size"
-                android:text="Green"
+                android:text="@string/green"
                 android:textColor="@color/black"
-                android:background="@color/green"
+                android:background="@color/forest"
                 android:onClick="onCheckBoxClicked"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/radio_group1"
                 />
 
-            <RadioButton
-                android:id="@+id/checkbox_yellow"
-                android:textSize="@dimen/button_text_size"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:text="Yellow"
-                android:textColor="@color/black"
-                android:background="@color/yellow"
-                android:onClick="onCheckBoxClicked"
-                android:layout_below="@id/checkbox_green"
-                />
+
 
             <RadioButton
                 android:id="@+id/checkbox_blue"
                 android:textSize="@dimen/button_text_size"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:text="Blue"
+                android:text="@string/cyan"
                 android:textColor="@color/black"
-                android:background="@color/middleblue"
+                android:background="@color/cyan"
                 android:onClick="onCheckBoxClicked"
-                android:layout_below="@id/checkbox_yellow"
+                android:layout_below="@id/checkbox_green"
                 />
 
             <RadioButton
@@ -94,38 +74,27 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/button_text_size"
                 android:layout_width="match_parent"
-                android:text="Grey"
+                android:text="@string/gray"
                 android:textColor="@color/black"
                 android:background="@color/middlegrey"
                 android:onClick="onCheckBoxClicked"
                 android:layout_below="@id/checkbox_blue"
                 />
 
+                <RadioButton
+                    android:id="@+id/checkbox_brown"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/button_text_size"
+                    android:layout_width="match_parent"
+                    android:text="@string/brown"
+                    android:textColor="@color/black"
+                    android:background="@color/brown"
+                    android:onClick="onCheckBoxClicked"
+                    android:layout_below="@id/checkbox_grey"
+                    />
+
             </RadioGroup>
 
-            <Button
-                android:layout_height="wrap_content"
-                android:text="CANCEL"
-                android:textSize="@dimen/button_text_size"
-                android:textColor="@color/white"
-                android:id="@+id/cancle_button"
-                android:layout_gravity="right"
-                android:layout_below="@id/radio_group1"
-                android:layout_alignParentRight="true"
-                android:background="@color/colorPrimaryDark"
-                android:layout_width="130dp" />
-            />
-            <Button
-                android:layout_height="wrap_content"
-                android:text="OK"
-                android:textSize="@dimen/button_text_size"
-                android:textColor="@color/white"
-                android:id="@+id/ok_button"
-                android:layout_gravity="right"
-
-                android:background="@color/colorPrimaryDark"
-                android:layout_below="@+id/radio_group1"
-                android:layout_width="130dp" />
 
         </RelativeLayout>
 

@@ -36,6 +36,7 @@ import com.badlogic.gdx.utils.StringBuilder;
 
 import org.secuso.privacyfriendlysolitaire.CallBackListener;
 import org.secuso.privacyfriendlysolitaire.Utils.Config;
+import org.secuso.privacyfriendlysolitaire.Utils.Constant;
 import org.secuso.privacyfriendlysolitaire.game.Application;
 import org.secuso.privacyfriendlysolitaire.R;
 import org.secuso.privacyfriendlysolitaire.game.Constants;
@@ -51,8 +52,9 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     TimerTask timerTask;
     TextView timerView;
     TextView pointsView;
-    Button alertButton;
     final Context context = this;
+
+    SettingsActivity Sett_Ac = new SettingsActivity();
 
     // delay to launch nav drawer item, to allow close animation to play
     static final int NAVDRAWER_LAUNCH_DELAY = 250;
@@ -108,33 +110,43 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
 
         //settings, which were set by the player
-        final boolean sound = mSharedPreferences.getBoolean("pref_sound_switch", true);
-        final boolean shake = mSharedPreferences.getBoolean("pref_shake_switch", true);
-        final boolean waste = mSharedPreferences.getBoolean("pref_waste", true);
-        boolean points = mSharedPreferences.getBoolean("pref_count_point", true);
+       final boolean sound = mSharedPreferences.getBoolean(getString(R.string.pref_sound_switch), true );
+        final boolean shake = mSharedPreferences.getBoolean(getString(R.string.pref_shake_switch), true);
+        final boolean waste = mSharedPreferences.getBoolean(getString(R.string.pref_waste), true);
+        boolean points = mSharedPreferences.getBoolean(getString(R.string.pref_count_point), true);
 
-        if (mSharedPreferences != null && sound) {
+        if (sound) {
             //TODO: Sound an schalten
-        } else {
+        }
+        else{
             //TODO: Sound aus schalten
         }
 
-        if (mSharedPreferences != null && shake) {
+        if (shake) {
             //TODO: Shake animation on
         } else {
             //TODO: Shake animation off
         }
 
+
+
+
         // default modes for cardDraw and score
         int cardDrawMode = Constants.MODE_ONE_CARD_DEALT;
         int scoreMode = Constants.MODE_VEGAS;
 
-        if (mSharedPreferences != null && waste) {
+        if ( waste) {
             cardDrawMode = Constants.MODE_THREE_CARDS_DEALT;
+        }else {
+            cardDrawMode =Constants.MODE_ONE_CARD_DEALT;
         }
-        if (mSharedPreferences != null && points) {
+        if (points) {
+            scoreMode = Constants.MODE_VEGAS;
+        }else {
             scoreMode = Constants.MODE_STANDARD;
         }
+
+
 
         ImageButton undo = (ImageButton) findViewById(R.id.undo);
         undo.setOnClickListener(new View.OnClickListener() {
@@ -152,11 +164,26 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
             }
         });
 
-        // TODO: set color from settings
-        // caution: this is libgdx Color, not Android Color
-        com.badlogic.gdx.graphics.Color c = Color.GOLD;
 
-        // start game
+
+        com.badlogic.gdx.graphics.Color c;
+        if( mSharedPreferences.getString("pref_color", "green").equals("green")){
+             c = Color.FOREST;
+        }else if(mSharedPreferences.getString("pref_color", "gray").equals("gray")){
+            c = Color.GRAY;
+
+        }else if(mSharedPreferences.getString("pref_color", "blue").equals("blue")) {
+            c = Color.CYAN;
+
+        }
+        else if(mSharedPreferences.getString("pref_color", "brown").equals("brown")) {
+            c = Color.TAN;
+
+        } else {
+            c =Color.GRAY;
+        }
+
+            // start game
         application.customConstructor(cardDrawMode, scoreMode, c);
 
         //start timer for game
@@ -238,7 +265,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     //Alert box for won a game which prints the total time and the reached points
     public void alertBoxWonMessage() {
 
-        //    alertButton = (Button) findViewById(R.id.buttonAlert);
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         context);
@@ -248,8 +274,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         alertDialogBuilder.setTitle("You won!");
                 // set dialog message
                 alertDialogBuilder
-                        //TODO: füge Points noch in AlertBox ein!!
-                        .setMessage(Html.fromHtml( "Total time: "+timeForAlert(time) + "<br>"+ "Total Points: " ))
+                        .setMessage(Html.fromHtml( "Total time: "+timeForAlert(time) + "<br>"+ "Total Points: " +  pointsView.getText().toString()))
                         .setCancelable(false)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -340,7 +365,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     private void callDrawerItem(final int itemId) {
         Intent intent;
 
-//        TODO: nevigation_drawer erweitern
         switch (itemId) {
             case R.id.nav_example:
                 intent = new Intent(this, MainActivity.class);
@@ -431,7 +455,9 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ((TextView) findViewById(R.id.points)).setText(String.valueOf(score));
+          //      ((TextView) findViewById(R.id.points)).setText(String.valueOf(score));
+                pointsView.setText(String.valueOf(score));
+
             }
         });
     }

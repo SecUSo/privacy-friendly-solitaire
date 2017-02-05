@@ -40,9 +40,23 @@
 
     <!--###HELP###-->
 
-    <string name="rules">Spielregeln</string>
+    <string name="sel_card">Ausgewählte Karte</string>
+    <string name="sel_card_summary">Eine ausgewählte Karte in dem Spiel wird durch das gelbe Rechteck um die Karte veranschaulicht</string>
 
-    <string name="rules_desc">hier kommt die Beschreibung der Regeln rin</string>
+    <string name="rules">Spielregeln</string>
+    <string name="rules_description">Es werden sieben verdeckte Kartenstapel (Tableau Piles) von links nach rechts nebeneinandergelegt. Die obersten Karten dieser Tableau Piles werden umgedreht.
+        Die Karten dürfen auf den sieben Tableaus in absteigender Reihenfolge angelegt werden, allerdings nur im Wechsel von Rot und Schwarz.
+        \n Die Karten des Decks werden je nach Einstellung eine nach der anderen oder drei Karten gleichzeitig auf dem Waste umgedreht.
+        Dabei können mögliche Karten auf die jeweiligen Tabelaus sortiert werden oder direkt auf einen der vier Foundations abgelegt werden. Das Deck darf beliebig oft wieder umgedreht und erneut durchgeguckt werden.
+            \n Um Solitär zu gewinnen, müssen alle Karten in aufsteigender Reihenfolge (beginnend mit dem Ass, dann 2, 3 usw.) und nach Farben (Karo, Herz, Pik, Kreuz) sortiert auf die vier horizontal markierten Plätze (Foundations) abgelegt werden. Das Spiel ist gewonnen, wenn alle Karten auf den passenden Foundations liegen, oder verloren, wenn es keine Zugmöglichkeiten mehr gibt bzw. der Spieler aufgibt.</string>
+
+    <string name="rules_point">Punktezählen beim Solitaire</string>
+    <string name="rules_point_desc">Es sind zwei Varianten des Punkte-Zählend bei Solitaire auswählbar, Standart und Vegas, welche in den Einstellungen zu finden sind.
+        Beim Standard sind die Regeln wie folgt: \n</string>
+
+    <string name="rules_point_desc_vegas">\n Bei der Vegas Variante beginnt der Spieler mit -52$. Für das Ablegen einer Karte auf einer Foundation, erhält er 5$ zurück. Das Deck darf nur einmal komplett auf dem Waste abgelegt werden, danach ist das Spiel beendet.</string>
+
+
 
     <string name="help">Help</string>
     <string name="help_general_heading">Overview</string>
@@ -109,61 +123,47 @@
     <string name="pref_sound_switch_summary_on">Ton ausschalten</string>
     <string name="pref_sound_switch_summary_off">Ton anschalten</string>
 
-    <string name="pref_shake_switch">Shake function </string>
-    <string name="pref_shake_switch_summary_on">shaking On</string>
-    <string name="pref_shake_switch_summary_off">Shaking Off</string>
+    <string name="pref_shake_switch">Schüttelfunktion </string>
+    <string name="pref_shake_switch_summary_on">An</string>
+    <string name="pref_shake_switch_summary_off">Aus</string>
 
-    <string name="pref_language">Select Language</string>
-    <string name="pref_language_summary_on">English</string>
+    <string name="pref_language">Sprachauswahl</string>
+    <string name="pref_language_summary_on">Englisch</string>
     <string name="pref_language_summary_off">Deutsch</string>
 
-    <string name="pref_count_point">Counting Points</string>
+    <string name="pref_count_point">Punkte</string>
     <string name="pref_point_summary_off">Stantard</string>
     <string name="pref_point_summary_on">Vegas</string>
 
-    <string name="pref_waste">Number of cards on Waste</string>
-    <string name="pref_waste_summary_off">One card</string>
-    <string name="pref_waste_summary_on">Three cards</string>
+    <string name="pref_waste">Karte ziehen</string>
+    <string name="pref_waste_summary_off">Eine Karte</string>
+    <string name="pref_waste_summary_on">Drei Karten</string>
 
 
+    <!-- Backgroundcolor-->
     <string name="sp_key_background_color">Hintergrundfarbe</string>
     <string name="summary_backroundcolor">Wählen Sie die Hintergrundfarbe im Spielfeld</string>
 
-    <!-- background color names array -->
-    <string-array name="background_color_names_array">
-        <item>middleblue</item>
-        <!--item>#8aa5ce</item-->
+    <string name="cyan">BLUE</string>
+    <string name="green">GREEN</string>
+    <string name="gray">GRAY</string>
+    <string name="brown">BROWN</string>
 
-        <item>middlegrey</item>
-        <!--item>#A8A8A8</item-->
 
-        <item>yellow</item>
-        <!--item>#f6d126</item-->
-
-        <item>green</item>
-        <!--item>#388E3C</item-->
-    </string-array>
-
-    <!-- background color values array -->
-    <string-array name="background_color_values_array">
-
-        <!--item>Purple</item-->
-        <item>#8aa5ce</item>
-
-        <!--item>Green</item-->
-        <item>#A8A8A8</item>
-
-        <!--item>Green</item-->
-        <item>#f6d126</item>
-
-        <!--item>Coral</item-->
-        <item>#388E3C</item>
+    <string-array name="color_palete">
+        <item name="color_p_green">GREEN</item>
+        <item name="color_p_blue">BLUE</item>
+        <item name="color_p_gray">GRAY</item>
+        <item name="color_p_brown">BROWN</item>
     </string-array>
 
 
-
-
-
+    <string-array name="color_palete_value">
+        <item name="green">#228b22</item>
+        <item name="blue">#00ffff</item>
+        <item name="gray">#A8A8A8</item>
+        <item name="brown">#d2b48c</item>
+    </string-array>
 
     <!-- ### WELCOME DIALOG ### -->
     <!-- TODO: The welcome screen should introduce the app and the key elements of the start page.-->
