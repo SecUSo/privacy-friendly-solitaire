@@ -12,6 +12,7 @@ public class Move {
     private Action action2;
     private boolean turnOver = false;
     private int oldfanSize = -1;
+    private int newFanSize = -1;
 
     public Move(Action action1, Action action2) {
         this.action1 = action1;
@@ -44,6 +45,14 @@ public class Move {
         this.oldfanSize = oldfanSize;
     }
 
+    public int getNewFanSize() {
+        return newFanSize;
+    }
+
+    public void setNewFanSize(int newFanSize) {
+        this.newFanSize = newFanSize;
+    }
+
     @Override
     public String toString() {
         return "Move{" +
@@ -51,6 +60,7 @@ public class Move {
                 ", action2=" + action2 +
                 ", turnOver=" + turnOver +
                 ", oldfanSize=" + oldfanSize +
+                ", newFanSize=" + newFanSize +
                 '}';
     }
 }

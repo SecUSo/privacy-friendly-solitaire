@@ -21,8 +21,19 @@ import java.util.Vector;
  */
 
 public class SolitaireGame {
+    /**
+     * the deck and the waste of the game
+     */
     private DeckWaste deckAndWaste;
+
+    /**
+     * the foundations of the game
+     */
     private ArrayList<Foundation> foundations;
+
+    /**
+     * the tableaus of the game
+     */
     private ArrayList<Tableau> tableaus;
 
     /**
@@ -50,8 +61,14 @@ public class SolitaireGame {
      */
     private boolean lastMoveturnedOverTableau = false;
 
+    /**
+     * the vector of listeners to be notified in case the game changes
+     */
     private Vector<GameListener> gameListeners = new Vector<GameListener>();
 
+    /**
+     * a CallBackListener residing in the android part of the app
+     */
     private CallBackListener callBackListener;
 
     /**
@@ -151,13 +168,15 @@ public class SolitaireGame {
         this.saveAction(action);
         int oldFanSize = deckAndWaste.getFanSize();
         if (this.deckAndWaste.canTurnOver()) {
+            int prevWasteSize = deckAndWaste.getWaste().size();
             if (this.deckAndWaste.turnOver()) {
-                makeMove(null, redoMove, oldFanSize);
+                int newFanSize = deckAndWaste.getWaste().size() - prevWasteSize;
+                makeMove(null, redoMove, oldFanSize, newFanSize);
                 return true;
             }
         } else if (this.deckAndWaste.canReset()) {
             if (this.deckAndWaste.reset()) {
-                makeMove(action, redoMove, oldFanSize);
+                makeMove(action, redoMove, oldFanSize, deckAndWaste.getFanSize());
                 return true;
             }
         }
@@ -197,7 +216,7 @@ public class SolitaireGame {
         } else if (this.prevAction.getGameObject() == GameObject.WASTE) {
             int oldFanSize = deckAndWaste.getFanSize();
             if (handleWasteToTableau(action)) {
-                makeMove(action, redoMove, oldFanSize);
+                makeMove(action, redoMove, oldFanSize, deckAndWaste.getFanSize());
                 return true;
             }
         } else if (this.prevAction.getGameObject() == GameObject.FOUNDATION) {
@@ -227,7 +246,7 @@ public class SolitaireGame {
         } else if (this.prevAction.getGameObject() == GameObject.WASTE) {
             int oldFanSize = deckAndWaste.getFanSize();
             if (handleWasteToFoundation(action)) {
-                makeMove(action, redoMove, oldFanSize);
+                makeMove(action, redoMove, oldFanSize, deckAndWaste.getFanSize());
                 return true;
             }
         }
@@ -276,8 +295,11 @@ public class SolitaireGame {
      * recentMove variable, resets prevAction and notifies observers
      *
      * @param action the action that specifies the target of this move
+     * @param redoMove true if the move to be made is caused by a redo
+     * @param oldFanSize the number of cards fanned out on the waste before the move
+     * @param newFanSize the number of cards fanned out on the waste after the move
      */
-    private void makeMove(Action action, boolean redoMove, int oldFanSize) {
+    private void makeMove(Action action, boolean redoMove, int oldFanSize, int newFanSize) {
         lastMoveturnedOverTableau = false;
         //if source of move was a tableau, try to turn over this tableau
         if (prevAction.getGameObject() == GameObject.TABLEAU) {
@@ -290,6 +312,7 @@ public class SolitaireGame {
             cleanUpMoves();
             this.moves.add(new Move(prevAction, action, lastMoveturnedOverTableau));
             moves.lastElement().setOldfanSize(oldFanSize);
+            moves.lastElement().setNewFanSize(newFanSize);
         }
         movePointer++;
         this.prevAction = null;
@@ -634,7 +657,9 @@ public class SolitaireGame {
         if (canRedo()) {
             Move toRedo = moves.elementAt(movePointer + 1);
             handleAction(toRedo.getAction1(), true);
-            handleAction(toRedo.getAction2(), true);
+            if (toRedo.getAction1().getGameObject() != GameObject.DECK) {
+                handleAction(toRedo.getAction2(), true);
+            }
         }
     }
 }

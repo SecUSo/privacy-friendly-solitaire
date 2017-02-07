@@ -124,7 +124,7 @@ public class DeckWaste {
     }
 
     public void undoTurnOver(int oldFanSize) {
-        for (int i = 0; i < numTurnOver; i++) {
+        for (int i = 0; i < fanSize; i++) {
             deck.add(removeWasteTop());
         }
         setFanSize(oldFanSize);
@@ -156,6 +156,7 @@ public class DeckWaste {
             while (!this.waste.isEmpty()) {
                 this.deck.add(this.waste.remove(this.waste.size() - 1));
             }
+            fanSize = 0;
             return true;
         } else {
             return false;
