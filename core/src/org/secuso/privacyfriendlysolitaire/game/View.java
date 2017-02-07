@@ -225,7 +225,7 @@ public class View implements GameListener {
                 if (!game.wasInvalidMove()) {
                     if (!game.wasUndoMove()) {
                         // usual move
-                        Move prevMove = game.getMoves().lastElement();
+                        Move prevMove = game.getMoves().elementAt(game.getMovePointer());
                         handleMove(prevMove, game);
                     } else {
                         // undo move
