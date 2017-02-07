@@ -357,13 +357,18 @@ public class View implements GameListener {
         if (!cardsToBeMarked.isEmpty()) {
             // move marker to correct position and make visible
             ImageWrapper topElement = cardsToBeMarked.get(cardsToBeMarked.size() - 1);
+            ImageWrapper bottomElement = cardsToBeMarked.get(0);
+            Gdx.app.log("topElement ", topElement.toString());
+            Gdx.app.log("bottomElement ", bottomElement.toString());
             marker.setPosition(topElement.getX() - 4, topElement.getY() - 5);
+            float height = Math.abs(topElement.getX() - bottomElement.getTop());
             // TODO: hier nochmal an den Zahlen frickeln
             int nrOfOffsets = cardsToBeMarked.size() - 1;
-            marker.setHeight(ViewConstants.heightCard * 1.05f +
-                    (nrOfOffsets * ViewConstants.offsetHeightBetweenCards * 1.1f
-//                            (0.7f - 1 / (16f * nrOfOffsets + 1))
-                    ));
+            marker.setHeight(height + 10f);
+//            marker.setHeight(ViewConstants.heightCard * 1.05f +
+//                    (nrOfOffsets * ViewConstants.offsetHeightBetweenCards * 1.1f
+////                            (0.7f - 1 / (16f * nrOfOffsets + 1))
+//                    ));
             marker.setVisible(true);
             marker.toFront();
 
@@ -551,7 +556,11 @@ public class View implements GameListener {
 
         if (cardsToBeUnturned != null) {
             for (String texString : cardsToBeUnturned) {
-                faceUpCards.get(texString).setVisible(false);
+                try {
+                    faceUpCards.get(texString).setVisible(false);
+                } catch (Exception e) {
+                    // in this case we added to many cards into cardsToBeUnturned
+                }
             }
         }
 
@@ -1110,6 +1119,7 @@ public class View implements GameListener {
                         // if this does not exist, don't add it
                     }
                 }
+                Gdx.app.log("cardsToBeUnturned ", cardsToBeUnturned.toString());
                 turnOrUnturnDeckCard(game, cardsToBeUnturned);
             }
         } else {
