@@ -364,11 +364,11 @@ public class View implements GameListener {
             float height = Math.abs(topElement.getX() - bottomElement.getTop());
             // TODO: hier nochmal an den Zahlen frickeln
             int nrOfOffsets = cardsToBeMarked.size() - 1;
-            marker.setHeight(height + 10f);
-//            marker.setHeight(ViewConstants.heightCard * 1.05f +
-//                    (nrOfOffsets * ViewConstants.offsetHeightBetweenCards * 1.1f
-////                            (0.7f - 1 / (16f * nrOfOffsets + 1))
-//                    ));
+//            marker.setHeight(height + 10f);
+            marker.setHeight(ViewConstants.heightCard * 1.05f +
+                    (nrOfOffsets * ViewConstants.offsetHeightBetweenCards * 1.1f
+//                            (0.7f - 1 / (16f * nrOfOffsets + 1))
+                    ));
             marker.setVisible(true);
             marker.toFront();
 
@@ -1112,6 +1112,8 @@ public class View implements GameListener {
                 // i don't currently know how to get how many cards to unturn
                 // (since I only know the old fanSize, but not the current one (before
                 // the undo was done in the game, but how it is currently in the view)
+
+                // TODO: hier später auf newFanSize im move zugreifen
                 for (int i = deck.size() - 3; i < deck.size(); i++) {
                     try {
                         cardsToBeUnturned.add(loader.getCardTextureName(deck.get(i)));
