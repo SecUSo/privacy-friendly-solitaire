@@ -5,17 +5,46 @@
 
 
     <TextView
-        android:text="@string/rules"
-        android:textColor="@color/white"
-        android:textSize="@dimen/button_text_size"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="10"
-        android:shadowColor="@color/colorPrimaryDark"
-        android:layout_height="94dp"
-        android:background="@drawable/border"
-        android:layout_width="350dp"
-        android:layout_gravity="center_horizontal"/>
+        android:text="@string/rules_description"
+        android:layout_height="wrap_content"
+        android:id="@+id/rules_description"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="380dp" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="380dp"
+        android:textColor="@color/lightblue"
+        android:layout_marginTop="10dp"
+        android:text="@string/rules_point" />
+
+
+    <TextView
+        android:text="@string/rules_point_desc"
+        android:layout_height="wrap_content"
+        android:id="@+id/rules_point_desc"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="380dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/standard_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/standard_points" />
+    </LinearLayout>
+
+    <TextView
+        android:text="@string/rules_point_desc_vegas"
+        android:layout_height="wrap_content"
+        android:id="@+id/rules_point_desc_vegas"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="380dp"/>
+
+
 </LinearLayout>

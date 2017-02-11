@@ -94,15 +94,7 @@
                     />
 
             </RadioGroup>
-
-
         </RelativeLayout>
-
-
     </LinearLayout>
-
-
-
-
 
 </ScrollView>

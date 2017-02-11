@@ -26,9 +26,9 @@ import java.util.Set;
 
 public class BackgroundActivity extends AppCompatActivity {
 
-    public RadioButton green, blue, grey, brown, selecdetColor;
+    public RadioButton green, blue, grey, brown;
 
-    Boolean gr, bl, gra, bro;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

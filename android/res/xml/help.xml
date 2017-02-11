@@ -4,16 +4,6 @@
     <PreferenceCategory android:title="@string/help">
 
 
-
-        <Preference android:title="@string/rules"
-            android:key="rule"
-            android:layout="@layout/help_rules"
-            android:selectable="true">
-            <intent android:action="org.secuso.privacyfriendlyexample.RuleActivity" />
-        </Preference>
-
-
-
            <Preference android:title="@string/help_undo"
                android:selectable="false"
                android:icon="@drawable/glyphicons_undo"
@@ -40,6 +30,16 @@
             android:summary="@string/sel_card_summary"/>
 
 
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/rules">
+
+        <Preference android:title="@string/rules"
+            android:key="rule"
+            android:layout="@layout/help_rules"
+            android:selectable="true">
+        </Preference>
 
 
     </PreferenceCategory>

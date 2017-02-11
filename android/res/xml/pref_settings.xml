@@ -40,13 +40,13 @@
            android:summaryOff="@string/pref_waste_summary_off"
           />
 
-        <!--     <ListPreference
-               android:key="@string/sp_key_background_color"
+          <ListPreference
+               android:key="backgroundcolor"
                android:title="Backgroundcolor"
                android:icon="@drawable/icon_backroundcolor"
                android:entries="@array/color_palete"
                android:entryValues="@array/color_palete_value"/>
-                 -->
+
 
            <Preference android:title="Backgroundcolor"
                android:icon="@drawable/icon_backroundcolor"

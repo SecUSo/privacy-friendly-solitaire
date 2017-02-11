@@ -34,6 +34,7 @@ import org.secuso.privacyfriendlysolitaire.R;
 
 public class SettingsActivity extends BaseActivity {
 
+
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
@@ -94,13 +95,14 @@ public class SettingsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_settings);
-
-
-        //setupActionBar();
-
-
         overridePendingTransition(0, 0);
 
+
+
+
+
+        final SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences.Editor edit = mSharedPreferences.edit();
 
 
     }
@@ -179,6 +181,9 @@ public class SettingsActivity extends BaseActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public  static class GeneralPreferenceFragment extends PreferenceFragment {
+
+        public ListPreference background_color;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -194,7 +199,18 @@ public class SettingsActivity extends BaseActivity {
 
 
 
+          background_color = (ListPreference) findPreference("backgroundcolor");
+            background_color.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                    return true;
+                }
+            });
         }
+
+
+
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {

@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -102,12 +104,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         outerLayout.addView(gameView);
 
 
-//        if (graphics.getView() instanceof SurfaceView) {
-//            SurfaceView glView = (SurfaceView) graphics.getView();
-//            glView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-//            glView.setZOrderOnTop(true);
-//        }
-
 
         //settings, which were set by the player
        final boolean sound = mSharedPreferences.getBoolean(getString(R.string.pref_sound_switch), true );
@@ -127,6 +123,8 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         } else {
             //TODO: Shake animation off
         }
+
+
 
 
 
@@ -163,7 +161,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
                 application.redo();
             }
         });
-
 
 
         com.badlogic.gdx.graphics.Color c;
