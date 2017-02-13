@@ -45,17 +45,19 @@
                android:title="Backgroundcolor"
                android:icon="@drawable/icon_backroundcolor"
                android:entries="@array/color_palete"
-               android:entryValues="@array/color_palete_value"/>
+               android:entryValues="@array/color_palete_value"
+              />
+
+
 
 
            <Preference android:title="Backgroundcolor"
                android:icon="@drawable/icon_backroundcolor"
-               android:key="rule"
+               android:key="@string/sp_key_background_color"
                android:layout="@layout/setting_color"
                android:selectable="true">
                <intent android:action="org.secuso.privacyfriendlyexample.BackgroundActivity" />
            </Preference>
-
 
 
            <!--      <ListPreference

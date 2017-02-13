@@ -19,6 +19,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -33,7 +34,7 @@ import android.widget.Toast;
 import org.secuso.privacyfriendlysolitaire.R;
 
 public class SettingsActivity extends BaseActivity {
-
+    final Context context = this;
 
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
@@ -98,17 +99,11 @@ public class SettingsActivity extends BaseActivity {
         overridePendingTransition(0, 0);
 
 
-
-
-
         final SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor edit = mSharedPreferences.edit();
 
 
     }
-
-
-
 
 
     @Override
@@ -172,17 +167,12 @@ public class SettingsActivity extends BaseActivity {
     }
 
 
-
-
-
     /**
      * This fragment shows general preferences only. It is used when the
      * activity is showing a two-pane settings UI.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public  static class GeneralPreferenceFragment extends PreferenceFragment {
-
-        public ListPreference background_color;
+    public static class GeneralPreferenceFragment extends PreferenceFragment {
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -197,19 +187,7 @@ public class SettingsActivity extends BaseActivity {
             //bindPreferenceSummaryToValue(findPreference("example_text"));
             //bindPreferenceSummaryToValue(findPreference("example_list"));
 
-
-
-          background_color = (ListPreference) findPreference("backgroundcolor");
-            background_color.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-
-                    return true;
-                }
-            });
         }
-
-
 
 
         @Override
@@ -224,7 +202,7 @@ public class SettingsActivity extends BaseActivity {
         }
 
 
-
-
     }
+
+
 }

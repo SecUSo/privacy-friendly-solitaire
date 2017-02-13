@@ -56,7 +56,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     TextView pointsView;
     final Context context = this;
 
-    SettingsActivity Sett_Ac = new SettingsActivity();
+
 
     // delay to launch nav drawer item, to allow close animation to play
     static final int NAVDRAWER_LAUNCH_DELAY = 250;
@@ -162,6 +162,14 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
             }
         });
 
+
+        ImageButton hint = (ImageButton) findViewById(R.id.hint);
+        undo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: hint button Funktion von Hinweis drauf legen aus core
+            }
+        });
 
         com.badlogic.gdx.graphics.Color c;
         if( mSharedPreferences.getString("pref_color", "green").equals("green")){
