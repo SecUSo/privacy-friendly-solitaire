@@ -164,7 +164,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
 
         ImageButton hint = (ImageButton) findViewById(R.id.hint);
-        undo.setOnClickListener(new View.OnClickListener() {
+        hint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO: hint button Funktion von Hinweis drauf legen aus core
