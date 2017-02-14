@@ -358,17 +358,10 @@ public class View implements GameListener {
             // move marker to correct position and make visible
             ImageWrapper topElement = cardsToBeMarked.get(cardsToBeMarked.size() - 1);
             ImageWrapper bottomElement = cardsToBeMarked.get(0);
-            Gdx.app.log("topElement ", topElement.toString());
-            Gdx.app.log("bottomElement ", bottomElement.toString());
+            float height = Math.abs(topElement.getY() - bottomElement.getTop()) + 10;
+
             marker.setPosition(topElement.getX() - 4, topElement.getY() - 5);
-            float height = Math.abs(topElement.getX() - bottomElement.getTop());
-            // TODO: hier nochmal an den Zahlen frickeln
-            int nrOfOffsets = cardsToBeMarked.size() - 1;
-//            marker.setHeight(height + 10f);
-            marker.setHeight(ViewConstants.heightCard * 1.05f +
-                    (nrOfOffsets * ViewConstants.offsetHeightBetweenCards * 1.1f
-//                            (0.7f - 1 / (16f * nrOfOffsets + 1))
-                    ));
+            marker.setHeight(height);
             marker.setVisible(true);
             marker.toFront();
 
