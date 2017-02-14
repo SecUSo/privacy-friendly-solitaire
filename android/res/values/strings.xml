@@ -41,20 +41,21 @@
     <!--###HELP###-->
 
     <string name="sel_card">Ausgewählte Karte</string>
-    <string name="sel_card_summary">Eine ausgewählte Karte in dem Spiel wird durch das gelbe Rechteck um die Karte veranschaulicht</string>
+    <string name="sel_card_summary">Eine ausgewählte Karte im Spiel wird durch einen gelben Rand um die Karte veranschaulicht</string>
 
     <string name="rules">Spielregeln</string>
-    <string name="rules_description">Es werden sieben verdeckte Kartenstapel (Tableau Piles) von links nach rechts nebeneinandergelegt. Die obersten Karten dieser Tableau Piles werden umgedreht.
-        Die Karten dürfen auf den sieben Tableaus in absteigender Reihenfolge angelegt werden, allerdings nur im Wechsel von Rot und Schwarz.
-        \n Die Karten des Decks werden je nach Einstellung eine nach der anderen oder drei Karten gleichzeitig auf dem Waste umgedreht.
-        Dabei können mögliche Karten auf die jeweiligen Tabelaus sortiert werden oder direkt auf einen der vier Foundations abgelegt werden. Das Deck darf beliebig oft wieder umgedreht und erneut durchgeguckt werden.
-            \n Um Solitär zu gewinnen, müssen alle Karten in aufsteigender Reihenfolge (beginnend mit dem Ass, dann 2, 3 usw.) und nach Farben (Karo, Herz, Pik, Kreuz) sortiert auf die vier horizontal markierten Plätze (Foundations) abgelegt werden. Das Spiel ist gewonnen, wenn alle Karten auf den passenden Foundations liegen, oder verloren, wenn es keine Zugmöglichkeiten mehr gibt bzw. der Spieler aufgibt.</string>
+    <string name="rules_description">Es werden sieben verdeckte Kartenstapel (Tableaus) von links nach rechts nebeneinandergelegt. Die obersten Karten der Tableaus werden umgedreht.
+        \n Um Solitär zu gewinnen, müssen alle Karten in aufsteigender Reihenfolge (beginnend mit dem Ass, dann 2, 3 usw.) und nach Farben (Karo, Herz, Pik, Kreuz) sortiert auf die vier horizontal markierten Plätze (Foundations) abgelegt werden. Das Spiel ist gewonnen, wenn alle Karten auf den passenden Foundations liegen, oder verloren, wenn es keine Zugmöglichkeiten mehr gibt bzw. der Spieler aufgibt.
+        \n Dazu können Karten auf den Tableaus abgelegt und verschoben werden oder direkt auf einer der vier Foundations abgelegt werden. Die Karten dürfen auf den sieben Tableaus in absteigender Reihenfolge angelegt werden, allerdings nur im Wechsel von rot und schwarz. Wird die letzte offene Karte von einem Tableau bewegt, so wird die oberste verdeckte Karte des Tableaus aufgedeckt. Ein leerer Tableauplatz kann nur durch einen König besetzt werden.
+        \n Im Spielmodus Standard darf das Deck beliebig oft zurückgesetzt und erneut aufgedeckt werden. Im Spielmodus Vegas ist das Zurücksetzen des Decks nicht möglich.
+        \n Die Karten des Decks werden je nach Einstellung eine nach der anderen oder drei Karten gleichzeitig aufgedeckt und auf den Waste gelegt.
+        </string>
 
-    <string name="rules_point">Punktezählen beim Solitaire</string>
-    <string name="rules_point_desc">Es sind zwei Varianten des Punkte-Zählend bei Solitaire auswählbar, Standart und Vegas, welche in den Einstellungen zu finden sind.
-        Beim Standard sind die Regeln wie folgt: \n</string>
+    <string name="rules_point">Punktezählen bei Solitaire</string>
+    <string name="rules_point_desc">Es sind zwei Varianten des Punktezählens auswählbar: Standard oder Vegas.
+        Im Standard Modus sind die Regeln wie folgt: \n</string>
 
-    <string name="rules_point_desc_vegas">\n Bei der Vegas Variante beginnt der Spieler mit -52$. Für das Ablegen einer Karte auf einer Foundation, erhält er 5$ zurück. Das Deck darf nur einmal komplett auf dem Waste abgelegt werden, danach ist das Spiel beendet.</string>
+    <string name="rules_point_desc_vegas">\n Bei der Variante Vegas beginnt der Spieler mit -52$. Für das Ablegen einer Karte auf einer Foundation, erhält er 5$ zurück. Das Deck darf nur einmal komplett auf dem Waste abgelegt werden, danach ist das Spiel beendet.</string>
 
 
 
