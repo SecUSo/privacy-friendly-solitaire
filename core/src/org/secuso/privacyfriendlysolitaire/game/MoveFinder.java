@@ -103,10 +103,10 @@ class MoveFinder {
                                     !game.isLastMoveturnedOverTableau()) {
                                 continue;
                             }
-                            Action sourceAction = new Action(GameObject.TABLEAU, sourceT, cardIndex);
-                            Action targetAction = new Action(GameObject.TABLEAU, targetT, 0);
-                            return new Move(sourceAction, targetAction);
                         }
+                        Action sourceAction = new Action(GameObject.TABLEAU, sourceT, cardIndex);
+                        Action targetAction = new Action(GameObject.TABLEAU, targetT, 0);
+                        return new Move(sourceAction, targetAction);
                     }
                 }
             }
