@@ -4,6 +4,7 @@ import org.secuso.privacyfriendlysolitaire.model.Action;
 import org.secuso.privacyfriendlysolitaire.model.Card;
 import org.secuso.privacyfriendlysolitaire.model.GameObject;
 import org.secuso.privacyfriendlysolitaire.model.Move;
+import org.secuso.privacyfriendlysolitaire.model.Tableau;
 
 
 import java.util.Vector;
@@ -82,17 +83,19 @@ class MoveFinder {
      * @return a possible Move from Tableau to Tableau or null if none could be found
      */
     private static Move findMoveTableauToTableau(SolitaireGame game) {
-        for (int sourceT = 0; sourceT < game.getTableaus().size(); sourceT++) {
-            if (game.getTableauAtPos(sourceT).getFaceUp().isEmpty()) {
+        for (int sourceT = 0; sourceT < Constants.NR_OF_TABLEAUS; sourceT++) {
+            Tableau sourceTab = game.getTableauAtPos(sourceT);
+            if (sourceTab.getFaceUp().isEmpty()) {
                 continue;
             }
-            for (int targetT = 0; targetT < game.getTableaus().size(); targetT++) {
+            for (int targetT = 0; targetT < Constants.NR_OF_TABLEAUS; targetT++) {
                 if (sourceT == targetT) {
                     continue;
                 }
-                for (int cardIndex = 0; cardIndex < game.getTableauAtPos(targetT).getFaceUp().size(); cardIndex++) {
-                    Vector<Card> toBeMoved = game.getTableauAtPos(sourceT).getCopyFaceUpVector(cardIndex);
-                    if (game.getTableauAtPos(targetT).isAddingFaceUpVectorPossible(toBeMoved)) {
+                Tableau targetTab = game.getTableauAtPos(targetT);
+                for (int cardIndex = 0; cardIndex < targetTab.getFaceUp().size(); cardIndex++) {
+                    Vector<Card> toBeMoved = sourceTab.getCopyFaceUpVector(cardIndex);
+                    if (targetTab.isAddingFaceUpVectorPossible(toBeMoved)) {
                         //check if reversal of previous move
                         if (!game.getMoves().isEmpty()) {
                             Move prevMove = game.getMoves().lastElement();

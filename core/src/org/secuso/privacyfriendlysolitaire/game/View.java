@@ -176,6 +176,9 @@ public class View implements GameListener {
                 ViewConstants.DeckX, ViewConstants.WasteDeckFoundationY, -1, -1);
         setImageScalingAndPositionAndStackCardIndicesAndAddToStage(backsideCardOnDeck, GameObject.DECK,
                 ViewConstants.DeckX, ViewConstants.WasteDeckFoundationY, -1, -1);
+        if (deckWaste.getDeck().isEmpty()) {
+            backsideCardOnDeck.setVisible(false);
+        }
     }
 
 
@@ -192,6 +195,7 @@ public class View implements GameListener {
 
         // get whether this was a marking action
         if (prevAction != null) {
+            Gdx.app.log("VIEW: prevAction ", prevAction.toString());
             int stackIndex = prevAction.getStackIndex();
 
             List<Card> cardsToBeMarked = new ArrayList<Card>();
@@ -226,6 +230,7 @@ public class View implements GameListener {
                     if (!game.wasUndoMove()) {
                         // usual move
                         Move prevMove = game.getMoves().elementAt(game.getMovePointer());
+                        Gdx.app.log("VIEW: prevMove ", prevMove.toString());
                         handleMove(prevMove, game);
                     } else {
                         // undo move
@@ -237,10 +242,9 @@ public class View implements GameListener {
                 Gdx.app.log("Error", e.getClass().toString() + ": " + e.getMessage() + ", probably an invalid move");
                 e.printStackTrace();
 
-//                Gdx.app.log("game after ", game.toString());
-                // maybe an invalid move
             }
         }
+//        Gdx.app.log("game after ", game.toString());
 
         // TODO: delete later, only for debug reasons
         checkModelAndViewCorrect(game);
@@ -805,13 +809,6 @@ public class View implements GameListener {
                                           int sourceStack, int sourceCardIndex, int targetStack,
                                           int targetCardIndex, int nrOfFaceDownInSourceTableau,
                                           int nrOfFaceDownInTargetTableau) {
-//        Gdx.app.log("cardsToBeMovedTextureStrings ", cardsToBeMovedTextureStrings.toString());
-//        if (targetCardTextureString != null) {
-//            Gdx.app.log("targetCardTextureString ", targetCardTextureString);
-//        } else {
-//            Gdx.app.log("targetCardTextureString ", "null");
-//        }
-
         // find correct card that should be moved and card to move it to
         List<ImageWrapper> sourceCards = new ArrayList<ImageWrapper>(cardsToBeMovedTextureStrings.size());
         for (int i = 0; i < cardsToBeMovedTextureStrings.size(); i++) {

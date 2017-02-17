@@ -135,4 +135,41 @@ public class Application extends ApplicationAdapter implements ScoreListener {
             }
         }
     }
+
+    public void autoMove() {
+        // all of this needs to run on libgdx's open gl rendering thread
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+
+                Move move;
+                //while (true) {
+                Gdx.app.log("findMove aufgerufen auf game ", game.toString());
+                move = MoveFinder.findMove(game);
+                try {
+                    if (move != null) {
+                        //break;
+                        Gdx.app.log("autoMove action1", move.getAction1().toString());
+                        game.handleAction(move.getAction1(), false);
+
+                        try {
+                            sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (move.getAction2() != null) {
+                            Gdx.app.log("autoMove action2", move.getAction2().toString());
+                            game.handleAction(move.getAction2(), false);
+                        } else {
+                            Gdx.app.log("autoMove action2", "null action was not passed to model");
+                        }
+                    }
+                } catch (Exception e) {
+                    Gdx.app.log("----FEHLER----, gesamter Move war ", move.toString());
+                    e.printStackTrace();
+                }
+                //}
+            }});
+    }
 }
