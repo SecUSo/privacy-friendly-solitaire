@@ -452,8 +452,6 @@ public class View implements GameListener {
             // possibilities: Tableau -> Tableau, Tableau -> Foundation
             case TABLEAU:
                 Tableau tabAtSourceStack = game.getTableauAtPos(sourceStack);
-                Tableau tabAtTargetStack = game.getTableauAtPos(targetStack);
-                Vector<Card> faceUpAtTargetStack = tabAtTargetStack.getFaceUp();
 
                 nrOfFaceDownInSourceTableauAfterChange =
                         tabAtSourceStack.getFaceDown().size();
@@ -468,6 +466,9 @@ public class View implements GameListener {
 
                 // ------------------------ T -> T ------------------------
                 if (ac2.getGameObject().equals(GameObject.TABLEAU)) {
+                    Tableau tabAtTargetStack = game.getTableauAtPos(targetStack);
+                    Vector<Card> faceUpAtTargetStack = tabAtTargetStack.getFaceUp();
+
                     int nrOfFaceDownInTargetTableau = tabAtTargetStack.getFaceDown().size();
                     // distinguish empty target tab from tab with exactly one card
                     targetCard--;
@@ -512,15 +513,16 @@ public class View implements GameListener {
 
             // possibilities: Foundation -> Tableau
             case FOUNDATION:
-                tabAtTargetStack = game.getTableauAtPos(targetStack);
-                faceUpAtTargetStack = tabAtTargetStack.getFaceUp();
-
-                // after moving the card the old foundation top is now on top the tableau
-                // (on top the targetCard)
-                String textureStringFoundationSource = loader.getCardTextureName(
-                        faceUpAtTargetStack.get(targetCard + 1));
                 // ------------------------ F -> T ------------------------
                 if (ac2.getGameObject().equals(GameObject.TABLEAU)) {
+                    Tableau tabAtTargetStack = game.getTableauAtPos(targetStack);
+                    Vector<Card> faceUpAtTargetStack = tabAtTargetStack.getFaceUp();
+
+                    // after moving the card the old foundation top is now on top the tableau
+                    // (on top the targetCard)
+                    String textureStringFoundationSource = loader.getCardTextureName(
+                            faceUpAtTargetStack.get(targetCard + 1));
+
                     String textureStringTableauTarget = null;
                     if (tabAtTargetStack.getNrOfAllCards() != 1) {
                         textureStringTableauTarget = loader.getCardTextureName(
