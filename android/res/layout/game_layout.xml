@@ -51,8 +51,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/game_points"
                             android:layout_centerHorizontal="true"
+                            android:text="@string/pref_count_point"
                             android:id="@+id/point"
                             />
                         <TextView

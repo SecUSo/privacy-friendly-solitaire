@@ -9,13 +9,18 @@
         android:layout_height="wrap_content"
         android:id="@+id/rules_description"
         android:layout_gravity="center_horizontal"
-        android:layout_width="380dp" />
+        android:layout_width="match_parent"
+        android:layout_marginLeft="35px"
+        android:layout_marginRight="35px"
+     />
 
     <TextView
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_width="380dp"
-        android:textColor="@color/lightblue"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="35px"
+        android:layout_marginRight="35px"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_marginTop="10dp"
         android:text="@string/rules_point" />
 
@@ -25,7 +30,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/rules_point_desc"
         android:layout_gravity="center_horizontal"
-        android:layout_width="380dp"/>
+        android:layout_width="match_parent"
+        android:layout_marginLeft="35px"
+        android:layout_marginRight="35px"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,7 +51,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/rules_point_desc_vegas"
         android:layout_gravity="center_horizontal"
-        android:layout_width="380dp"/>
-
+        android:layout_width="match_parent"
+        android:layout_marginLeft="35px"
+        android:layout_marginRight="35px"/>
 
 </LinearLayout>
