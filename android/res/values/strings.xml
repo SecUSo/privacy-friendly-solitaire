@@ -41,7 +41,7 @@
     <string name="help_redo_summary">Redo last move</string>
 
     <string name="help_foundation">Automove</string>
-    <string name="help_foundation_summary">By shaking, cards are automatically stored on the foundations, if possible</string>
+    <string name="help_foundation_summary">Shaking the device moves all cards to their respective foundations</string>
 
     <string name="help_hint">Hint</string>
     <string name="help_hint_summary">Hint for a possible move</string>
@@ -92,7 +92,7 @@
     <string name="pref_shake_switch_summary_off">Off</string>
 
     <string name="pref_count_point">Points</string>
-    <string name="pref_point_summary_off">Stantard</string>
+    <string name="pref_point_summary_off">Standard</string>
     <string name="pref_point_summary_on">Vegas</string>
     <string name="pref_point_summary_none">None</string>
 

@@ -87,7 +87,7 @@
     <string name="pref_shake_switch_summary_off">Aus</string>
 
     <string name="pref_count_point">Punkte</string>
-    <string name="pref_point_summary_off">Stantard</string>
+    <string name="pref_point_summary_off">Standard</string>
     <string name="pref_point_summary_on">Vegas</string>
     <string name="pref_point_summary_none">Keine</string>
 
