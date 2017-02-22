@@ -1,5 +1,7 @@
 package org.secuso.privacyfriendlysolitaire.game;
 
+import com.badlogic.gdx.Gdx;
+
 import org.secuso.privacyfriendlysolitaire.model.Action;
 import org.secuso.privacyfriendlysolitaire.model.Card;
 import org.secuso.privacyfriendlysolitaire.model.GameObject;
@@ -36,10 +38,10 @@ class MoveFinder {
         if (foundMove != null) {
             return foundMove;
         }
-        foundMove = findMoveFoundationToTableau(game);
-        if (foundMove != null) {
-            return foundMove;
-        }
+//        foundMove = findMoveFoundationToTableau(game);
+//        if (foundMove != null) {
+//            return foundMove;
+//        }
         foundMove = findMoveDeck(game);
         if (foundMove != null) {
             return foundMove;
@@ -93,8 +95,8 @@ class MoveFinder {
                     continue;
                 }
                 Tableau targetTab = game.getTableauAtPos(targetT);
-                for (int cardIndex = 0; cardIndex < targetTab.getFaceUp().size(); cardIndex++) {
-                    Vector<Card> toBeMoved = sourceTab.getCopyFaceUpVector(cardIndex);
+                for (int sourceCardIndex = 0; sourceCardIndex < sourceTab.getFaceUp().size(); sourceCardIndex++) {
+                    Vector<Card> toBeMoved = sourceTab.getCopyFaceUpVector(sourceCardIndex);
                     if (targetTab.isAddingFaceUpVectorPossible(toBeMoved)) {
                         //check if reversal of previous move
                         if (!game.getMoves().isEmpty()) {
@@ -107,7 +109,7 @@ class MoveFinder {
                                 continue;
                             }
                         }
-                        Action sourceAction = new Action(GameObject.TABLEAU, sourceT, cardIndex);
+                        Action sourceAction = new Action(GameObject.TABLEAU, sourceT, sourceCardIndex);
                         Action targetAction = new Action(GameObject.TABLEAU, targetT, 0);
                         return new Move(sourceAction, targetAction);
                     }
