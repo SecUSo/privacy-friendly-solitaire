@@ -25,6 +25,8 @@
             android:summaryOn="@string/pref_point_summary_on"
             android:title="@string/pref_count_point" />
 
+
+
         <SwitchPreference
             android:key="@string/pref_waste"
             android:summaryOff="@string/pref_waste_summary_off"
@@ -34,30 +36,16 @@
         <ListPreference
             android:entries="@array/color_palete"
             android:entryValues="@array/color_palete_value"
-            android:key="backgroundcolor"
+            android:key="@string/sp_key_background_color"
             android:title="@string/sp_key_background_color" />
 
-
-        <Preference
-            android:icon="@drawable/icon_backroundcolor"
-            android:key="@string/sp_key_background_color"
-            android:layout="@layout/setting_color"
-            android:selectable="true"
-            android:title="@string/sp_key_background_color">
-            <intent android:action="org.secuso.privacyfriendlyexample.BackgroundActivity" />
-        </Preference>
+        <ListPreference
+            android:entries="@array/point_screen"
+            android:entryValues="@array/point_screen_value"
+            android:key="@string/pref_count_point"
+            android:title="@string/pref_count_point" />
 
 
-        <!--      <ListPreference
-                   android:key="@string/sp_key_background_color"
-                   android:title="Background Color"
-                   android:entries="@array/background_color_names_array"
-                   android:entryValues="@array/background_color_values_array"
-                   android:icon="@drawable/icon_backroundcolor"
-                   android:summary="@string/summary_backroundcolor"
-                   android:defaultValue="@color/white"
-                   />
-                   -->
 
     </PreferenceCategory>
 

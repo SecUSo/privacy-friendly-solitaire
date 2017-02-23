@@ -41,21 +41,6 @@
 
 
         <activity
-            android:name=".Activities.BackgroundActivity"
-            android:label="@string/sp_key_background_color"
-            android:parentActivityName=".Activities.SettingsActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activities.SettingsActivity" />
-            <intent-filter>
-                <action android:name="org.secuso.privacyfriendlyexample.BackgroundActivity"/>
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-
-        <activity
             android:name=".Activities.HelpActivity"
             android:label="@string/help"
             android:parentActivityName=".Activities.MainActivity"

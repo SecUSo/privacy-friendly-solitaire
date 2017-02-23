@@ -100,25 +100,6 @@
     <string name="sp_key_background_color">Hintergrundfarbe wählen</string>
     <string name="summary_backroundcolor">Wählen Sie die Hintergrundfarbe des Spielfeldes</string>
 
-    <string name="cyan">BLAU</string>
-    <string name="green">GRÜN</string>
-    <string name="gray">GRAU</string>
-    <string name="brown">BRAUN</string>
 
-
-    <string-array name="color_palete">
-        <item name="color_p_green">GRÜN</item>
-        <item name="color_p_blue">BLAU</item>
-        <item name="color_p_gray">GRAU</item>
-        <item name="color_p_brown">BRAUN</item>
-    </string-array>
-
-
-    <string-array name="color_palete_value">
-        <item name="green">#228b22</item>
-        <item name="blue">#00ffff</item>
-        <item name="gray">#A8A8A8</item>
-        <item name="brown">#d2b48c</item>
-    </string-array>
 
 </resources>

@@ -106,27 +106,13 @@
     <string name="sp_key_background_color">Select background color</string>
     <string name="summary_backroundcolor">Select the background color of the playing area</string>
 
+
+
+
     <string name="cyan">BLUE</string>
     <string name="green">GREEN</string>
     <string name="gray">GRAY</string>
     <string name="brown">BROWN</string>
-
-
-    <string-array name="color_palete">
-        <item name="color_p_green">GREEN</item>
-        <item name="color_p_blue">BLUE</item>
-        <item name="color_p_gray">GRAY</item>
-        <item name="color_p_brown">BROWN</item>
-    </string-array>
-
-
-    <string-array name="color_palete_value">
-        <item name="green">#228b22</item>
-        <item name="blue">#00ffff</item>
-        <item name="gray">#A8A8A8</item>
-        <item name="brown">#d2b48c</item>
-    </string-array>
-
 
     <!-- ### WELCOME DIALOG ### -->
     <!-- TODO: The welcome screen should introduce the app and the key elements of the start page.-->

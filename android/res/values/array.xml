@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Array value for background color -->
+    <string-array name="color_palete">
+        <item name="color_p_green">GREEN</item>
+        <item name="color_p_blue">BLUE</item>
+        <item name="color_p_gray">GREY</item>
+        <item name="color_p_brown">BROWN</item>
+    </string-array>
+
+
+    <string-array name="color_palete_value">
+        <item name="color_p_green">1</item>
+        <item name="color_p_blue">2</item>
+        <item name="color_p_gray">3</item>
+        <item name="color_p_brown">4</item>
+    </string-array>
+
+
+    <!--Array value for points -->
+    <string-array name="point_screen">
+        <item name="none">None</item>
+        <item name="standard">Standard</item>
+        <item name="vegas">Vegas</item>
+    </string-array>
+
+    <string-array name="point_screen_value">
+        <item name="none">1</item>
+        <item name="standard">2</item>
+        <item name="vegas">3</item>
+    </string-array>
+</resources>

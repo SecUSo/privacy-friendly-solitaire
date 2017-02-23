@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
@@ -35,6 +36,8 @@ import org.secuso.privacyfriendlysolitaire.R;
 
 public class SettingsActivity extends BaseActivity {
     final Context context = this;
+    static SharedPreferences mSharedPreferences;
+    static SharedPreferences.Editor edit;
 
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
@@ -98,9 +101,8 @@ public class SettingsActivity extends BaseActivity {
         setContentView(R.layout.activity_settings);
         overridePendingTransition(0, 0);
 
-
-        final SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        final SharedPreferences.Editor edit = mSharedPreferences.edit();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        edit = mSharedPreferences.edit();
 
 
     }
@@ -174,33 +176,40 @@ public class SettingsActivity extends BaseActivity {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class GeneralPreferenceFragment extends PreferenceFragment {
 
+
+
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_settings);
-            //setHasOptionsMenu(true);
 
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
-            //bindPreferenceSummaryToValue(findPreference("example_text"));
-            //bindPreferenceSummaryToValue(findPreference("example_list"));
+            final ListPreference color_list = (ListPreference) findPreference(getString(R.string.sp_key_background_color));
+
+            color_list.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    if (color_list.getValue().equals("1")) {
+                        edit.putString("pref_col", "green");
+                        edit.commit();
+                    } else if (color_list.getValue().equals("2")) {
+                        edit.putString("pref_col", "blue");
+                        edit.commit();
+                    } else if (color_list.getValue().equals("3")) {
+                        edit.putString("pref_col", "grey");
+                        edit.commit();
+                    } else if (color_list.getValue().equals("4")) {
+                        edit.putString("pref_col", "brown");
+                        edit.commit();
+                    }
+
+                    return true;
+                }
+            });
+
+
 
         }
-
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            int id = item.getItemId();
-            if (id == android.R.id.home) {
-                //getActivity().finish();
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
-                return true;
-            }
-            return super.onOptionsItemSelected(item);
-        }
-
 
     }
 

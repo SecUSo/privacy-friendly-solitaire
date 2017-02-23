@@ -47,7 +47,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class Solitaire extends AndroidApplication implements NavigationView.OnNavigationItemSelectedListener, CallBackListener {
+public class Solitaire extends AndroidApplication implements NavigationView.OnNavigationItemSelectedListener, CallBackListener{
 
 
     Timer timer;
@@ -55,6 +55,8 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     TextView timerView;
     TextView pointsView;
     final Context context = this;
+    com.badlogic.gdx.graphics.Color c;
+
 
 
 
@@ -85,6 +87,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         setContentView(R.layout.game_layout);
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         mHandler = new Handler();
         overridePendingTransition(0, 0);
 
@@ -123,9 +126,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         } else {
             //TODO: Shake animation off
         }
-
-
-
 
 
 
@@ -171,19 +171,19 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
             }
         });
 
-        com.badlogic.gdx.graphics.Color c;
-        if( mSharedPreferences.getString("pref_color", "green").equals("green")){
+
+
+
+        // Set the background color of the game panel
+
+        if( mSharedPreferences.getString("pref_col", "green").equals("green")){
              c = Color.FOREST;
-        }else if(mSharedPreferences.getString("pref_color", "gray").equals("gray")){
+        }else if(mSharedPreferences.getString("pref_col", "grey").equals("grey")){
             c = Color.GRAY;
-
-        }else if(mSharedPreferences.getString("pref_color", "blue").equals("blue")) {
+        }else if(mSharedPreferences.getString("pref_col", "blue").equals("blue")) {
             c = Color.CYAN;
-
-        }
-        else if(mSharedPreferences.getString("pref_color", "brown").equals("brown")) {
+        } else if(mSharedPreferences.getString("pref_col", "brown").equals("brown")) {
             c = Color.TAN;
-
         } else {
             c =Color.GRAY;
         }
@@ -466,4 +466,8 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
             }
         });
     }
+
+
+
+
 }
