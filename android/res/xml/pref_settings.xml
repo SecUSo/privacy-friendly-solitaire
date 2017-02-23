@@ -40,12 +40,11 @@
             android:title="@string/sp_key_background_color" />
 
         <ListPreference
-            android:entries="@array/point_screen"
-            android:entryValues="@array/point_screen_value"
-            android:key="@string/pref_count_point"
-            android:title="@string/pref_count_point" />
-
-
+            android:entries="@array/time_screen"
+            android:entryValues="@array/time_screen_value"
+            android:key="@string/pref_time"
+            android:title="@string/pref_time"
+            android:summary="@string/pref_time_summary"/>
 
     </PreferenceCategory>
 

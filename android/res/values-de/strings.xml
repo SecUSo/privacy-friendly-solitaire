@@ -96,6 +96,9 @@
     <string name="pref_waste_summary_on">Drei Karten</string>
 
 
+    <string name="pref_time">Zeit</string>
+    <string name="pref_time_summary">Die Spielzeit zählen</string>
+
     <!-- Backgroundcolor-->
     <string name="sp_key_background_color">Hintergrundfarbe wählen</string>
     <string name="summary_backroundcolor">Wählen Sie die Hintergrundfarbe des Spielfeldes</string>

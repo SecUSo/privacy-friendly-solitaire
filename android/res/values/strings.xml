@@ -101,6 +101,9 @@
     <string name="pref_waste_summary_off">Draw one</string>
     <string name="pref_waste_summary_on">Draw three</string>
 
+    <string name="pref_time">Time</string>
+    <string name="pref_time_summary">Count played time</string>
+
 
     <!-- Backgroundcolor-->
     <string name="sp_key_background_color">Select background color</string>

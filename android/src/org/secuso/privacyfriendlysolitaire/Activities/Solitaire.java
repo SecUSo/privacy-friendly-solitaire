@@ -193,7 +193,9 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
         //start timer for game
         timerView = (TextView) findViewById(R.id.timerView);
-        startTimer();
+       if(countTime())
+            startTimer();
+
 
         //pointsView
 
@@ -266,6 +268,15 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         return timeAlert;
     }
 
+
+    public boolean countTime(){
+        if(mSharedPreferences.getString("time_co","off").equals("off")){
+            return false;
+        }else if (mSharedPreferences.getString("time_co","on").equals("on")){
+            return true;
+        }
+        return true;
+    }
 
     //Alert box for won a game which prints the total time and the reached points
     public void alertBoxWonMessage() {
