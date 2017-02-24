@@ -144,7 +144,6 @@ public class Application extends ApplicationAdapter implements ScoreListener {
 
                 Move move;
                 //while (true) {
-                Gdx.app.log("findMove aufgerufen auf game ", game.toString());
                 move = MoveFinder.findMove(game);
                 try {
                     if (move != null) {
@@ -164,12 +163,15 @@ public class Application extends ApplicationAdapter implements ScoreListener {
                         } else {
                             Gdx.app.log("autoMove action2", "null action was not passed to model");
                         }
+                    } else {
+                        Gdx.app.log("autoMove", "move war null");
                     }
                 } catch (Exception e) {
                     Gdx.app.log("----FEHLER----, gesamter Move war ", move.toString());
                     e.printStackTrace();
                 }
                 //}
-            }});
+            }
+        });
     }
 }

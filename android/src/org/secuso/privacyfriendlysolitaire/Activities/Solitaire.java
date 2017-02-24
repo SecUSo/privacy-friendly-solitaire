@@ -7,8 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.ListPreference;
-import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -17,14 +15,12 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 
 import android.text.Html;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -34,11 +30,8 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.surfaceview.GLSurfaceView20;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.utils.StringBuilder;
 
 import org.secuso.privacyfriendlysolitaire.CallBackListener;
-import org.secuso.privacyfriendlysolitaire.Utils.Config;
-import org.secuso.privacyfriendlysolitaire.Utils.Constant;
 import org.secuso.privacyfriendlysolitaire.game.Application;
 import org.secuso.privacyfriendlysolitaire.R;
 import org.secuso.privacyfriendlysolitaire.game.Constants;
@@ -47,7 +40,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class Solitaire extends AndroidApplication implements NavigationView.OnNavigationItemSelectedListener, CallBackListener{
+public class Solitaire extends AndroidApplication implements NavigationView.OnNavigationItemSelectedListener, CallBackListener {
 
 
     Timer timer;
@@ -56,8 +49,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     TextView pointsView;
     final Context context = this;
     com.badlogic.gdx.graphics.Color c;
-
-
 
 
     // delay to launch nav drawer item, to allow close animation to play
@@ -74,8 +65,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     // Helper
     private Handler mHandler;
     protected SharedPreferences mSharedPreferences;
-
-
 
 
     //private AppCompatDelegate delegate;
@@ -107,17 +96,16 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         outerLayout.addView(gameView);
 
 
-
-        //settings, which were set by the player
-       final boolean sound = mSharedPreferences.getBoolean(getString(R.string.pref_sound_switch), true );
-        final boolean shake = mSharedPreferences.getBoolean(getString(R.string.pref_shake_switch), true);
-        final boolean waste = mSharedPreferences.getBoolean(getString(R.string.pref_waste), true);
-        boolean points = mSharedPreferences.getBoolean(getString(R.string.pref_count_point), true);
+        // settings, which were set by the player,
+        // if the setting could not be found, set it to false
+        final boolean sound = mSharedPreferences.getBoolean(getString(R.string.pref_sound_switch), false);
+        final boolean shake = mSharedPreferences.getBoolean(getString(R.string.pref_shake_switch), false);
+        final boolean waste = mSharedPreferences.getBoolean(getString(R.string.pref_waste), false);
+        final boolean points = mSharedPreferences.getBoolean(getString(R.string.pref_count_point), false);
 
         if (sound) {
             //TODO: Sound an schalten
-        }
-        else{
+        } else {
             //TODO: Sound aus schalten
         }
 
@@ -128,29 +116,23 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         }
 
 
-
         // default modes for cardDraw and score
+        int scoreMode = Constants.MODE_STANDARD;
         int cardDrawMode = Constants.MODE_ONE_CARD_DEALT;
-        int scoreMode = Constants.MODE_VEGAS;
 
-        if ( waste) {
-            cardDrawMode = Constants.MODE_THREE_CARDS_DEALT;
-        }else {
-            cardDrawMode =Constants.MODE_ONE_CARD_DEALT;
-        }
         if (points) {
             scoreMode = Constants.MODE_VEGAS;
-        }else {
-            scoreMode = Constants.MODE_STANDARD;
         }
-
+        if (waste) {
+            cardDrawMode = Constants.MODE_THREE_CARDS_DEALT;
+        }
 
 
         ImageButton undo = (ImageButton) findViewById(R.id.undo);
         undo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              application.undo();
+                application.undo();
             }
         });
 
@@ -167,33 +149,31 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         hint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: hint button Funktion von Hinweis drauf legen aus core
+//                application.autoMove();
             }
         });
 
 
-
-
         // Set the background color of the game panel
 
-        if( mSharedPreferences.getString("pref_col", "green").equals("green")){
-             c = Color.FOREST;
-        }else if(mSharedPreferences.getString("pref_col", "grey").equals("grey")){
+        if (mSharedPreferences.getString("pref_col", "green").equals("green")) {
+            c = Color.FOREST;
+        } else if (mSharedPreferences.getString("pref_col", "grey").equals("grey")) {
             c = Color.GRAY;
-        }else if(mSharedPreferences.getString("pref_col", "blue").equals("blue")) {
+        } else if (mSharedPreferences.getString("pref_col", "blue").equals("blue")) {
             c = Color.CYAN;
-        } else if(mSharedPreferences.getString("pref_col", "brown").equals("brown")) {
+        } else if (mSharedPreferences.getString("pref_col", "brown").equals("brown")) {
             c = Color.TAN;
         } else {
-            c =Color.GRAY;
+            c = Color.GRAY;
         }
 
-            // start game
+        // start game
         application.customConstructor(cardDrawMode, scoreMode, c);
 
         //start timer for game
         timerView = (TextView) findViewById(R.id.timerView);
-       if(countTime())
+        if (countTime())
             startTimer();
 
 
@@ -248,31 +228,28 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
     //display time   in Alertbox
     String timeAlert;
-    public String timeForAlert(int t){
 
-        if(t == 0) {
+    public String timeForAlert(int t) {
+
+        if (t == 0) {
             timeAlert = String.valueOf(t);
-        }
-        else if( (t < 60) && (t%60 <10)){
-            timeAlert=String.valueOf("0:0" + t) ;
-        }
-        else if( (t < 60) && (t%60 >10)){
-            timeAlert=String.valueOf("0:" + t) ;
-        }
-        else if( (t > 60) && (t%60 >10)){
-            timeAlert=String.valueOf(((t - (t%60))/60) +":" + (t%60));
-        }
-        else if( (t > 60) && (t%60 <10)) {
-            timeAlert=String.valueOf(((t - (t%60))/60) + ":0"+ (t%60)) ;
+        } else if ((t < 60) && (t % 60 < 10)) {
+            timeAlert = String.valueOf("0:0" + t);
+        } else if ((t < 60) && (t % 60 > 10)) {
+            timeAlert = String.valueOf("0:" + t);
+        } else if ((t > 60) && (t % 60 > 10)) {
+            timeAlert = String.valueOf(((t - (t % 60)) / 60) + ":" + (t % 60));
+        } else if ((t > 60) && (t % 60 < 10)) {
+            timeAlert = String.valueOf(((t - (t % 60)) / 60) + ":0" + (t % 60));
         }
         return timeAlert;
     }
 
 
-    public boolean countTime(){
-        if(mSharedPreferences.getString("time_co","off").equals("off")){
+    public boolean countTime() {
+        if (mSharedPreferences.getString("time_co", "off").equals("off")) {
             return false;
-        }else if (mSharedPreferences.getString("time_co","on").equals("on")){
+        } else if (mSharedPreferences.getString("time_co", "on").equals("on")) {
             return true;
         }
         return true;
@@ -282,29 +259,29 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     public void alertBoxWonMessage() {
 
 
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                        context);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                context);
 
-        String alertContent= "Total time: "+String.valueOf(time) +"/n" + "Total Points: " ;
+        String alertContent = "Total time: " + String.valueOf(time) + "/n" + "Total Points: ";
         // set title
         alertDialogBuilder.setTitle("You won!");
-                // set dialog message
-                alertDialogBuilder
-                        .setMessage(Html.fromHtml( "Total time: "+timeForAlert(time) + "<br>"+ "Total Points: " +  pointsView.getText().toString()))
-                        .setCancelable(false)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // if this button is clicked, close
-                                // current activity
-                                Solitaire.this.finish();
-                            }
-                        });
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(Html.fromHtml("Total time: " + timeForAlert(time) + "<br>" + "Total Points: " + pointsView.getText().toString()))
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, close
+                        // current activity
+                        Solitaire.this.finish();
+                    }
+                });
 
-                // create alert dialog
-                AlertDialog alertDialog = alertDialogBuilder.create();
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
 
-                // show it
-                alertDialog.show();
+        // show it
+        alertDialog.show();
     }
 
     @Override
@@ -448,8 +425,8 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
                 Toast toast = Toast.makeText(getApplicationContext(), "You won", Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.BOTTOM, 0, 0);
                 toast.show();
-                 stoptimertask(timerView);
-                 alertBoxWonMessage();
+                stoptimertask(timerView);
+                alertBoxWonMessage();
 
             }
         });
@@ -471,14 +448,12 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-          //      ((TextView) findViewById(R.id.points)).setText(String.valueOf(score));
+                //      ((TextView) findViewById(R.id.points)).setText(String.valueOf(score));
                 pointsView.setText(String.valueOf(score));
 
             }
         });
     }
-
-
 
 
 }

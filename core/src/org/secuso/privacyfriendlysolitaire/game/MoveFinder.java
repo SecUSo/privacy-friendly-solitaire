@@ -26,16 +26,18 @@ class MoveFinder {
         if (foundMove != null) {
             return foundMove;
         }
+        foundMove = findMoveWasteToFoundation(game);
+        if (foundMove != null) {
+            return foundMove;
+        }
         foundMove = findMoveTableauToTableau(game);
         if (foundMove != null) {
             return foundMove;
         }
         foundMove = findMoveWasteToTableau(game);
         if (foundMove != null) {
-            return foundMove;
-        }
-        foundMove = findMoveWasteToFoundation(game);
-        if (foundMove != null) {
+            Gdx.app.log("moveWasteToTableau ", foundMove.toString());
+
             return foundMove;
         }
 //        foundMove = findMoveFoundationToTableau(game);
@@ -128,9 +130,17 @@ class MoveFinder {
             Vector<Card> toBeMoved = new Vector<Card>();
             toBeMoved.add(game.getDeckWaste().getWasteTop());
             for (int t = 0; t < game.getTableaus().size(); t++) {
-                if (game.getTableauAtPos(t).isAddingFaceUpVectorPossible(toBeMoved)) {
+                Tableau targetTab = game.getTableauAtPos(t);
+
+                if (targetTab.isAddingFaceUpVectorPossible(toBeMoved)) {
                     Action sourceAction = new Action(GameObject.WASTE, 0, 0);
-                    Action targetAction = new Action(GameObject.TABLEAU, t, 0);
+                    Action targetAction;
+                    int nrOfFaceUpInTarget = targetTab.getFaceUp().size();
+                    if (nrOfFaceUpInTarget == 0) {
+                        targetAction = new Action(GameObject.TABLEAU, t, -1);
+                    } else {
+                        targetAction = new Action(GameObject.TABLEAU, t, nrOfFaceUpInTarget - 1);
+                    }
                     return new Move(sourceAction, targetAction);
                 }
             }

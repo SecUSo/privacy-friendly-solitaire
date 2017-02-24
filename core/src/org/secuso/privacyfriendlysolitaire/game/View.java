@@ -195,7 +195,7 @@ public class View implements GameListener {
 
         // get whether this was a marking action
         if (prevAction != null) {
-            Gdx.app.log("VIEW: prevAction ", prevAction.toString());
+            Gdx.app.log("---VIEW--- prevAction ", prevAction.toString());
             int stackIndex = prevAction.getStackIndex();
 
             List<Card> cardsToBeMarked = new ArrayList<Card>();
@@ -230,7 +230,7 @@ public class View implements GameListener {
                     if (!game.wasUndoMove()) {
                         // usual move
                         Move prevMove = game.getMoves().elementAt(game.getMovePointer());
-                        Gdx.app.log("VIEW: prevMove ", prevMove.toString());
+                        Gdx.app.log("---VIEW--- prevMove ", prevMove.toString());
                         handleMove(prevMove, game);
                     } else {
                         // undo move
@@ -244,7 +244,8 @@ public class View implements GameListener {
 
             }
         }
-//        Gdx.app.log("game after ", game.toString());
+//        Gdx.app.log("---VIEW--- game after ", game.toString());
+        Gdx.app.log("------------------------------------------------", " ");
 
         // TODO: delete later, only for debug reasons
         checkModelAndViewCorrect(game);
