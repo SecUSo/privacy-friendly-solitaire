@@ -97,25 +97,26 @@ class MoveFinder {
                     continue;
                 }
                 Tableau targetTab = game.getTableauAtPos(targetT);
-                for (int sourceCardIndex = 0; sourceCardIndex < sourceTab.getFaceUp().size(); sourceCardIndex++) {
-                    Vector<Card> toBeMoved = sourceTab.getCopyFaceUpVector(sourceCardIndex);
-                    if (targetTab.isAddingFaceUpVectorPossible(toBeMoved)) {
-                        //check if reversal of previous move
-                        if (!game.getMoves().isEmpty()) {
-                            Move prevMove = game.getMoves().lastElement();
-                            if (prevMove.getAction1().getGameObject() == GameObject.TABLEAU &&
-                                    prevMove.getAction2().getGameObject() == GameObject.TABLEAU &&
-                                    prevMove.getAction1().getStackIndex() == targetT &&
-                                    prevMove.getAction2().getStackIndex() == sourceT &&
-                                    !game.isLastMoveturnedOverTableau()) {
-                                continue;
-                            }
+                int sourceCardIndex = 0;
+//                for (int sourceCardIndex = 0; sourceCardIndex < sourceTab.getFaceUp().size(); sourceCardIndex++) {
+                Vector<Card> toBeMoved = sourceTab.getCopyFaceUpVector(sourceCardIndex);
+                if (targetTab.isAddingFaceUpVectorPossible(toBeMoved)) {
+                    //check if reversal of previous move
+                    if (!game.getMoves().isEmpty()) {
+                        Move prevMove = game.getMoves().lastElement();
+                        if (prevMove.getAction1().getGameObject() == GameObject.TABLEAU &&
+                                prevMove.getAction2().getGameObject() == GameObject.TABLEAU &&
+                                prevMove.getAction1().getStackIndex() == targetT &&
+                                prevMove.getAction2().getStackIndex() == sourceT &&
+                                !game.isLastMoveturnedOverTableau()) {
+                            continue;
                         }
-                        Action sourceAction = new Action(GameObject.TABLEAU, sourceT, sourceCardIndex);
-                        Action targetAction = new Action(GameObject.TABLEAU, targetT, 0);
-                        return new Move(sourceAction, targetAction);
                     }
+                    Action sourceAction = new Action(GameObject.TABLEAU, sourceT, sourceCardIndex);
+                    Action targetAction = new Action(GameObject.TABLEAU, targetT, 0);
+                    return new Move(sourceAction, targetAction);
                 }
+//                }
             }
         }
         return null;

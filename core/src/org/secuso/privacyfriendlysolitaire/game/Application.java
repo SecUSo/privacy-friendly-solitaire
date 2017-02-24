@@ -151,12 +151,6 @@ public class Application extends ApplicationAdapter implements ScoreListener {
                         Gdx.app.log("autoMove action1", move.getAction1().toString());
                         game.handleAction(move.getAction1(), false);
 
-                        try {
-                            sleep(500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
                         if (move.getAction2() != null) {
                             Gdx.app.log("autoMove action2", move.getAction2().toString());
                             game.handleAction(move.getAction2(), false);
