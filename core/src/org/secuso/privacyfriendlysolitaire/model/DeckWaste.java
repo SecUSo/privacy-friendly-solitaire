@@ -42,7 +42,6 @@ public class DeckWaste {
     private int fanSize=0;
 
 
-    //TODO DEPRECATED remove if not used anymore
     /**
      * @param numTurnOver the number of cards that is turned over simultaneously
      */

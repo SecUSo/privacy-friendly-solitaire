@@ -1106,23 +1106,18 @@ public class View implements GameListener {
             } else {
                 Vector<String> cardsToBeUnturned = new Vector<String>(3);
 
-                // i don't currently know how to get how many cards to unturn
-                // (since I only know the old fanSize, but not the current one (before
-                // the undo was done in the game, but how it is currently in the view)
-
-                // TODO: hier später auf newFanSize im move zugreifen
-                for (int i = deck.size() - move.getNewFanSize() + 1; i < deck.size(); i++) {
+                // turn all cards that are in the deck after size-newFanSize (fanSize after move
+                // that is currently being undone)
+                for (int i = deck.size() - move.getNewFanSize(); i < deck.size(); i++) {
                     try {
                         cardsToBeUnturned.add(loader.getCardTextureName(deck.get(i)));
                     } catch (Exception E) {
                         // if this does not exist, don't add it
                     }
                 }
-                Gdx.app.log("cardsToBeUnturned ", cardsToBeUnturned.toString());
                 turnOrUnturnDeckCard(game, cardsToBeUnturned);
             }
         } else {
-//            Gdx.app.log("Move", move.toString());
             // works analogous to handleMove (game has already done the undo)
             // plus: if an action was X->Y, we have to perform the inverse move Y->X
             switch (ac2.getGameObject()) {
@@ -1152,8 +1147,6 @@ public class View implements GameListener {
                         Vector<Card> faceUpAtTargetStack = tabAtTargetStack.getFaceUp();
                         int nrOfFaceDownInTargetTableau = tabAtTargetStack.getFaceDown().size();
                         targetCard--;
-
-//                        Gdx.app.log("targetCard ", String.valueOf(targetCard));
 
                         List<String> cardsToBeMovedTextureStrings = new ArrayList<String>();
                         for (int i = targetCard + 1; i < faceUpAtTargetStack.size(); i++) {

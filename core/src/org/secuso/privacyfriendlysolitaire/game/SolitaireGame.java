@@ -529,9 +529,6 @@ public class SolitaireGame {
                 undoTableau(toUndo);
             } else if (toUndo.getAction2().getGameObject() == GameObject.FOUNDATION) {
                 undoFoundation(toUndo);
-            } else {
-                //TODO remove this
-                throw new Error("UNDO broke, due to invalid action");
             }
             movePointer--;
             undoMove = true;
