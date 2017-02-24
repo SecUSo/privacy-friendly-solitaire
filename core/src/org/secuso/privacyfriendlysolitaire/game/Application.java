@@ -103,13 +103,23 @@ public class Application extends ApplicationAdapter implements ScoreListener {
 
     public void undo() {
         if (game.canUndo()) {
-            game.undo();
+            Gdx.app.postRunnable(new Runnable() {
+                @Override
+                public void run() {
+                    game.undo();
+                }
+            });
         }
     }
 
     public void redo() {
         if (game.canRedo()) {
-            game.redo();
+            Gdx.app.postRunnable(new Runnable() {
+                @Override
+                public void run() {
+                    game.redo();
+                }
+            });
         }
     }
 

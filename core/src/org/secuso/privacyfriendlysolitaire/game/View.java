@@ -195,7 +195,6 @@ public class View implements GameListener {
 
         // get whether this was a marking action
         if (prevAction != null) {
-            Gdx.app.log("---VIEW--- prevAction ", prevAction.toString());
             int stackIndex = prevAction.getStackIndex();
 
             List<Card> cardsToBeMarked = new ArrayList<Card>();
@@ -230,7 +229,6 @@ public class View implements GameListener {
                     if (!game.wasUndoMove()) {
                         // usual move
                         Move prevMove = game.getMoves().elementAt(game.getMovePointer());
-                        Gdx.app.log("---VIEW--- prevMove ", prevMove.toString());
                         handleMove(prevMove, game);
                     } else {
                         // undo move
@@ -245,7 +243,6 @@ public class View implements GameListener {
             }
         }
 //        Gdx.app.log("---VIEW--- game after ", game.toString());
-        Gdx.app.log("------------------------------------------------", " ");
 
         // TODO: delete later, only for debug reasons
         checkModelAndViewCorrect(game);
@@ -583,6 +580,7 @@ public class View implements GameListener {
      */
     private void paintWaste(DeckWaste deckWaste, boolean isInitialization,
                             boolean fanCardsToBeRearranged) {
+        Gdx.app.log("paintWaste ", deckWaste.toString());
         // draw first few cards before the open fan
         Vector<Card> waste = deckWaste.getWaste();
         for (int i = 0; i < waste.size() - deckWaste.getFanSize(); i++) {
@@ -632,6 +630,7 @@ public class View implements GameListener {
                 }
 
                 card.setVisible(true);
+                card.toFront();
 
             } else if (fanSize == 2) {
                 ImageWrapper card0 = fanImages.get(0);
@@ -648,7 +647,9 @@ public class View implements GameListener {
                 }
 
                 card0.setVisible(true);
+                card0.toFront();
                 card1.setVisible(true);
+                card1.toFront();
 
             } else if (fanSize == 3) {
                 ImageWrapper card0 = fanImages.get(0);
@@ -669,8 +670,11 @@ public class View implements GameListener {
                 }
 
                 card0.setVisible(true);
+                card0.toFront();
                 card1.setVisible(true);
+                card1.toFront();
                 card2.setVisible(true);
+                card2.toFront();
             }
         }
     }
@@ -1107,7 +1111,7 @@ public class View implements GameListener {
                 // the undo was done in the game, but how it is currently in the view)
 
                 // TODO: hier später auf newFanSize im move zugreifen
-                for (int i = deck.size() - 3; i < deck.size(); i++) {
+                for (int i = deck.size() - move.getNewFanSize() + 1; i < deck.size(); i++) {
                     try {
                         cardsToBeUnturned.add(loader.getCardTextureName(deck.get(i)));
                     } catch (Exception E) {
