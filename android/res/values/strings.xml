@@ -96,13 +96,17 @@
     <string name="pref_point_summary_on">Vegas</string>
     <string name="pref_point_summary_none">None</string>
 
+    <string name="pref_count_point_l">Points</string>
+
+
 
     <string name="pref_waste">Cards per draw</string>
-    <string name="pref_waste_summary_off">Draw one</string>
-    <string name="pref_waste_summary_on">Draw three</string>
+    <string name="pref_waste_summary_off">Draw </string>
+    <string name="pref_waste_summary_on">Draws </string>
 
     <string name="pref_time">Time</string>
-    <string name="pref_time_summary">Count played time</string>
+    <string name="pref_time_summary_on">On</string>
+    <string name="pref_time_summary_off">Off</string>
 
 
     <!-- Backgroundcolor-->
@@ -111,11 +115,6 @@
 
 
 
-
-    <string name="cyan">BLUE</string>
-    <string name="green">GREEN</string>
-    <string name="gray">GRAY</string>
-    <string name="brown">BROWN</string>
 
     <!-- ### WELCOME DIALOG ### -->
     <!-- TODO: The welcome screen should introduce the app and the key elements of the start page.-->

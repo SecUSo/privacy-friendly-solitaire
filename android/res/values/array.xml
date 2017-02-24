@@ -19,26 +19,19 @@
 
 
     <!--Array value for points -->
-<!--    <string-array name="point_screen">
-        <item name="none">None</item>
+    <string-array name="point_screen">
+        <item name ="points_off">keine</item>
         <item name="standard">Standard</item>
         <item name="vegas">Vegas</item>
     </string-array>
 
     <string-array name="point_screen_value">
-        <item name="none">1</item>
+        <item name="points_off">1</item>
         <item name="standard">2</item>
         <item name="vegas">3</item>
     </string-array>
-    -->
 
-    <string-array name="time_screen">
-        <item name="no_count">turn on</item>
-        <item name="count">turn off</item>
-    </string-array>
 
-    <string-array name="time_screen_value">
-    <item name="no_count">1</item>
-    <item name="count">2</item>
-    </string-array>
+
 </resources>
+

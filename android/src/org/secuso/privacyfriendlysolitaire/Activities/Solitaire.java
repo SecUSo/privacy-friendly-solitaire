@@ -277,11 +277,11 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
                     }
                 });
 
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
 
-        // show it
-        alertDialog.show();
+                // show it
+                alertDialog.show();
     }
 
     @Override
@@ -425,8 +425,8 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
                 Toast toast = Toast.makeText(getApplicationContext(), "You won", Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.BOTTOM, 0, 0);
                 toast.show();
-                stoptimertask(timerView);
-                alertBoxWonMessage();
+                 stoptimertask(timerView);
+                 alertBoxWonMessage();
 
             }
         });
@@ -454,6 +454,8 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
             }
         });
     }
+
+
 
 
 }

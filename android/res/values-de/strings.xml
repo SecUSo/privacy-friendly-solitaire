@@ -91,13 +91,20 @@
     <string name="pref_point_summary_on">Vegas</string>
     <string name="pref_point_summary_none">Keine</string>
 
+    <string name="pref_count_point_l">Punkte</string>
+
+
+
     <string name="pref_waste">Karten pro Zug</string>
-    <string name="pref_waste_summary_off">Eine Karte</string>
-    <string name="pref_waste_summary_on">Drei Karten</string>
+    <string name="pref_waste_summary_off"> Karte</string>
+    <string name="pref_waste_summary_on"> Karten</string>
 
 
     <string name="pref_time">Zeit</string>
     <string name="pref_time_summary">Die Spielzeit zählen</string>
+    <string name="pref_time_summary_on">An</string>
+    <string name="pref_time_summary_off">Aus</string>
+
 
     <!-- Backgroundcolor-->
     <string name="sp_key_background_color">Hintergrundfarbe wählen</string>

@@ -4,6 +4,7 @@
 
     <PreferenceCategory>
 
+        <!-- Sound-Switch -->
         <SwitchPreference
             android:defaultValue="false"
             android:key="pref_sound_switch"
@@ -11,6 +12,7 @@
             android:summaryOn="@string/pref_sound_switch_summary_on"
             android:title="@string/pref_sound_switch" />
 
+        <!-- Shake-Switch -->
         <SwitchPreference
             android:defaultValue="false"
             android:key="pref_shake_switch"
@@ -18,33 +20,42 @@
             android:summaryOn="@string/pref_shake_switch_summary_on"
             android:title="@string/pref_shake_switch" />
 
-
+        <!-- Time-Switch -->
         <SwitchPreference
-            android:key="@string/pref_count_point"
-            android:summaryOff="@string/pref_point_summary_off"
-            android:summaryOn="@string/pref_point_summary_on"
-            android:title="@string/pref_count_point" />
+            android:defaultValue="false"
+            android:key="pref_time"
+            android:summaryOff="@string/pref_time_summary_off"
+            android:summaryOn="@string/pref_time_summary_on"
+            android:title="@string/pref_time" />
 
-
-
+          <!-- Draw-Switch -->
         <SwitchPreference
             android:key="@string/pref_waste"
             android:summaryOff="@string/pref_waste_summary_off"
             android:summaryOn="@string/pref_waste_summary_on"
             android:title="@string/pref_waste" />
 
+        <!-- Points-Switch -->
+        <SwitchPreference
+            android:key="@string/pref_count_point"
+            android:summaryOff="@string/pref_point_summary_off"
+            android:summaryOn="@string/pref_point_summary_on"
+            android:title="@string/pref_count_point" />
+
+     <!-- Points-List
+        <ListPreference
+            android:entries="@array/color_palete"
+            android:entryValues="@array/color_palete_value"
+            android:key="@string/pref_count_point"
+            android:title="@string/pref_count_point" />
+        -->
+
+        <!-- BackgroundColor-List -->
         <ListPreference
             android:entries="@array/color_palete"
             android:entryValues="@array/color_palete_value"
             android:key="@string/sp_key_background_color"
             android:title="@string/sp_key_background_color" />
-
-        <ListPreference
-            android:entries="@array/time_screen"
-            android:entryValues="@array/time_screen_value"
-            android:key="@string/pref_time"
-            android:title="@string/pref_time"
-            android:summary="@string/pref_time_summary"/>
 
     </PreferenceCategory>
 

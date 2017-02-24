@@ -208,22 +208,6 @@ public class SettingsActivity extends BaseActivity {
             });
 
 
-            final ListPreference time_c = (ListPreference) findPreference(getString(R.string.pref_time));
-
-            time_c.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-
-                    if (time_c.getValue().equals("1")) {
-                        edit.putString("time_co", "on");
-                        edit.commit();
-                    } else if (time_c.getValue().equals("2")) {
-                        edit.putString("time_co", "off");
-                        edit.commit();
-                    }
-                    return true;
-                }
-            });
         }
 
     }

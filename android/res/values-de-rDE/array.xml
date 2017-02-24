@@ -17,28 +17,17 @@
     </string-array>
 
     <!--Array value for points -->
-  <!--  <string-array name="point_screen">
-        <item name="none">Keine</item>
+    <string-array name="point_screen">
+        <item name="points_off">Keine</item>
         <item name="standard">Standard</item>
         <item name="vegas">Vegas</item>
     </string-array>
 
     <string-array name="point_screen_value">
-        <item name="none">1</item>
+        <item name="points_off">1</item>
         <item name="standard">2</item>
         <item name="vegas">3</item>
     </string-array>
--->
-    <string-array name="time_screen">
-        <item name="no_count">An</item>
-        <item name="count">Aus</item>
-    </string-array>
-
-    <string-array name="time_screen_value">
-        <item name="no_count">1</item>
-        <item name="count">2</item>
-    </string-array>
-
 
 
 </resources>
