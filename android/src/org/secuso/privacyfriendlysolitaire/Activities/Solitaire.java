@@ -81,6 +81,19 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         overridePendingTransition(0, 0);
 
 
+        // Set the background color of the game panel
+        if (mSharedPreferences.getString("pref_col", "green").equals("green")) {
+            c = Color.FOREST;
+        } else if (mSharedPreferences.getString("pref_col", "grey").equals("grey")) {
+            c = Color.GRAY;
+        } else if (mSharedPreferences.getString("pref_col", "blue").equals("blue")) {
+            c = Color.CYAN;
+        } else if (mSharedPreferences.getString("pref_col", "brown").equals("brown")) {
+            c = Color.TAN;
+        } else {
+            c = Color.GRAY;
+        }
+
         final Application application = new Application();
         application.registerCallBackListener(this);
 
@@ -102,6 +115,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         final boolean shake = mSharedPreferences.getBoolean(getString(R.string.pref_shake_switch), false);
         final boolean waste = mSharedPreferences.getBoolean(getString(R.string.pref_waste), false);
         final boolean points = mSharedPreferences.getBoolean(getString(R.string.pref_count_point), false);
+        final boolean time = mSharedPreferences.getBoolean(getString(R.string.pref_time), false);
 
         if (sound) {
             //TODO: Sound an schalten
@@ -126,7 +140,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         if (waste) {
             cardDrawMode = Constants.MODE_THREE_CARDS_DEALT;
         }
-
 
         ImageButton undo = (ImageButton) findViewById(R.id.undo);
         undo.setOnClickListener(new View.OnClickListener() {
@@ -154,27 +167,16 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         });
 
 
-        // Set the background color of the game panel
 
-        if (mSharedPreferences.getString("pref_col", "green").equals("green")) {
-            c = Color.FOREST;
-        } else if (mSharedPreferences.getString("pref_col", "grey").equals("grey")) {
-            c = Color.GRAY;
-        } else if (mSharedPreferences.getString("pref_col", "blue").equals("blue")) {
-            c = Color.CYAN;
-        } else if (mSharedPreferences.getString("pref_col", "brown").equals("brown")) {
-            c = Color.TAN;
-        } else {
-            c = Color.GRAY;
-        }
 
         // start game
         application.customConstructor(cardDrawMode, scoreMode, c);
 
         //start timer for game
         timerView = (TextView) findViewById(R.id.timerView);
-        if (countTime())
+        if (time)
             startTimer();
+
 
 
         //pointsView
@@ -246,14 +248,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     }
 
 
-    public boolean countTime() {
-        if (mSharedPreferences.getString("time_co", "off").equals("off")) {
-            return false;
-        } else if (mSharedPreferences.getString("time_co", "on").equals("on")) {
-            return true;
-        }
-        return true;
-    }
 
     //Alert box for won a game which prints the total time and the reached points
     public void alertBoxWonMessage() {

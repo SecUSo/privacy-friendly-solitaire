@@ -96,13 +96,12 @@
     <string name="pref_point_summary_on">Vegas</string>
     <string name="pref_point_summary_none">None</string>
 
-    <string name="pref_count_point_l">Points</string>
 
 
 
     <string name="pref_waste">Cards per draw</string>
-    <string name="pref_waste_summary_off">Draw </string>
-    <string name="pref_waste_summary_on">Draws </string>
+    <string name="pref_waste_summary_off">Draw One</string>
+    <string name="pref_waste_summary_on">Draws Three</string>
 
     <string name="pref_time">Time</string>
     <string name="pref_time_summary_on">On</string>

@@ -18,15 +18,15 @@
 
     <!--Array value for points -->
     <string-array name="point_screen">
-        <item name="points_off">Keine</item>
-        <item name="standard">Standard</item>
-        <item name="vegas">Vegas</item>
+        <item name="sel_points_off">Keine</item>
+        <item name="sel_standard">Standard</item>
+        <item name="sel_vegas">Vegas</item>
     </string-array>
 
     <string-array name="point_screen_value">
-        <item name="points_off">1</item>
-        <item name="standard">2</item>
-        <item name="vegas">3</item>
+        <item name="sel_points_off">1</item>
+        <item name="sel_standard">2</item>
+        <item name="sel_vegas">3</item>
     </string-array>
 
 

@@ -189,7 +189,10 @@ public class SettingsActivity extends BaseActivity {
             color_list.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    if (color_list.getValue().equals("1")) {
+                    if (color_list.getValue() == null){
+                        edit.putString("pref_col", "green");
+                    edit.commit();
+                }else if (color_list.getValue().equals("1")) {
                         edit.putString("pref_col", "green");
                         edit.commit();
                     } else if (color_list.getValue().equals("2")) {

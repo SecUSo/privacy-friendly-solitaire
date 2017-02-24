@@ -22,8 +22,7 @@
 
         <!-- Time-Switch -->
         <SwitchPreference
-            android:defaultValue="false"
-            android:key="pref_time"
+            android:key="@string/pref_time"
             android:summaryOff="@string/pref_time_summary_off"
             android:summaryOn="@string/pref_time_summary_on"
             android:title="@string/pref_time" />
@@ -42,13 +41,13 @@
             android:summaryOn="@string/pref_point_summary_on"
             android:title="@string/pref_count_point" />
 
-     <!-- Points-List
+     <!-- Points-List -->
         <ListPreference
-            android:entries="@array/color_palete"
-            android:entryValues="@array/color_palete_value"
+            android:entries="@array/point_screen"
+            android:entryValues="@array/point_screen_value"
             android:key="@string/pref_count_point"
             android:title="@string/pref_count_point" />
-        -->
+
 
         <!-- BackgroundColor-List -->
         <ListPreference
