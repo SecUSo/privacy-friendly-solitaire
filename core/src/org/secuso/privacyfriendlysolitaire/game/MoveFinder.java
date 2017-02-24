@@ -97,6 +97,9 @@ class MoveFinder {
                     continue;
                 }
                 Tableau targetTab = game.getTableauAtPos(targetT);
+                if (targetTab.getFaceDown().isEmpty() && sourceTab.getFaceDown().isEmpty()) {
+                    continue;
+                }
                 int sourceCardIndex = 0;
 //                for (int sourceCardIndex = 0; sourceCardIndex < sourceTab.getFaceUp().size(); sourceCardIndex++) {
                 Vector<Card> toBeMoved = sourceTab.getCopyFaceUpVector(sourceCardIndex);
