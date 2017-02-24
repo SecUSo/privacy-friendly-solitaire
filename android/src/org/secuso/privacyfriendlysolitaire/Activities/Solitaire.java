@@ -82,7 +82,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
 
         // Set the background color of the game panel
-        if (mSharedPreferences.getString("pref_col", "green").equals("green")) {
+        if (mSharedPreferences.getString("pref_col", "green").equals("green") ) {
             c = Color.FOREST;
         } else if (mSharedPreferences.getString("pref_col", "grey").equals("grey")) {
             c = Color.GRAY;

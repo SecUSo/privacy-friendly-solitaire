@@ -41,6 +41,13 @@
             android:summaryOn="@string/pref_point_summary_on"
             android:title="@string/pref_count_point" />
 
+        <!-- Points-List -->
+        <ListPreference
+            android:entries="@array/waste_screen"
+            android:entryValues="@array/waste_screen_value"
+            android:key="@string/pref_waste"
+            android:title="@string/pref_waste" />
+
      <!-- Points-List -->
         <ListPreference
             android:entries="@array/point_screen"

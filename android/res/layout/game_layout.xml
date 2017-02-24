@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="@color/middleblue"
+    android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
 
-    <android.support.design.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -23,81 +21,90 @@
 
 
         <android.support.design.widget.AppBarLayout
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay">
 
-            <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay" >
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="14"
-                    android:orientation="horizontal"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:gravity="center_vertical">
-
-
-
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="4"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:text="@string/pref_count_point"
-                            android:id="@+id/point"
-                            />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" 0 "
-                            android:layout_centerHorizontal="true"
-                            android:id="@+id/points"
-                            android:layout_below="@id/point"
-                            />
-                    </RelativeLayout>
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="14">
 
 
                     <ImageButton
                         android:id="@+id/undo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/undo_nav_bar"
-                        android:clickable="true"/>
+                        android:clickable="true"
+                        android:src="@drawable/undo_nav_bar" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7">
+
+                        <TextView
+                            android:id="@+id/point"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/pref_count_point" />
+
+                        <TextView
+                            android:id="@+id/points"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/point"
+                            android:layout_centerHorizontal="true"
+                            android:text=" 0 " />
+
+                        <TextView
+                            android:id="@+id/timerView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.73"
+                            android:layout_marginLeft="80px"
+                            android:text="00:00"
+                            android:layout_toRightOf="@id/point"/>
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6">
+
+                    <ImageButton
+                        android:id="@+id/hint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:src="@drawable/glyphicons_robot_game"
+                        android:layout_centerInParent="true"/>
 
 
                     <ImageButton
                         android:id="@+id/redo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:clickable="true"
                         android:src="@drawable/redo_nav_bar"
-                        android:clickable="true"/>
-
-                   <ImageButton
-                        android:id="@+id/hint"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/glyphicons_robot_game"
-                        android:clickable="true"/>
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="00:00"
-                        android:layout_weight="0.73"
-                        android:id="@+id/timerView"
-                        android:gravity="end"
                         android:layout_alignParentRight="true"
                         />
+                    </RelativeLayout>
                 </LinearLayout>
             </android.support.v7.widget.Toolbar>
 
@@ -105,11 +112,11 @@
 
         <LinearLayout
             android:id="@+id/outer"
-            android:background="@color/white"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="?attr/actionBarSize"
-            android:orientation="horizontal"
-            android:layout_width="match_parent">
+            android:background="@color/white"
+            android:orientation="horizontal">
 
         </LinearLayout>
 

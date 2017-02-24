@@ -29,10 +29,13 @@ public class HelpActivity extends BaseActivity {
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
 
+
         setContentView(R.layout.activity_help);
         //getFragmentManager().beginTransaction().replace(android.R.id.content, new HelpFragment()).commit();
 
         overridePendingTransition(0, 0);
+
+
         
     }
 
