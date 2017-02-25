@@ -177,8 +177,6 @@ public class SettingsActivity extends BaseActivity {
     public static class GeneralPreferenceFragment extends PreferenceFragment {
 
 
-
-
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -186,13 +184,14 @@ public class SettingsActivity extends BaseActivity {
 
             final ListPreference color_list = (ListPreference) findPreference(getString(R.string.sp_key_background_color));
 
+
             color_list.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    if (color_list.getValue() == null){
+                    if (color_list.getValue() == null) {
                         edit.putString("pref_col", "green");
-                    edit.commit();
-                }else if (color_list.getValue().equals("1")) {
+                        edit.commit();
+                    } else if (color_list.getValue().equals("1")) {
                         edit.putString("pref_col", "green");
                         edit.commit();
                     } else if (color_list.getValue().equals("2")) {
@@ -204,13 +203,61 @@ public class SettingsActivity extends BaseActivity {
                     } else if (color_list.getValue().equals("4")) {
                         edit.putString("pref_col", "brown");
                         edit.commit();
+                    } else {
+                        edit.putString("pref_col", "green");
+                        edit.commit();
                     }
 
                     return true;
                 }
             });
 
+            final ListPreference waste_list = (ListPreference) findPreference(getString(R.string.pref_waste));
+            waste_list.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
 
+                    if (waste_list.getValue() == null) {
+                        edit.putString("pref_waste", "one");
+                        edit.commit();
+                    } else if (waste_list.getValue().equals("1")) {
+                        edit.putString("pref_waste", "one");
+                        edit.commit();
+                    } else if (waste_list.getValue().equals("2")) {
+                        edit.putString("pref_waste", "three");
+                        edit.commit();
+                    } else {
+                        edit.putString("pref_waste", "one");
+                        edit.commit();
+                    }
+                    return true;
+                }
+            });
+
+            final ListPreference points_list = (ListPreference) findPreference(getString(R.string.pref_count_point));
+
+            points_list.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    if (points_list.getValue() == null) {
+                        edit.putString("pref_points", "none");
+                        edit.commit();
+                    } else if (waste_list.getValue().equals("1")) {
+                        edit.putString("pref_points", "none");
+                        edit.commit();
+                    } else if (waste_list.getValue().equals("2")) {
+                        edit.putString("pref_points", "standard");
+                        edit.commit();
+                    } else if(waste_list.getValue().equals("3")){
+                        edit.putString("pref_points", "vegas");
+                        edit.commit();
+                    }else{
+                        edit.putString("pref_points", "none");
+                        edit.commit();
+                    }
+                    return true;
+                }
+            });
         }
 
     }

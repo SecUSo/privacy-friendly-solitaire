@@ -66,6 +66,8 @@ public class Application extends ApplicationAdapter implements ScoreListener {
             scorer = new StandardScorer();
         } else if (scoreMode == Constants.MODE_VEGAS) {
             scorer = new VegasScorer();
+        }else if(scoreMode == Constants.MODE_NONE){
+            scorer = new NoneScorer();
         }
         game.registerGameListener(scorer);
         scorer.registerScoreListener(this);

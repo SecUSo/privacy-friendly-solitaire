@@ -85,6 +85,63 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         overridePendingTransition(0, 0);
 
 
+        final Application application = new Application();
+        application.registerCallBackListener(this);
+
+        final GLSurfaceView20 gameView =
+                (GLSurfaceView20) initializeForView(application, new AndroidApplicationConfiguration());
+
+        LinearLayout outerLayout = (LinearLayout) findViewById(R.id.outer);
+        outerLayout.addView(gameView);
+
+        // settings, which were set by the player,
+        // if the setting could not be found, set it to false
+        final boolean sound = mSharedPreferences.getBoolean(getString(R.string.pref_sound_switch), false);
+        final boolean shake = mSharedPreferences.getBoolean(getString(R.string.pref_shake_switch), false);
+        final boolean time = mSharedPreferences.getBoolean(getString(R.string.pref_time), false);
+
+        //set sound in settings
+        if (sound) {
+            //TODO: Sound an schalten
+        } else {
+            //TODO: Sound aus schalten
+        }
+
+        //set shake function in settings
+        if (shake) {
+            //TODO: Shake animation on
+        } else {
+            //TODO: Shake animation off
+        }
+
+        //start timer for game
+        timerView = (TextView) findViewById(R.id.timerView);
+        if (time)
+            startTimer();
+
+
+        // default modes for cardDraw and score
+        int scoreMode = Constants.MODE_STANDARD;
+        int cardDrawMode = Constants.MODE_ONE_CARD_DEALT;
+
+        if (mSharedPreferences.getString("pref_waste", "one").equals("one")) {
+            scoreMode = Constants.MODE_ONE_CARD_DEALT;
+        } else if (mSharedPreferences.getString("pref_waste", "three").equals("three")) {
+            cardDrawMode = Constants.MODE_THREE_CARDS_DEALT;
+        }
+
+
+        //pointsView && select point counting mode in settings
+        pointsView = (TextView) findViewById(R.id.points);
+
+        if (mSharedPreferences.getString("pref_points", "none").equals("none")) {
+            scoreMode = Constants.MODE_NONE;
+        } else if (mSharedPreferences.getString("pref_points", "standard").equals("standard")) {
+            scoreMode = Constants.MODE_STANDARD;
+        } else if (mSharedPreferences.getString("pref_points", "vegas").equals("vegas")) {
+            scoreMode = Constants.MODE_VEGAS;
+        }
+
         // Set the background color of the game panel
         if (mSharedPreferences.getString("pref_col", "green").equals("green")) {
             c = GREEN_SOL;
@@ -96,54 +153,8 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
             c = LILA_SOL;
         }
 
-        final Application application = new Application();
-        application.registerCallBackListener(this);
 
-//        Config config = new Config(getApplicationContext());
-        AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
-//        cfg.r = cfg.g = cfg.b = cfg.a = 8;
-
-        final GLSurfaceView20 gameView =
-                (GLSurfaceView20) initializeForView(application, new AndroidApplicationConfiguration());
-
-
-        LinearLayout outerLayout = (LinearLayout) findViewById(R.id.outer);
-        outerLayout.addView(gameView);
-
-
-        // settings, which were set by the player,
-        // if the setting could not be found, set it to false
-        final boolean sound = mSharedPreferences.getBoolean(getString(R.string.pref_sound_switch), false);
-        final boolean shake = mSharedPreferences.getBoolean(getString(R.string.pref_shake_switch), false);
-        final boolean waste = mSharedPreferences.getBoolean(getString(R.string.pref_waste), false);
-        final boolean points = mSharedPreferences.getBoolean(getString(R.string.pref_count_point), false);
-        final boolean time = mSharedPreferences.getBoolean(getString(R.string.pref_time), false);
-
-
-        if (sound) {
-            //TODO: Sound an schalten
-        } else {
-            //TODO: Sound aus schalten
-        }
-
-        if (shake) {
-            //TODO: Shake animation on
-        } else {
-            //TODO: Shake animation off
-        }
-
-
-        // default modes for cardDraw and score
-        int scoreMode = Constants.MODE_STANDARD;
-        int cardDrawMode = Constants.MODE_ONE_CARD_DEALT;
-
-        if (points) {
-            scoreMode = Constants.MODE_VEGAS;
-        }
-        if (waste) {
-            cardDrawMode = Constants.MODE_THREE_CARDS_DEALT;
-        }
-
+        //undo Button in game panel
         ImageButton undo = (ImageButton) findViewById(R.id.undo);
         undo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,6 +163,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
             }
         });
 
+        //redo button in game panel
         ImageButton redo = (ImageButton) findViewById(R.id.redo);
         redo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,28 +172,18 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
             }
         });
 
-
+        //hint button in game panel
         ImageButton hint = (ImageButton) findViewById(R.id.hint);
         hint.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
 //                application.autoMove();
             }
         });
 
-
         // start game
         application.customConstructor(cardDrawMode, scoreMode, c);
-
-        //start timer for game
-        timerView = (TextView) findViewById(R.id.timerView);
-        if (time)
-            startTimer();
-
-
-        //pointsView
-
-        pointsView = (TextView) findViewById(R.id.points);
 
     }
 

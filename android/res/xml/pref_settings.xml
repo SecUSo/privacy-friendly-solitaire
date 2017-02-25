@@ -27,21 +27,9 @@
             android:summaryOn="@string/pref_time_summary_on"
             android:title="@string/pref_time" />
 
-          <!-- Draw-Switch -->
-        <SwitchPreference
-            android:key="@string/pref_waste"
-            android:summaryOff="@string/pref_waste_summary_off"
-            android:summaryOn="@string/pref_waste_summary_on"
-            android:title="@string/pref_waste" />
 
-        <!-- Points-Switch -->
-        <SwitchPreference
-            android:key="@string/pref_count_point"
-            android:summaryOff="@string/pref_point_summary_off"
-            android:summaryOn="@string/pref_point_summary_on"
-            android:title="@string/pref_count_point" />
 
-        <!-- Points-List -->
+        <!-- Waste-List -->
         <ListPreference
             android:entries="@array/waste_screen"
             android:entryValues="@array/waste_screen_value"

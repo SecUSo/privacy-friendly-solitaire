@@ -92,16 +92,9 @@
     <string name="pref_shake_switch_summary_off">Off</string>
 
     <string name="pref_count_point">Points</string>
-    <string name="pref_point_summary_off">Standard</string>
-    <string name="pref_point_summary_on">Vegas</string>
-    <string name="pref_point_summary_none">None</string>
-
-
 
 
     <string name="pref_waste">Cards per draw</string>
-    <string name="pref_waste_summary_off">Draw One</string>
-    <string name="pref_waste_summary_on">Draws Three</string>
 
     <string name="pref_time">Time</string>
     <string name="pref_time_summary_on">On</string>
@@ -111,8 +104,6 @@
     <!-- Backgroundcolor-->
     <string name="sp_key_background_color">Select background color</string>
     <string name="summary_backroundcolor">Select the background color of the playing area</string>
-
-
 
 
     <!-- ### WELCOME DIALOG ### -->

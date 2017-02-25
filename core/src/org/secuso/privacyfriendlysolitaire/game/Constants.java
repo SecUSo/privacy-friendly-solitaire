@@ -14,6 +14,8 @@ public class Constants {
 
     public final static int MODE_STANDARD = 0;
     public final static int MODE_VEGAS = 1;
+    public final static int MODE_NONE = 2;
+
 
     public final static int NR_OF_TABLEAUS = 7;
     public final static int NR_OF_FOUNDATIONS = 4;
