@@ -1,5 +1,6 @@
 package org.secuso.privacyfriendlysolitaire.Activities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -254,20 +255,21 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     public void alertBoxWonMessage() {
 
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 context);
 
-        String alertContent = "Total time: " + String.valueOf(time) + "/n" + "Total Points: ";
+
         // set title
-        alertDialogBuilder.setTitle("You won!");
+        alertDialogBuilder.setTitle(getString(R.string.alert_box_won));
         // set dialog message
         alertDialogBuilder
                 .setMessage(Html.fromHtml("Total time: " + timeForAlert(time) + "<br>" + "Total Points: " + pointsView.getText().toString()))
-                .setCancelable(false)
+                .setCancelable(true)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // if this button is clicked, close
                         // current activity
+                        dialog.dismiss();
                         Solitaire.this.finish();
                     }
                 });
@@ -277,6 +279,8 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
         // show it
         alertDialog.show();
+
+
     }
 
     @Override
@@ -411,20 +415,26 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         return R.id.nav_game;
     }
 
+    Boolean alert_box_ok = false;
+
     @Override
     public void onWon() {
         runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                // TODO: ordentliche Reaktion auf Gewinn :D
-                Toast toast = Toast.makeText(getApplicationContext(), "You won", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.show();
-                stoptimertask(timerView);
-                alertBoxWonMessage();
+                          @Override
+                          public void run() {
+                              if (!alert_box_ok) {
+                                  stoptimertask(timerView);
+                                  alertBoxWonMessage();
+                                  alert_box_ok =true;
+                              } else {
 
-            }
-        });
+                              }
+
+                          }
+                      }
+
+        );
+
     }
 
     @Override

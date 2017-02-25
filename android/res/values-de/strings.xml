@@ -101,5 +101,6 @@
     <string name="sp_key_background_color">Hintergrundfarbe wählen</string>
     <string name="summary_backroundcolor">Wählen Sie die Hintergrundfarbe des Spielfeldes</string>
 
+    <string name="alert_box_won">Sie haben gewonnen!</string>
 
 </resources>
