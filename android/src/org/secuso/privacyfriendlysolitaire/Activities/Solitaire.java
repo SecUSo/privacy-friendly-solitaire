@@ -1,6 +1,5 @@
 package org.secuso.privacyfriendlysolitaire.Activities;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,14 +17,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 
-import android.text.Html;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
@@ -72,7 +68,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     protected SharedPreferences mSharedPreferences;
 
 
-    //private AppCompatDelegate delegate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -253,24 +248,31 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
     //Alert box for won a game which prints the total time and the reached points
     public void alertBoxWonMessage() {
-
-
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 context);
-
 
         // set title
         alertDialogBuilder.setTitle(getString(R.string.alert_box_won));
         // set dialog message
         alertDialogBuilder
-                .setMessage(Html.fromHtml("Total time: " + timeForAlert(time) + "<br>" + "Total Points: " + pointsView.getText().toString()))
+                .setMessage(getString(R.string.alert_box_won_time) + timeForAlert(time) +
+                        "\n" +
+                        getString(R.string.alert_box_won_points) + pointsView.getText().toString())
                 .setCancelable(true)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                // go back to main menu
+                .setNegativeButton(getString(R.string.alert_box_won_main), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // if this button is clicked, close
-                        // current activity
+                        // if this button is clicked, close current activity
                         dialog.dismiss();
                         Solitaire.this.finish();
+                    }
+                })
+                // or start another game
+                .setPositiveButton(getString(R.string.alert_box_won_another), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, start current activity anew
+                        dialog.dismiss();
+                        Solitaire.this.recreate();
                     }
                 });
 
@@ -279,8 +281,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
         // show it
         alertDialog.show();
-
-
     }
 
     @Override
@@ -419,21 +419,16 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
     @Override
     public void onWon() {
-        runOnUiThread(new Runnable() {
-                          @Override
-                          public void run() {
-                              if (!alert_box_ok) {
-                                  stoptimertask(timerView);
-                                  alertBoxWonMessage();
-                                  alert_box_ok =true;
-                              } else {
-
-                              }
-
-                          }
-                      }
-
-        );
+        if (!alert_box_ok) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    stoptimertask(timerView);
+                    alertBoxWonMessage();
+                    alert_box_ok = true;
+                }
+            });
+        }
 
     }
 

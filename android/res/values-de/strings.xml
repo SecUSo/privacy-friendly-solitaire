@@ -101,6 +101,22 @@
     <string name="sp_key_background_color">Hintergrundfarbe wählen</string>
     <string name="summary_backroundcolor">Wählen Sie die Hintergrundfarbe des Spielfeldes</string>
 
-    <string name="alert_box_won">Sie haben gewonnen!</string>
+
+    <!-- ### WELCOME DIALOG ### -->
+    <string name="welcome_text"> Diese App ist ein grundlegendes Klondike Solitaire Spiel analog
+        zum bekannten Windows Solitaire.
+        \n\nDer Sourcecode ist auf GitHub verfügbar.\n\n</string>
+    <string name="welcome">Willkommen</string>
+    <string name="okay">Okay</string>
+    <string name="viewhelp">Zeige Hilfe Seite</string>
+    <!--<string name="main_button_welcomedialog">Show Welcome</string>-->
+
+
+    <!-- ### WON DIALOG ### -->
+    <string name="alert_box_won">Gewonnen!</string>
+    <string name="alert_box_won_time">Zeit: </string>
+    <string name="alert_box_won_points">Punkte: </string>
+    <string name="alert_box_won_main">Hauptmenü</string>
+    <string name="alert_box_won_another">Neues Spiel</string>
 
 </resources>

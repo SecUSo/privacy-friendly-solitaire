@@ -44,8 +44,6 @@ public class MainActivity extends BaseActivity {
 
     public static class WelcomeDialog extends DialogFragment {
 
-        // method onAttach removed, was deprecated
-
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 

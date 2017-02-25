@@ -138,7 +138,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
         Intent intent;
 
-//        TODO: nevigation_drawer erweitern
         switch (itemId) {
             case R.id.nav_example:
                 intent = new Intent(this, MainActivity.class);

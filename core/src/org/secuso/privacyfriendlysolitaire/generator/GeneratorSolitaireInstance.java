@@ -183,7 +183,7 @@ public class GeneratorSolitaireInstance {
             for (Rank rank : Rank.values()) {
                 Card c = new Card(rank, suit);
 
-                if (rank != Rank.KING) {
+                if (rank != Rank.KING || suit != Suit.CLUBS) {
                     foundation.add(c);
                 } else {
                     // except for the 4 kings

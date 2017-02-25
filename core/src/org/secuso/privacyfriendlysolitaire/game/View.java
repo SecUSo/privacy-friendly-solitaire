@@ -580,7 +580,6 @@ public class View implements GameListener {
      */
     private void paintWaste(DeckWaste deckWaste, boolean isInitialization,
                             boolean fanCardsToBeRearranged) {
-        Gdx.app.log("paintWaste ", deckWaste.toString());
         // draw first few cards before the open fan
         Vector<Card> waste = deckWaste.getWaste();
         for (int i = 0; i < waste.size() - deckWaste.getFanSize(); i++) {

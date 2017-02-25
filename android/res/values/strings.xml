@@ -100,8 +100,6 @@
     <string name="pref_time_summary_on">On</string>
     <string name="pref_time_summary_off">Off</string>
 
-    <string name="alert_box_won">You won!</string>
-
 
     <!-- Backgroundcolor-->
     <string name="sp_key_background_color">Select background color</string>
@@ -109,14 +107,20 @@
 
 
     <!-- ### WELCOME DIALOG ### -->
-    <!-- TODO: The welcome screen should introduce the app and the key elements of the start page.-->
     <string name="welcome_text"> This App is a basic Klondike Solitaire Game analogous to the known
         Windows Solitaire.
-        \n\n
-        The sourcecode is available at GitHub.\n\n</string>
+        \n\nThe sourcecode is available at GitHub.\n\n</string>
     <string name="welcome">Welcome</string>
     <string name="okay">Okay</string>
     <string name="viewhelp">View Help</string>
-    <string name="main_button_welcomedialog">Show Welcome</string>
+    <!--<string name="main_button_welcomedialog">Show Welcome</string>-->
+
+
+    <!-- ### WON DIALOG ### -->
+    <string name="alert_box_won">You won!</string>
+    <string name="alert_box_won_time">Total Time: </string>
+    <string name="alert_box_won_points">Points: </string>
+    <string name="alert_box_won_main">Main Menu</string>
+    <string name="alert_box_won_another">New Game</string>
 
 </resources>
