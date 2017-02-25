@@ -38,8 +38,6 @@
                 android:value=".Activities.MainActivity" />
         </activity>
 
-
-
         <activity
             android:name=".Activities.HelpActivity"
             android:label="@string/help"

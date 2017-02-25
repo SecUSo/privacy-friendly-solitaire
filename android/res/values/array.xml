@@ -6,7 +6,7 @@
         <item name="color_p_green">GREEN</item>
         <item name="color_p_blue">BLUE</item>
         <item name="color_p_gray">GREY</item>
-        <item name="color_p_brown">BROWN</item>
+        <item name="color_p_brown">YELLOW</item>
     </string-array>
 
 
@@ -20,7 +20,7 @@
 
     <!--Array value for points -->
     <string-array name="point_screen">
-        <item name="sel_points_off">nix</item>
+        <item name="sel_points_off">None</item>
         <item name="sel_standard">Standard</item>
         <item name="sel_vegas">Vegas</item>
     </string-array>

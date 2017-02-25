@@ -42,6 +42,10 @@ import java.util.TimerTask;
 
 public class Solitaire extends AndroidApplication implements NavigationView.OnNavigationItemSelectedListener, CallBackListener {
 
+    public static final Color GRAY_SOL = new Color(0.75f, 0.75f, 0.75f, 1);
+    public static final Color GREEN_SOL = new Color(143 / 255.0f, 188 / 255.0f, 143 / 255.0f, 1f);
+    public static final Color BLUE_SOL = new Color(176 / 255.0f, 196 / 255.0f, 222 / 255.0f, 1);
+    public static final Color YELLOW_SOL = new Color(240 / 255.0f, 230 / 255.0f, 140 / 255.0f, 1);
 
     Timer timer;
     TimerTask timerTask;
@@ -82,16 +86,14 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
 
         // Set the background color of the game panel
-        if (mSharedPreferences.getString("pref_col", "green").equals("green") ) {
-            c = Color.FOREST;
+        if (mSharedPreferences.getString("pref_col", "green").equals("green")) {
+            c = GREEN_SOL;
         } else if (mSharedPreferences.getString("pref_col", "grey").equals("grey")) {
-            c = Color.GRAY;
+            c = GRAY_SOL;
         } else if (mSharedPreferences.getString("pref_col", "blue").equals("blue")) {
-            c = Color.CYAN;
+            c = BLUE_SOL;
         } else if (mSharedPreferences.getString("pref_col", "brown").equals("brown")) {
-            c = Color.TAN;
-        } else {
-            c = Color.GRAY;
+            c = YELLOW_SOL;
         }
 
         final Application application = new Application();
@@ -116,6 +118,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         final boolean waste = mSharedPreferences.getBoolean(getString(R.string.pref_waste), false);
         final boolean points = mSharedPreferences.getBoolean(getString(R.string.pref_count_point), false);
         final boolean time = mSharedPreferences.getBoolean(getString(R.string.pref_time), false);
+
 
         if (sound) {
             //TODO: Sound an schalten
@@ -167,8 +170,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         });
 
 
-
-
         // start game
         application.customConstructor(cardDrawMode, scoreMode, c);
 
@@ -176,7 +177,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         timerView = (TextView) findViewById(R.id.timerView);
         if (time)
             startTimer();
-
 
 
         //pointsView
@@ -248,7 +248,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     }
 
 
-
     //Alert box for won a game which prints the total time and the reached points
     public void alertBoxWonMessage() {
 
@@ -271,11 +270,11 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
                     }
                 });
 
-                // create alert dialog
-                AlertDialog alertDialog = alertDialogBuilder.create();
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
 
-                // show it
-                alertDialog.show();
+        // show it
+        alertDialog.show();
     }
 
     @Override
@@ -419,8 +418,8 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
                 Toast toast = Toast.makeText(getApplicationContext(), "You won", Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.BOTTOM, 0, 0);
                 toast.show();
-                 stoptimertask(timerView);
-                 alertBoxWonMessage();
+                stoptimertask(timerView);
+                alertBoxWonMessage();
 
             }
         });
@@ -448,8 +447,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
             }
         });
     }
-
-
 
 
 }
