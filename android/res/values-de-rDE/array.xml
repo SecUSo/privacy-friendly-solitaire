@@ -6,7 +6,7 @@
         <item name="color_p_green">GRÜN</item>
         <item name="color_p_blue">BLAU</item>
         <item name="color_p_gray">GRAU</item>
-        <item name="color_p_brown">GELB</item>
+        <item name="color_p_brown">LILA</item>
     </string-array>
 
     <string-array name="color_palete_value">

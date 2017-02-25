@@ -45,7 +45,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     public static final Color GRAY_SOL = new Color(0.75f, 0.75f, 0.75f, 1);
     public static final Color GREEN_SOL = new Color(143 / 255.0f, 188 / 255.0f, 143 / 255.0f, 1f);
     public static final Color BLUE_SOL = new Color(176 / 255.0f, 196 / 255.0f, 222 / 255.0f, 1);
-    public static final Color YELLOW_SOL = new Color(240 / 255.0f, 230 / 255.0f, 140 / 255.0f, 1);
+    public static final Color LILA_SOL = new Color(216 / 255.0f, 191 / 255.0f, 216 / 255.0f, 1);
 
     Timer timer;
     TimerTask timerTask;
@@ -93,7 +93,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         } else if (mSharedPreferences.getString("pref_col", "blue").equals("blue")) {
             c = BLUE_SOL;
         } else if (mSharedPreferences.getString("pref_col", "brown").equals("brown")) {
-            c = YELLOW_SOL;
+            c = LILA_SOL;
         }
 
         final Application application = new Application();
