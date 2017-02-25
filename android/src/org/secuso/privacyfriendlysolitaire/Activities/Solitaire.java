@@ -1,6 +1,5 @@
 package org.secuso.privacyfriendlysolitaire.Activities;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,13 +18,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 
 import android.text.Html;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
@@ -154,7 +151,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
             c = LILA_SOL;
         }
 
-
         //undo Button in game panel
         ImageButton undo = (ImageButton) findViewById(R.id.undo);
         undo.setOnClickListener(new View.OnClickListener() {
@@ -189,9 +185,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     }
 
     //Timer
-
     public void startTimer() {
-
         //set a new Timer
         timer = new Timer();
         //initialize the TimerTask's job
@@ -200,9 +194,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         timer.schedule(timerTask, 0, 1000); //
     }
 
-
     int time = 0;
-
     public void initializeTimerTask() {
         timerTask = new TimerTask() {
             public void run() {
@@ -230,7 +222,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         }
     }
 
-
     //display time   in Alertbox
     String timeAlert;
 
@@ -250,14 +241,11 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         return timeAlert;
     }
 
-
     //Alert box for won a game which prints the total time and the reached points
     public void alertBoxWonMessage() {
 
-
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 context);
-
 
         // set title
         alertDialogBuilder.setTitle(getString(R.string.alert_box_won));
@@ -279,8 +267,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
 
         // show it
         alertDialog.show();
-
-
     }
 
     @Override
@@ -297,7 +283,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         final int itemId = item.getItemId();
-
         return goToNavigationItem(itemId);
     }
 
@@ -316,9 +301,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
                 callDrawerItem(itemId);
             }
         }, NAVDRAWER_LAUNCH_DELAY);
-
         mDrawerLayout.closeDrawer(GravityCompat.START);
-
         selectNavigationItem(itemId);
 
         // fade out the active activity
@@ -425,14 +408,10 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
                               if (!alert_box_ok) {
                                   stoptimertask(timerView);
                                   alertBoxWonMessage();
-                                  alert_box_ok =true;
-                              } else {
-
+                                  alert_box_ok = true;
                               }
-
                           }
                       }
-
         );
 
     }
@@ -453,7 +432,6 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //      ((TextView) findViewById(R.id.points)).setText(String.valueOf(score));
                 pointsView.setText(String.valueOf(score));
 
             }
