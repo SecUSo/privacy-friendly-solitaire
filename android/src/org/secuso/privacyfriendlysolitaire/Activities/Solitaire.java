@@ -1,5 +1,8 @@
 package org.secuso.privacyfriendlysolitaire.Activities;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,16 +19,14 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
@@ -53,7 +54,6 @@ public class Solitaire extends AndroidApplication implements
     TimerTask timerTask;
     TextView timerView;
     TextView pointsView;
-    final Context context = this;
     com.badlogic.gdx.graphics.Color c;
 
 
@@ -78,6 +78,9 @@ public class Solitaire extends AndroidApplication implements
     private static final int SHAKE_THRESHOLD = 800;
     float last_x, last_y, last_z;
     Application application;
+
+    // Won Dialog
+    Context thisContext;
 
 
     @Override
@@ -259,39 +262,13 @@ public class Solitaire extends AndroidApplication implements
 
     //Alert box for won a game which prints the total time and the reached points
     public void alertBoxWonMessage() {
-        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                context);
-
-        // set title
-        alertDialogBuilder.setTitle(getString(R.string.alert_box_won));
-        // set dialog message
-        alertDialogBuilder
-                .setMessage(getString(R.string.alert_box_won_time) + timeForAlert(time) +
-                        "\n" +
-                        getString(R.string.alert_box_won_points) + pointsView.getText().toString())
-                .setCancelable(true)
-                // go back to main menu
-                .setNegativeButton(getString(R.string.alert_box_won_main), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // if this button is clicked, close current activity
-                        dialog.dismiss();
-                        Solitaire.this.finish();
-                    }
-                })
-                // or start another game
-                .setPositiveButton(getString(R.string.alert_box_won_another), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // if this button is clicked, start current activity anew
-                        dialog.dismiss();
-                        Solitaire.this.recreate();
-                    }
-                });
-
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show it
-        alertDialog.show();
+        WonDialog dia = new WonDialog();
+        Bundle args = new Bundle();
+        // put necessary arguments to build correct alertBox
+        args.putString("timeForAlert", timeForAlert(time));
+        args.putString("pointsString", pointsView.getText().toString());
+        dia.setArguments(args);
+        dia.show(getFragmentManager(), "WWonDialog");
     }
 
     @Override
@@ -463,6 +440,49 @@ public class Solitaire extends AndroidApplication implements
     }
 
 
+    // if we did make this dialog static, we could not close the surrounding activity
+    @SuppressLint("ValidFragment")
+    public class WonDialog extends DialogFragment {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            String timeForAlert = getArguments().getString("timeForAlert");
+            String pointsString = getArguments().getString("pointsString");
+
+            LayoutInflater i = getActivity().getLayoutInflater();
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
+            builder.setView(i.inflate(R.layout.custom_dialog, null))
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setTitle(getActivity().getString(R.string.alert_box_won))
+                    .setMessage(getString(R.string.alert_box_won_time) + timeForAlert +
+                            "\n" +
+                            getString(R.string.alert_box_won_points) + pointsString)
+                    .setCancelable(true)
+                    // go back to main menu
+                    .setNegativeButton(getString(R.string.alert_box_won_main), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // if this button is clicked, close current activity
+                            dialog.dismiss();
+
+                            Solitaire.this.finish();
+                        }
+                    })
+                    // or start another game
+                    .setPositiveButton(getString(R.string.alert_box_won_another), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // if this button is clicked, start current activity anew
+                            dialog.dismiss();
+                            Solitaire.this.recreate();
+//                            ((Activity) context).recreate();
+                        }
+                    });
+
+            return builder.create();
+        }
+    }
+
+
     @Override
     public void onSensorChanged(int sensor, float[] values) {
         // TODO: deprecated ersetzen durch aktuelle Methode(n)
@@ -481,8 +501,8 @@ public class Solitaire extends AndroidApplication implements
 
                 if (speed > SHAKE_THRESHOLD) {
                     application.autoFoundations();
-                  //  Log.d("sensor", "shake detected w/ speed: " + speed);
-                 //   Toast.makeText(this, "shake detected w/ speed: " + speed, Toast.LENGTH_SHORT).show();
+                    //  Log.d("sensor", "shake detected w/ speed: " + speed);
+                    //   Toast.makeText(this, "shake detected w/ speed: " + speed, Toast.LENGTH_SHORT).show();
                 }
                 last_x = x;
                 last_y = y;

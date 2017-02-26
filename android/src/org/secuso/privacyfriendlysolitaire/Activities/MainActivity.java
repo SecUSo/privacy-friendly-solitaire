@@ -14,8 +14,6 @@ import android.widget.Button;
 import org.secuso.privacyfriendlysolitaire.R;
 import org.secuso.privacyfriendlysolitaire.Utils.Config;
 
-import static android.R.attr.numColumns;
-
 public class MainActivity extends BaseActivity {
     private Config config;
 
@@ -31,12 +29,12 @@ public class MainActivity extends BaseActivity {
             welcomeDialog.show(getFragmentManager(), "WelcomeDialog");
         }
 
-        Button button=(Button)findViewById(R.id.game_button_start);
+        Button button = (Button) findViewById(R.id.game_button_start);
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,Solitaire.class));
+                startActivity(new Intent(MainActivity.this, Solitaire.class));
             }
         });
 
@@ -49,16 +47,17 @@ public class MainActivity extends BaseActivity {
 
             LayoutInflater i = getActivity().getLayoutInflater();
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setView(i.inflate(R.layout.welcome_dialog, null));
-            builder.setIcon(R.mipmap.ic_launcher);
-            builder.setTitle(getActivity().getString(R.string.welcome));
-            builder.setPositiveButton(getActivity().getString(R.string.okay), null);
-            builder.setNegativeButton(getActivity().getString(R.string.viewhelp), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ((MainActivity) getActivity()).goToNavigationItem(R.id.nav_help);
-                }
-            });
+            builder.setView(i.inflate(R.layout.custom_dialog, null))
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setTitle(getActivity().getString(R.string.welcome))
+                    .setMessage(getString(R.string.welcome_text))
+                    .setPositiveButton(getActivity().getString(R.string.okay), null)
+                    .setNegativeButton(getActivity().getString(R.string.viewhelp), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ((MainActivity) getActivity()).goToNavigationItem(R.id.nav_help);
+                        }
+                    });
 
             return builder.create();
         }

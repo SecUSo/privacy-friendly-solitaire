@@ -107,8 +107,7 @@
 
 
     <!-- ### WELCOME DIALOG ### -->
-    <string name="welcome_text"> This App is a basic Klondike Solitaire Game analogous to the known
-        Windows Solitaire.
+    <string name="welcome_text">\nThis App is a basic Klondike Solitaire Game. A complete manual can be found on the Help page.
         \n\nThe sourcecode is available at GitHub.\n\n</string>
     <string name="welcome">Welcome</string>
     <string name="okay">Okay</string>
