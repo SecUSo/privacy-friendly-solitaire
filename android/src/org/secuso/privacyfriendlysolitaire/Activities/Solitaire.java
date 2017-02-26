@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.Sensor;
 import android.hardware.SensorListener;
 import android.hardware.SensorManager;
 import android.os.Build;
@@ -42,12 +43,32 @@ import java.util.TimerTask;
 
 
 public class Solitaire extends AndroidApplication implements
-        NavigationView.OnNavigationItemSelectedListener, CallBackListener, SensorListener {
+        NavigationView.OnNavigationItemSelectedListener, CallBackListener {
 
     public static final Color GRAY_SOL = new Color(0.75f, 0.75f, 0.75f, 1);
     public static final Color GREEN_SOL = new Color(143 / 255.0f, 188 / 255.0f, 143 / 255.0f, 1f);
     public static final Color BLUE_SOL = new Color(176 / 255.0f, 196 / 255.0f, 222 / 255.0f, 1);
     public static final Color LILA_SOL = new Color(216 / 255.0f, 191 / 255.0f, 216 / 255.0f, 1);
+
+
+
+
+
+
+
+    // The following are used for the shake detection
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
+
+
+
+
+
+
+
+
+
 
     Timer timer;
     TimerTask timerTask;
@@ -84,11 +105,11 @@ public class Solitaire extends AndroidApplication implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
+//        sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
         // TODO: deprecated ersetzen durch aktuelle Methode(n)
-        sensorMgr.registerListener(this,
-                SensorManager.SENSOR_ACCELEROMETER,
-                SensorManager.SENSOR_DELAY_GAME);
+  //      sensorMgr.registerListener(this,
+    //            SensorManager.SENSOR_ACCELEROMETER,
+      //          SensorManager.SENSOR_DELAY_GAME);
 
         setContentView(R.layout.game_layout);
 
@@ -191,7 +212,55 @@ public class Solitaire extends AndroidApplication implements
         // start game
         application.customConstructor(cardDrawMode, scoreMode, sound, c);
 
+
+
+
+
+
+
+
+
+        // ShakeDetector initialization
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+
+            @Override
+            public void onShake(int count) {
+				/*
+				 * The following method, "handleShakeEvent(count):" is a stub //
+				 * method you would use to setup whatever you want done once the
+				 * device has been shook.
+				 */
+                application.autoFoundations();
+
+            }
+        });
+
+
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Add the following line to register the Session Manager Listener onResume
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+    }
+
+    @Override
+    public void onPause() {
+        // Add the following line to unregister the Sensor Manager onPause
+        mSensorManager.unregisterListener(mShakeDetector);
+        super.onPause();
+    }
+
+
+
+
+
 
 
     //Timer
@@ -458,10 +527,10 @@ public class Solitaire extends AndroidApplication implements
     }
 
 
-    @Override
-    public void onSensorChanged(int sensor, float[] values) {
+  //  @Override
+  //  public void onSensorChanged(int sensor, float[] values) {
         // TODO: deprecated ersetzen durch aktuelle Methode(n)
-        if (sensor == SensorManager.SENSOR_ACCELEROMETER) {
+  /*      if (sensor == SensorManager.SENSOR_ACCELEROMETER) {
             long curTime = System.currentTimeMillis();
             // only allow one update every 100ms.
             if ((curTime - lastUpdate) > 100) {
@@ -483,11 +552,11 @@ public class Solitaire extends AndroidApplication implements
                 last_y = y;
                 last_z = z;
             }
-        }
-    }
+        }*/
+  //  }
 
-    @Override
-    public void onAccuracyChanged(int sensor, int accuracy) {
+ //   @Override
+ //   public void onAccuracyChanged(int sensor, int accuracy) {
 
-    }
+   // }
 }

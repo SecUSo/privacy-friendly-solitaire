@@ -184,6 +184,15 @@ public class SettingsActivity extends BaseActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_settings);
 
+            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
+            // to their values. When their values change, their summaries are
+            // updated to reflect the new value, per the Android Design
+            // guidelines.
+            //bindPreferenceSummaryToValue(findPreference("example_text"));
+            //bindPreferenceSummaryToValue(findPreference("example_list"));
+
+
+
             final ListPreference color_list = (ListPreference) findPreference(getString(R.string.sp_key_background_color));
 
 
@@ -238,7 +247,7 @@ public class SettingsActivity extends BaseActivity {
 
             final ListPreference points_list = (ListPreference) findPreference(getString(R.string.pref_count_point));
 
-        points_list.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            points_list.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     if (points_list.getValue() == null) {
@@ -250,10 +259,10 @@ public class SettingsActivity extends BaseActivity {
                     } else if (waste_list.getValue().equals("2")) {
                         edit.putString("pref_points", "standard");
                         edit.commit();
-                    } else if(waste_list.getValue().equals("3")){
+                    } else if (waste_list.getValue().equals("3")) {
                         edit.putString("pref_points", "vegas");
                         edit.commit();
-                    }else{
+                    } else {
                         edit.putString("pref_points", "none");
                         edit.commit();
                     }
@@ -261,8 +270,5 @@ public class SettingsActivity extends BaseActivity {
                 }
             });
         }
-
     }
-
-
 }
