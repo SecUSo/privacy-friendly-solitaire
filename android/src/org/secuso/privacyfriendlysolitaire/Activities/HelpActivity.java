@@ -2,6 +2,7 @@ package org.secuso.privacyfriendlysolitaire.Activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
@@ -15,6 +16,7 @@ import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import static org.secuso.privacyfriendlysolitaire.R.drawable.s;
@@ -35,6 +37,9 @@ public class HelpActivity extends BaseActivity {
 
         overridePendingTransition(0, 0);
 
+        // set keyboard orientation
+        int orientation = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ?
+                LinearLayout.HORIZONTAL : LinearLayout.VERTICAL;
 
         
     }

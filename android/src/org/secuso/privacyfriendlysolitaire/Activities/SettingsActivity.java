@@ -34,6 +34,8 @@ import android.widget.Toast;
 
 import org.secuso.privacyfriendlysolitaire.R;
 
+import static com.badlogic.gdx.Input.Keys.G;
+
 public class SettingsActivity extends BaseActivity {
     final Context context = this;
     static SharedPreferences mSharedPreferences;
@@ -236,7 +238,7 @@ public class SettingsActivity extends BaseActivity {
 
             final ListPreference points_list = (ListPreference) findPreference(getString(R.string.pref_count_point));
 
-            points_list.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        points_list.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     if (points_list.getValue() == null) {

@@ -481,8 +481,8 @@ public class Solitaire extends AndroidApplication implements
 
                 if (speed > SHAKE_THRESHOLD) {
                     application.autoFoundations();
-                    Log.d("sensor", "shake detected w/ speed: " + speed);
-                    Toast.makeText(this, "shake detected w/ speed: " + speed, Toast.LENGTH_SHORT).show();
+                  //  Log.d("sensor", "shake detected w/ speed: " + speed);
+                 //   Toast.makeText(this, "shake detected w/ speed: " + speed, Toast.LENGTH_SHORT).show();
                 }
                 last_x = x;
                 last_y = y;
