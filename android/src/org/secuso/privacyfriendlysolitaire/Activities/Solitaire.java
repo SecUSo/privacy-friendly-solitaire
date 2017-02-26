@@ -190,7 +190,7 @@ public class Solitaire extends AndroidApplication implements
 
             @Override
             public void onClick(View v) {
-//                application.autoMove();
+                application.autoMove();
             }
         });
 
@@ -431,9 +431,9 @@ public class Solitaire extends AndroidApplication implements
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    alert_box_ok = true;
                     stoptimertask(timerView);
                     alertBoxWonMessage();
-                    alert_box_ok = true;
                 }
             });
         }
