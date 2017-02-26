@@ -116,13 +116,6 @@ public class Solitaire extends AndroidApplication implements
         final boolean shake = mSharedPreferences.getBoolean(getString(R.string.pref_shake_switch), false);
         final boolean time = mSharedPreferences.getBoolean(getString(R.string.pref_time), false);
 
-        //set sound in settings
-        if (sound) {
-            //TODO: Sound an schalten
-        } else {
-            //TODO: Sound aus schalten
-        }
-
         //set shake function in settings
         if (shake) {
             //TODO: Shake animation on
@@ -198,7 +191,7 @@ public class Solitaire extends AndroidApplication implements
         });
 
         // start game
-        application.customConstructor(cardDrawMode, scoreMode, c);
+        application.customConstructor(cardDrawMode, scoreMode, sound, c);
 
     }
 

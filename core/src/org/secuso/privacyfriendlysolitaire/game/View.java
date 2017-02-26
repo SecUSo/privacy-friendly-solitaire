@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -39,13 +41,16 @@ public class View implements GameListener {
     private final ImageWrapper marker;
     private final ImageWrapper backsideCardOnDeck;
 
+    private boolean playSounds;
+
     private final HashMap<String, ImageWrapper> faceUpCards = new HashMap<String, ImageWrapper>(52);
     private final List<ImageWrapper> faceDownCards = new ArrayList<ImageWrapper>(21);
     // describes the y at which the given tableau is positioned at the smallest
     private final HashMap<Integer, Float> smallestYForTableau = new HashMap<Integer, Float>(7);
 
-    public View(SolitaireGame game, Stage stage) {
+    public View(SolitaireGame game, Stage stage, boolean playSounds) {
         this.stage = stage;
+        this.playSounds = playSounds;
         initialiseViewConstants();
 
         // add mark and make it invisible
@@ -398,6 +403,7 @@ public class View implements GameListener {
             // possibilities: Deck -> Waste, Deck-Reset
             // both are initiated by a click on the deck and therefore have the deck as ac1
             case DECK:
+                playFlipCardSound();
                 // if after the move was handled (in the game) the waste is empty, this was a reset
                 if (game.getDeckWaste().isWasteEmpty()) {
                     resetDeck();
@@ -1576,6 +1582,22 @@ public class View implements GameListener {
 
         public String toString() {
             return super.toString() + ", stack: " + stackIndex + ", card: " + cardIndex + ", gameObject: " + gameObject;
+        }
+    }
+
+
+    private void playFlipCardSound() {
+        if (playSounds) {
+            Music music = Gdx.audio.newMusic(Gdx.files.getFileHandle("sounds/flipCard.mp3",
+                    Files.FileType.Internal));
+
+            try {
+                music.setVolume(0.5f);
+                music.play();
+                music.setLooping(false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

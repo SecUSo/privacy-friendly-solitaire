@@ -1,7 +1,9 @@
 package org.secuso.privacyfriendlysolitaire.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.input.GestureDetector;
@@ -28,19 +30,23 @@ public class Application extends ApplicationAdapter implements ScoreListener {
 
     // state of game
     private SolitaireGame game;
-    //  private View view;
     private Controller controller;
 
     private Scorer scorer;
 
     private int cardDrawMode;
     private int scoreMode;
+    private boolean playSounds;
 
     private Color backgroundColour;
 
-    public void customConstructor(int cardDrawMode, int scoreMode, Color backgroundColour) {
+    private boolean won = false;
+
+    public void customConstructor(int cardDrawMode, int scoreMode, boolean playSounds,
+                                  Color backgroundColour) {
         this.cardDrawMode = cardDrawMode;
         this.scoreMode = scoreMode;
+        this.playSounds = playSounds;
         this.backgroundColour = backgroundColour;
     }
 
@@ -51,22 +57,22 @@ public class Application extends ApplicationAdapter implements ScoreListener {
     }
 
     private void initMVC() {
-      game=GeneratorSolitaireInstance.buildAlmostWonSolitaireInstance();
-   //     game = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(cardDrawMode, scoreMode);
+        game = GeneratorSolitaireInstance.buildAlmostWonSolitaireInstance();
+//        game = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(cardDrawMode, scoreMode);
         initVC();
 
         Gdx.input.setInputProcessor(new GestureDetector(controller));
     }
 
     private void initVC() {
-        View view = new View(game, stage);
+        View view = new View(game, stage, playSounds);
         game.registerGameListener(view);
 
         if (scoreMode == Constants.MODE_STANDARD) {
             scorer = new StandardScorer();
         } else if (scoreMode == Constants.MODE_VEGAS) {
             scorer = new VegasScorer();
-        }else if(scoreMode == Constants.MODE_NONE){
+        } else if (scoreMode == Constants.MODE_NONE) {
             scorer = new NoneScorer();
         }
         game.registerGameListener(scorer);
@@ -83,8 +89,10 @@ public class Application extends ApplicationAdapter implements ScoreListener {
         Gdx.gl.glClearColor(backgroundColour.r, backgroundColour.g, backgroundColour.b, backgroundColour.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        if (game.isWon() && listener != null) {
+        if (game.isWon() && listener != null && !won) {
             listener.onWon();
+            playWonSound();
+            won = true;
         }
 
         stage.act();
@@ -105,6 +113,7 @@ public class Application extends ApplicationAdapter implements ScoreListener {
 
     public void undo() {
         if (game.canUndo()) {
+            playUndoRedoSound();
             Gdx.app.postRunnable(new Runnable() {
                 @Override
                 public void run() {
@@ -116,6 +125,7 @@ public class Application extends ApplicationAdapter implements ScoreListener {
 
     public void redo() {
         if (game.canRedo()) {
+            playUndoRedoSound();
             Gdx.app.postRunnable(new Runnable() {
                 @Override
                 public void run() {
@@ -131,21 +141,29 @@ public class Application extends ApplicationAdapter implements ScoreListener {
     }
 
     public void autoFoundations() {
-        Move move;
-        while (true) {
-            move = MoveFinder.findMoveTableauToFoundation(game);
-            if (move == null) {
-                break;
-            }
-            game.handleAction(move.getAction1(), false);
-            game.handleAction(move.getAction2(), false);
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
 
-            try {
-                sleep(300);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+
+                Move move;
+                while (true) {
+                    move = MoveFinder.findMoveTableauToFoundation(game);
+                    if (move == null) {
+                        break;
+                    }
+                    game.handleAction(move.getAction1(), false);
+                    game.handleAction(move.getAction2(), false);
+
+                    try {
+                        sleep(300);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        }
+
+        });
     }
 
     public void autoMove() {
@@ -179,5 +197,29 @@ public class Application extends ApplicationAdapter implements ScoreListener {
                 //}
             }
         });
+    }
+
+
+    private void playWonSound() {
+        playSoundWithName("success.mp3");
+    }
+
+    private void playUndoRedoSound() {
+        playSoundWithName("button.mp3");
+    }
+
+    private void playSoundWithName(String fileName) {
+        if (playSounds) {
+            Music music = Gdx.audio.newMusic(Gdx.files.getFileHandle("sounds/" + fileName,
+                    Files.FileType.Internal));
+
+            try {
+                music.setVolume(0.5f);
+                music.play();
+                music.setLooping(false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
