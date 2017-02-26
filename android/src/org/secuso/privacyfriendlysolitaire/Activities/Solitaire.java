@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.SensorListener;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,11 +19,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
@@ -37,7 +41,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class Solitaire extends AndroidApplication implements NavigationView.OnNavigationItemSelectedListener, CallBackListener {
+public class Solitaire extends AndroidApplication implements
+        NavigationView.OnNavigationItemSelectedListener, CallBackListener, SensorListener {
 
     public static final Color GRAY_SOL = new Color(0.75f, 0.75f, 0.75f, 1);
     public static final Color GREEN_SOL = new Color(143 / 255.0f, 188 / 255.0f, 143 / 255.0f, 1f);
@@ -67,11 +72,23 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     private Handler mHandler;
     protected SharedPreferences mSharedPreferences;
 
+    // SHAKE
+    private SensorManager sensorMgr;
+    private long lastUpdate;
+    private static final int SHAKE_THRESHOLD = 800;
+    float last_x, last_y, last_z;
+    Application application;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
+        // TODO: deprecated ersetzen durch aktuelle Methode(n)
+        sensorMgr.registerListener(this,
+                SensorManager.SENSOR_ACCELEROMETER,
+                SensorManager.SENSOR_DELAY_GAME);
 
         setContentView(R.layout.game_layout);
 
@@ -81,7 +98,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
         overridePendingTransition(0, 0);
 
 
-        final Application application = new Application();
+        application = new Application();
         application.registerCallBackListener(this);
 
         final GLSurfaceView20 gameView =
@@ -193,6 +210,7 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     }
 
     int time = 0;
+
     public void initializeTimerTask() {
         timerTask = new TimerTask() {
             public void run() {
@@ -445,4 +463,36 @@ public class Solitaire extends AndroidApplication implements NavigationView.OnNa
     }
 
 
+    @Override
+    public void onSensorChanged(int sensor, float[] values) {
+        // TODO: deprecated ersetzen durch aktuelle Methode(n)
+        if (sensor == SensorManager.SENSOR_ACCELEROMETER) {
+            long curTime = System.currentTimeMillis();
+            // only allow one update every 100ms.
+            if ((curTime - lastUpdate) > 100) {
+                long diffTime = (curTime - lastUpdate);
+                lastUpdate = curTime;
+
+                float x = values[SensorManager.DATA_X];
+                float y = values[SensorManager.DATA_Y];
+                float z = values[SensorManager.DATA_Z];
+
+                float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+
+                if (speed > SHAKE_THRESHOLD) {
+                    application.autoFoundations();
+                    Log.d("sensor", "shake detected w/ speed: " + speed);
+                    Toast.makeText(this, "shake detected w/ speed: " + speed, Toast.LENGTH_SHORT).show();
+                }
+                last_x = x;
+                last_y = y;
+                last_z = z;
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(int sensor, int accuracy) {
+
+    }
 }
