@@ -74,7 +74,8 @@
                     android:layout_marginRight="30dp"
                     android:text="@string/game_button_continue"
                     android:id="@+id/game_button_continue"
-                    android:onClick="onClick"/>
+                    android:onClick="onClick"
+                    android:visibility="invisible"/>
 
 
 

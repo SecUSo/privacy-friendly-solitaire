@@ -38,6 +38,14 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        overridePendingTransition(0, 0);
+
+    }
+
+
+    @Override
+    protected int getNavigationDrawerID() {
+        return R.id.nav_example;
     }
 
     public static class WelcomeDialog extends DialogFragment {

@@ -47,7 +47,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:clickable="true"
-                        android:src="@drawable/undo_nav_bar" />
+                        android:src="@drawable/ic_undo_white_game_36dp"
+                        android:background="@null"/>
 
                     <RelativeLayout
                         android:layout_width="0dp"
@@ -91,8 +92,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:clickable="true"
-                        android:src="@drawable/glyphicons_robot_game"
-                        android:layout_centerInParent="true"/>
+                        android:src="@drawable/ic_lightbulb_outline_white_game_36dp"
+                        android:layout_centerInParent="true"
+                        android:background="@null"/>
 
 
                     <ImageButton
@@ -101,8 +103,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:clickable="true"
-                        android:src="@drawable/redo_nav_bar"
+                        android:src="@drawable/ic_redo_white_game_36dp"
                         android:layout_alignParentRight="true"
+                        android:background="@null"
                         />
                     </RelativeLayout>
                 </LinearLayout>

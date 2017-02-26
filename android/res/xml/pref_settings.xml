@@ -6,16 +6,14 @@
 
         <!-- Sound-Switch -->
         <SwitchPreference
-            android:defaultValue="false"
-            android:key="pref_sound_switch"
+            android:key="@string/pref_sound_switch"
             android:summaryOff="@string/pref_sound_switch_summary_off"
             android:summaryOn="@string/pref_sound_switch_summary_on"
             android:title="@string/pref_sound_switch" />
 
         <!-- Shake-Switch -->
         <SwitchPreference
-            android:defaultValue="false"
-            android:key="pref_shake_switch"
+            android:key="@string/pref_shake_switch"
             android:summaryOff="@string/pref_shake_switch_summary_off"
             android:summaryOn="@string/pref_shake_switch_summary_on"
             android:title="@string/pref_shake_switch" />

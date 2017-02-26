@@ -36,11 +36,6 @@ public class HelpActivity extends BaseActivity {
         //getFragmentManager().beginTransaction().replace(android.R.id.content, new HelpFragment()).commit();
 
         overridePendingTransition(0, 0);
-
-        // set keyboard orientation
-        int orientation = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ?
-                LinearLayout.HORIZONTAL : LinearLayout.VERTICAL;
-
         
     }
 

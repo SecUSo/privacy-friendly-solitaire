@@ -51,7 +51,7 @@
         \nUm Solitär zu gewinnen, müssen alle Karten in aufsteigender Reihenfolge (beginnend mit dem Ass, dann 2, 3 usw.) und nach Farben (Karo, Herz, Pik, Kreuz) sortiert auf die vier horizontal markierten Plätze (Foundations) abgelegt werden. Das Spiel ist gewonnen, wenn alle Karten auf den passenden Foundations liegen, oder verloren, wenn es keine Zugmöglichkeiten mehr gibt bzw. der Spieler aufgibt.
         \nDazu können Karten auf den Tableaus abgelegt und verschoben werden oder direkt auf einer der vier Foundations abgelegt werden. Die Karten dürfen auf den sieben Tableaus in absteigender Reihenfolge angelegt werden, allerdings nur im Wechsel von rot und schwarz. Wird die letzte offene Karte von einem Tableau bewegt, so wird die oberste verdeckte Karte des Tableaus aufgedeckt. Ein leerer Tableauplatz kann nur durch einen König besetzt werden.
         \nIm Spielmodus Standard darf das Deck beliebig oft zurückgesetzt und erneut aufgedeckt werden. Im Spielmodus Vegas ist das Zurücksetzen des Decks nicht möglich.
-        \nDie Karten des Decks werden je nach Einstellung eine nach der anderen oder drei Karten gleichzeitig aufgedeckt und auf den Waste gelegt.
+        \nDie Karten des Decks werden je nach Einstellung eine nach der anderen oder drei Karten gleichzeitig aufgedeckt und auf den Waste gelegt.\n
         </string>
 
     <string name="rules_point">Punktezählen - Solitaire</string>
@@ -112,7 +112,7 @@
 
 
     <!-- ### WON DIALOG ### -->
-    <string name="alert_box_won">Gewonnen!</string>
+    <string name="alert_box_won">Glückwunsch! Sie haben gewonnen!</string>
     <string name="alert_box_won_time">Zeit: </string>
     <string name="alert_box_won_points">Punkte: </string>
     <string name="alert_box_won_main">Hauptmenü</string>
