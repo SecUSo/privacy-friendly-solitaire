@@ -16,8 +16,9 @@ import java.util.Vector;
 
 /**
  * @author M. Fischer
- * <p>
- * represents the solitaire game (its current state and all actions to invoke in order to do an action)
+ *         <p>
+ *         represents the solitaire game
+ *         (its current state and all actions to invoke in order to do an action)
  */
 
 public class SolitaireGame {
@@ -294,8 +295,8 @@ public class SolitaireGame {
      * constructs a new move based on prevAction and the parameter action and saves it to the
      * recentMove variable, resets prevAction and notifies observers
      *
-     * @param action the action that specifies the target of this move
-     * @param redoMove true if the move to be made is caused by a redo
+     * @param action     the action that specifies the target of this move
+     * @param redoMove   true if the move to be made is caused by a redo
      * @param oldFanSize the number of cards fanned out on the waste before the move
      * @param newFanSize the number of cards fanned out on the waste after the move
      */

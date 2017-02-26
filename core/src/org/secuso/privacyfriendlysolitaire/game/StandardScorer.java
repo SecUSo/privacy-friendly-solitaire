@@ -5,6 +5,15 @@ import org.secuso.privacyfriendlysolitaire.model.Move;
 
 /**
  * @author M. Fischer
+ *         <p>
+ *         The standard scorer starts with 0 points and gives the following points:
+ *         - Waste->Tab: 5
+ *         - Waste->Found: 10
+ *         - Tab->Found: 10
+ *         - Found->Tab: -15
+ *         - Resetting the Deck: -100
+ *
+ *         The score can never be below 0
  */
 
 class StandardScorer extends Scorer {

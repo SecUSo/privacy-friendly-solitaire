@@ -1,10 +1,11 @@
 package org.secuso.privacyfriendlysolitaire.game;
 
 /**
- * Created by meric-doga on 25.02.17.
+ * @author M. Saracoglu
+ *         Empty scorer, if the user does not want to count his points
  */
 
-public class NoneScorer extends Scorer  {
+public class NoneScorer extends Scorer {
 
     NoneScorer() {
         setScore(0);

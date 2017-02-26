@@ -5,6 +5,9 @@ import org.secuso.privacyfriendlysolitaire.model.Move;
 
 /**
  * @author M. Fischer
+ *         <p>
+ *         The vegas scorer starts with -52 points and only adds 5 on moves to the foundation
+ *         and -5 on moves from the foundation
  */
 
 class VegasScorer extends Scorer {

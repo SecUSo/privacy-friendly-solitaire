@@ -13,6 +13,8 @@ import java.util.Vector;
 
 /**
  * @author M. Fischer
+ *         <p>
+ *         class to find possible moves in a given game
  */
 
 class MoveFinder {
