@@ -1,11 +1,13 @@
 package org.secuso.privacyfriendlysolitaire.Activities;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
-import android.hardware.SensorListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,21 +19,21 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.surfaceview.GLSurfaceView20;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.utils.StringBuilder;
 
 import org.secuso.privacyfriendlysolitaire.CallBackListener;
 import org.secuso.privacyfriendlysolitaire.game.Application;
@@ -51,30 +53,16 @@ public class Solitaire extends AndroidApplication implements
     public static final Color LILA_SOL = new Color(216 / 255.0f, 191 / 255.0f, 216 / 255.0f, 1);
 
 
-
-
-
-
-
     // The following are used for the shake detection
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
 
 
-
-
-
-
-
-
-
-
     Timer timer;
     TimerTask timerTask;
     TextView timerView;
     TextView pointsView;
-    final Context context = this;
     com.badlogic.gdx.graphics.Color c;
 
 
@@ -94,11 +82,13 @@ public class Solitaire extends AndroidApplication implements
     protected SharedPreferences mSharedPreferences;
 
     // SHAKE
-    private SensorManager sensorMgr;
-    private long lastUpdate;
-    private static final int SHAKE_THRESHOLD = 800;
-    float last_x, last_y, last_z;
+//    private SensorManager sensorMgr;
+//    private long lastUpdate;
+//    private static final int SHAKE_THRESHOLD = 800;
+//    float last_x, last_y, last_z;
     Application application;
+    boolean countTime = false;
+    boolean showPoints = false;
 
 
     @Override
@@ -107,9 +97,9 @@ public class Solitaire extends AndroidApplication implements
 
 //        sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
         // TODO: deprecated ersetzen durch aktuelle Methode(n)
-  //      sensorMgr.registerListener(this,
-    //            SensorManager.SENSOR_ACCELEROMETER,
-      //          SensorManager.SENSOR_DELAY_GAME);
+        //      sensorMgr.registerListener(this,
+        //            SensorManager.SENSOR_ACCELEROMETER,
+        //          SensorManager.SENSOR_DELAY_GAME);
 
         setContentView(R.layout.game_layout);
 
@@ -133,6 +123,7 @@ public class Solitaire extends AndroidApplication implements
         final boolean sound = mSharedPreferences.getBoolean(getString(R.string.pref_sound_switch), false);
         final boolean shake = mSharedPreferences.getBoolean(getString(R.string.pref_shake_switch), false);
         final boolean time = mSharedPreferences.getBoolean(getString(R.string.pref_time), false);
+        countTime = time;
 
 
         //set shake function in settings
@@ -166,8 +157,10 @@ public class Solitaire extends AndroidApplication implements
             scoreMode = Constants.MODE_NONE;
         } else if (mSharedPreferences.getString("pref_points", "standard").equals("standard")) {
             scoreMode = Constants.MODE_STANDARD;
+            showPoints = true;
         } else if (mSharedPreferences.getString("pref_points", "vegas").equals("vegas")) {
             scoreMode = Constants.MODE_VEGAS;
+            showPoints = true;
         }
 
         // Set the background color of the game panel
@@ -205,19 +198,12 @@ public class Solitaire extends AndroidApplication implements
 
             @Override
             public void onClick(View v) {
-//                application.autoMove();
+                application.autoMove();
             }
         });
 
         // start game
         application.customConstructor(cardDrawMode, scoreMode, sound, c);
-
-
-
-
-
-
-
 
 
         // ShakeDetector initialization
@@ -229,8 +215,8 @@ public class Solitaire extends AndroidApplication implements
 
             @Override
             public void onShake(int count) {
-				/*
-				 * The following method, "handleShakeEvent(count):" is a stub //
+                /*
+                 * The following method, "handleShakeEvent(count):" is a stub //
 				 * method you would use to setup whatever you want done once the
 				 * device has been shook.
 				 */
@@ -247,7 +233,7 @@ public class Solitaire extends AndroidApplication implements
     public void onResume() {
         super.onResume();
         // Add the following line to register the Session Manager Listener onResume
-        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
@@ -256,11 +242,6 @@ public class Solitaire extends AndroidApplication implements
         mSensorManager.unregisterListener(mShakeDetector);
         super.onPause();
     }
-
-
-
-
-
 
 
     //Timer
@@ -323,39 +304,15 @@ public class Solitaire extends AndroidApplication implements
 
     //Alert box for won a game which prints the total time and the reached points
     public void alertBoxWonMessage() {
-        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                context);
 
-        // set title
-        alertDialogBuilder.setTitle(getString(R.string.alert_box_won));
-        // set dialog message
-        alertDialogBuilder
-                .setMessage(getString(R.string.alert_box_won_time) + timeForAlert(time) +
-                        "\n" +
-                        getString(R.string.alert_box_won_points) + pointsView.getText().toString())
-                .setCancelable(true)
-                // go back to main menu
-                .setNegativeButton(getString(R.string.alert_box_won_main), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // if this button is clicked, close current activity
-                        dialog.dismiss();
-                        Solitaire.this.finish();
-                    }
-                })
-                // or start another game
-                .setPositiveButton(getString(R.string.alert_box_won_another), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // if this button is clicked, start current activity anew
-                        dialog.dismiss();
-                        Solitaire.this.recreate();
-                    }
-                });
+        WonDialog dia = new WonDialog();
+        Bundle args = new Bundle();
 
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show it
-        alertDialog.show();
+        // put necessary arguments to build correct alertBox
+        args.putString("timeForAlert", timeForAlert(time));
+        args.putString("pointsString", pointsView.getText().toString());
+        dia.setArguments(args);
+        dia.show(getFragmentManager(), "WWonDialog");
     }
 
     @Override
@@ -527,9 +484,66 @@ public class Solitaire extends AndroidApplication implements
     }
 
 
-  //  @Override
-  //  public void onSensorChanged(int sensor, float[] values) {
-        // TODO: deprecated ersetzen durch aktuelle Methode(n)
+    // if we did make this dialog static, we could not close the surrounding activity
+    @SuppressLint("ValidFragment")
+    public class WonDialog extends DialogFragment {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            String timeForAlert = getArguments().getString("timeForAlert");
+            String pointsString = getArguments().getString("pointsString");
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("\n\n" + getString(R.string.alert_box_won_generic_message) + "\n\n");
+            if (countTime) {
+                sb.append(getString(R.string.alert_box_won_time) + timeForAlert + "\n");
+            }
+            if (showPoints) {
+                sb.append(getString(R.string.alert_box_won_points) + pointsString);
+            }
+
+            String message = sb.toString();
+
+
+            LayoutInflater i = getActivity().getLayoutInflater();
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
+            builder.setView(i.inflate(R.layout.custom_dialog, null))
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setTitle(getActivity().getString(R.string.alert_box_won))
+                    .setMessage(message)
+                    .setCancelable(false)
+                    // go back to main menu
+                    .setNegativeButton(getString(R.string.alert_box_won_main), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // if this button is clicked, close current activity
+                            dialog.dismiss();
+
+                            Solitaire.this.finish();
+                        }
+                    })
+                    // or start another game
+                    .setPositiveButton(getString(R.string.alert_box_won_another), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // if this button is clicked, start current activity anew
+                            dialog.dismiss();
+                            Solitaire.this.recreate();
+                        }
+                    });
+
+            return builder.create();
+        }
+
+        @Override
+        public void onCancel(DialogInterface dialog) {
+            alertBoxWonMessage();
+        }
+    }
+
+
+    //  @Override
+    //  public void onSensorChanged(int sensor, float[] values) {
+    // TODO: deprecated ersetzen durch aktuelle Methode(n)
   /*      if (sensor == SensorManager.SENSOR_ACCELEROMETER) {
             long curTime = System.currentTimeMillis();
             // only allow one update every 100ms.
@@ -553,10 +567,10 @@ public class Solitaire extends AndroidApplication implements
                 last_z = z;
             }
         }*/
-  //  }
+    //  }
 
- //   @Override
- //   public void onAccuracyChanged(int sensor, int accuracy) {
+    //   @Override
+    //   public void onAccuracyChanged(int sensor, int accuracy) {
 
-   // }
+    // }
 }

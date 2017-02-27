@@ -1523,12 +1523,11 @@ public class View implements GameListener {
 
         private static float scalingWidthCard = 2.3f;
         private static float scalingHeightCard = 4f;
-        private static float scalingWidthMarker = 2.4f;
+        private static float scalingWidthMarker = 2.45f;
         private static float scalingHeightMarker = 4.5f;
 
         private static float DeckX;
 
-        //        private static float WasteX;
         private static float WasteDeckFoundationY;
 
         private static float[] TableauFoundationX;

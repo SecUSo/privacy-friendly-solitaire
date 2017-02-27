@@ -178,17 +178,15 @@ public class Application extends ApplicationAdapter implements ScoreListener {
                 try {
                     if (move != null) {
                         //break;
-                        Gdx.app.log("autoMove action1", move.getAction1().toString());
+//                        Gdx.app.log("autoMove action1", move.getAction1().toString());
                         game.handleAction(move.getAction1(), false);
 
                         if (move.getAction2() != null) {
-                            Gdx.app.log("autoMove action2", move.getAction2().toString());
+//                            Gdx.app.log("autoMove action2", move.getAction2().toString());
                             game.handleAction(move.getAction2(), false);
                         } else {
-                            Gdx.app.log("autoMove action2", "null action was not passed to model");
+//                            Gdx.app.log("autoMove action2", "null action was not passed to model");
                         }
-                    } else {
-                        Gdx.app.log("autoMove", "move war null");
                     }
                 } catch (Exception e) {
                     Gdx.app.log("----FEHLER----, gesamter Move war ", move.toString());

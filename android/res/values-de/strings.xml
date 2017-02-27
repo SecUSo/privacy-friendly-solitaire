@@ -112,7 +112,8 @@
 
 
     <!-- ### WON DIALOG ### -->
-    <string name="alert_box_won">Glückwunsch! Sie haben gewonnen!</string>
+    <string name="alert_box_won">Glückwunsch! Du hast gewonnen!</string>
+    <string name="alert_box_won_generic_message">Du hast es geschafft! Super!</string>
     <string name="alert_box_won_time">Zeit: </string>
     <string name="alert_box_won_points">Punkte: </string>
     <string name="alert_box_won_main">Hauptmenü</string>

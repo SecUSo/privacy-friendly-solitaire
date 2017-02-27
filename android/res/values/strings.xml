@@ -117,6 +117,7 @@
 
     <!-- ### WON DIALOG ### -->
     <string name="alert_box_won">Congratulations! You won!</string>
+    <string name="alert_box_won_generic_message">You did it! Awesome!</string>
     <string name="alert_box_won_time">Total Time: </string>
     <string name="alert_box_won_points">Points: </string>
     <string name="alert_box_won_main">Main Menu</string>
