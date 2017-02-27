@@ -126,12 +126,21 @@ public class Solitaire extends AndroidApplication implements
         countTime = time;
 
 
-        //set shake function in settings
-        if (shake) {
-            //TODO: Shake animation on
-        } else {
-            //TODO: Shake animation off
-        }
+        // ShakeDetector initialization
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+
+            @Override
+            public void onShake(int count) {
+                if (shake) {
+                    application.autoFoundations();
+                }
+            }
+        });
+
 
         //start timer for game
         timerView = (TextView) findViewById(R.id.timerView);
@@ -204,26 +213,6 @@ public class Solitaire extends AndroidApplication implements
 
         // start game
         application.customConstructor(cardDrawMode, scoreMode, sound, c);
-
-
-        // ShakeDetector initialization
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mAccelerometer = mSensorManager
-                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mShakeDetector = new ShakeDetector();
-        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
-
-            @Override
-            public void onShake(int count) {
-                /*
-                 * The following method, "handleShakeEvent(count):" is a stub //
-				 * method you would use to setup whatever you want done once the
-				 * device has been shook.
-				 */
-                application.autoFoundations();
-
-            }
-        });
 
 
     }

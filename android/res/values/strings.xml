@@ -49,11 +49,11 @@
     <!--###Play-Rules###-->
     <string name="rules">Rules</string>
     <string name="rules_description">
-        There are seven hidden card piles (tableaus) placed side by side from left to right. The uppermost cards of the tableau are reversed.
-        \nTo win solitaire, all cards must be placed in ascending order (starting with the ace, then 2, 3, etc.) and sorted according to colors (diamonds, hearts, spades, crosses) to the four horizontally marked places (foundations). The game is won when all the cards are on the appropriate foundations, or lost when there are no more moves or the player gives up.
+        \nThere are seven hidden card piles (tableaus) placed side by side from left to right. The uppermost cards of the tableau are reversed.
+       \nTo win solitaire, all cards must be placed in ascending order (starting with the ace, then 2, 3, etc.) and sorted according to colors (diamonds, hearts, spades, crosses) to the four horizontally marked places (foundations). The game is won when all the cards are on the appropriate foundations, or lost when there are no more moves or the player gives up.
         \nTo do this, you can place and move maps on the tableau or place them directly on one of the four foundations. The cards may be placed on the seven tables in descending order, alternately in red and black. If the last open card is moved from a tableau, the top face-down card of the tableau is revealed. An empty table place can only be occupied by a king.
         \nIn the standard game mode, the deck can be reset and reopened as often as desired. In the Vegas game mode you can not reset the deck.
-        \nThe cards of the deck are faced up one by one or three cards simultaneously, depending on the settings, and sent to the Waste.\n
+        \nThe cards of the deck are faced up one by one or three cards simultaneously, depending on the settings, and sent to the Waste.
     </string>
 
     <string name="rules_point">Counting points - Solitaire</string>

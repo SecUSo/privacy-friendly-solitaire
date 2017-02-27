@@ -32,22 +32,22 @@
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layoutDirection="ltr"
-                android:layout_weight="1"/>
+                android:layout_weight="0"/>
 
             <ImageView
-                android:layout_weight="5.29"
+                android:layout_weight="9"
                 android:id="@+id/gameTypeImage"
                 android:layout_width="match_parent"
                 android:adjustViewBounds="true"
                 android:layout_centerInParent="true"
-                android:src="@drawable/s"
+                android:src="@drawable/ic_icon__game_main"
                 android:layout_height="0dp" />
 
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layoutDirection="ltr"
-                android:layout_weight="1">
+                android:layout_weight="0">
 
             </RelativeLayout>
                 <Button
