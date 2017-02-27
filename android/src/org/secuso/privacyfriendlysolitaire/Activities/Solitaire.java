@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,6 +37,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.StringBuilder;
 
 import org.secuso.privacyfriendlysolitaire.CallBackListener;
+import org.secuso.privacyfriendlysolitaire.Utils.Config;
 import org.secuso.privacyfriendlysolitaire.game.Application;
 import org.secuso.privacyfriendlysolitaire.R;
 import org.secuso.privacyfriendlysolitaire.game.Constants;
@@ -80,6 +82,7 @@ public class Solitaire extends AndroidApplication implements
     // Helper
     private Handler mHandler;
     protected SharedPreferences mSharedPreferences;
+    private Config config;
 
     // SHAKE
 //    private SensorManager sensorMgr;
@@ -89,6 +92,7 @@ public class Solitaire extends AndroidApplication implements
     Application application;
     boolean countTime = false;
     boolean showPoints = false;
+    static boolean stillLeave = false;
 
 
     @Override
@@ -102,6 +106,9 @@ public class Solitaire extends AndroidApplication implements
         //          SensorManager.SENSOR_DELAY_GAME);
 
         setContentView(R.layout.game_layout);
+
+
+        config = new Config(getApplicationContext());
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -301,7 +308,7 @@ public class Solitaire extends AndroidApplication implements
         args.putString("timeForAlert", timeForAlert(time));
         args.putString("pointsString", pointsView.getText().toString());
         dia.setArguments(args);
-        dia.show(getFragmentManager(), "WWonDialog");
+        dia.show(getFragmentManager(), "WonDialog");
     }
 
     @Override
@@ -375,31 +382,48 @@ public class Solitaire extends AndroidApplication implements
     private void callDrawerItem(final int itemId) {
         Intent intent;
 
-        switch (itemId) {
-            case R.id.nav_example:
-                intent = new Intent(this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                break;
-            case R.id.nav_game:
-                intent = new Intent(this, Solitaire.class);
-                createBackStack(intent);
-                break;
-            case R.id.nav_about:
-                intent = new Intent(this, AboutActivity.class);
-                createBackStack(intent);
-                break;
-            case R.id.nav_help:
-                intent = new Intent(this, HelpActivity.class);
-                createBackStack(intent);
-                break;
-            case R.id.nav_settings:
-                intent = new Intent(this, SettingsActivity.class);
-                intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.GeneralPreferenceFragment.class.getName());
-                intent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
-                createBackStack(intent);
-                break;
-            default:
+        if (config.showWarningWhenLeavingGame()) {
+            WarningDialog dia = new WarningDialog();
+            Bundle args = new Bundle();
+
+            // put itemId, so when the user makes his choice, we can call this method again and
+            // potentially change the activity
+            args.putInt("itemId", itemId);
+            dia.setArguments(args);
+            dia.show(getFragmentManager(), "WarningDialog");
+        } else {
+            stillLeave = true;
+        }
+
+        if (stillLeave) {
+            switch (itemId) {
+                case R.id.nav_example:
+                    intent = new Intent(this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    break;
+                case R.id.nav_game:
+                    intent = new Intent(this, Solitaire.class);
+                    createBackStack(intent);
+                    break;
+                case R.id.nav_about:
+                    intent = new Intent(this, AboutActivity.class);
+                    createBackStack(intent);
+                    break;
+                case R.id.nav_help:
+                    intent = new Intent(this, HelpActivity.class);
+                    createBackStack(intent);
+                    break;
+                case R.id.nav_settings:
+                    intent = new Intent(this, SettingsActivity.class);
+                    intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.GeneralPreferenceFragment.class.getName());
+                    intent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
+                    createBackStack(intent);
+                    break;
+                default:
+            }
+
+            stillLeave = false;
         }
     }
 
@@ -527,6 +551,59 @@ public class Solitaire extends AndroidApplication implements
         public void onCancel(DialogInterface dialog) {
             alertBoxWonMessage();
         }
+    }
+
+
+    // if we did make this dialog static, we could not access callDrawerItem
+    @SuppressLint("ValidFragment")
+    public class WarningDialog extends DialogFragment {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            final int itemId = getArguments().getInt("itemId");
+
+            LayoutInflater i = getActivity().getLayoutInflater();
+            View view = i.inflate(R.layout.custom_dialog, null);
+            final CheckBox checkbox = (CheckBox) view.findViewById(R.id.checkbox);
+            checkbox.setVisibility(View.VISIBLE);
+            checkbox.setText(getString(R.string.warning_box_show_future));
+
+
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
+            builder.setView(view)
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setTitle(getActivity().getString(R.string.warning_box_title))
+                    .setMessage(getString(R.string.warning_box_message))
+                    .setCancelable(false)
+                    // stay
+                    .setNegativeButton(getString(R.string.warning_box_negative_answer), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            if (checkbox.isChecked()) {
+                                setDoNotShowWarningInFuture();
+                            }
+                            dialog.dismiss();
+                        }
+                    })
+                    // leave the current activity
+                    .setPositiveButton(getString(R.string.warning_box_positive_answer), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                            stillLeave = true;
+                            if (checkbox.isChecked()) {
+                                setDoNotShowWarningInFuture();
+                            }
+                            callDrawerItem(itemId);
+                        }
+                    });
+
+            return builder.create();
+        }
+    }
+
+    private void setDoNotShowWarningInFuture() {
+        config.setShowWarningWhenLeavingGame(false);
     }
 
 

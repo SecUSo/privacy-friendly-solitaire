@@ -123,4 +123,12 @@
     <string name="alert_box_won_main">Main Menu</string>
     <string name="alert_box_won_another">New Game</string>
 
+
+    <!-- ### WARNING DIALOG ### -->
+    <string name="warning_box_title">Caution!</string>
+    <string name="warning_box_message">\nYou are leaving the game. Your current game will not be saved.\n\nContinue anyway?</string>
+    <string name="warning_box_show_future">Do not show this dialog in the future</string>
+    <string name="warning_box_positive_answer">Yes</string>
+    <string name="warning_box_negative_answer">No</string>
+
 </resources>

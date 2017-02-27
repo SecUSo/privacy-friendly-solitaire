@@ -119,4 +119,12 @@
     <string name="alert_box_won_main">Hauptmenü</string>
     <string name="alert_box_won_another">Neues Spiel</string>
 
+
+    <!-- ### WARNING DIALOG ### -->
+    <string name="warning_box_title">Vorsicht!</string>
+    <string name="warning_box_message">\nDu verlässt das Spiel. Der aktuelle Spielstand wird nicht gespeichert.\n\nTrotzdem fortfahren?</string>
+    <string name="warning_box_show_future">Diesen Dialog in der Zukunft nicht anzeigen</string>
+    <string name="warning_box_positive_answer">Ja</string>
+    <string name="warning_box_negative_answer">Nein</string>
+
 </resources>

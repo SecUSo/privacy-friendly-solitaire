@@ -8,4 +8,5 @@ public class Constant {
 
     ////////////////////////////// CONFIG-KEYS //////////////////////////////
     public static final String FIRST_CALL = "first_call";
+    public static final String SHOW_WARNING = "show_warning";
 }

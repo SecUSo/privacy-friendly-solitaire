@@ -24,9 +24,17 @@ public class Config {
             editor.apply();
         }
 
-
-
         return isFirstCall;
+    }
+
+    public boolean showWarningWhenLeavingGame() {
+        return settings.getBoolean(Constant.SHOW_WARNING, true);
+    }
+
+
+    public void setShowWarningWhenLeavingGame(boolean show_warning) {
+        editor.putBoolean(Constant.SHOW_WARNING, show_warning);
+        editor.apply();
     }
 
 }
