@@ -6,7 +6,7 @@ privacy friendly in that it uses only Android permissions that are strictly nece
 functioning and abstains from advertisement or tracking mechanisms.
 
 # API Reference
-Mininum SDK: 21 Target SDK: 24
+Mininum SDK: 21 Target SDK: 25
 
 # License
 Privacy Friendly Solitaire is licensed under the GPLv3. Copyright (C) 2016 Emine Saracoglu, Moritz
