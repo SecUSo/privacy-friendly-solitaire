@@ -34,7 +34,7 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlysolitaire.R;
 import org.secuso.privacyfriendlysolitaire.Utils.Config;
-
+/*
 public class MenuActivity extends BaseActivity {
 
     private Config config;
@@ -66,17 +66,11 @@ public class MenuActivity extends BaseActivity {
         });
 
         final SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        // Set up the ViewPager with the sections adapter.
-        //     mViewPager = (ViewPager) findViewById(R.id.scroller);
-        //    if(mViewPager != null) {
-        //      mViewPager.setAdapter(mSectionsPagerAdapter);
-        //  }
+
 
         int index = mSharedPreferences.getInt("lastChosenPage", 0);
 
         mViewPager.setCurrentItem(index);
-        //    mArrowLeft = (ImageView) findViewById(R.id.arrow_left);
-        //    mArrowRight = (ImageView) findViewById(R.id.arrow_right);
 
         //care for initial postiton of the ViewPager
         mArrowLeft.setVisibility((index == 0) ? View.INVISIBLE : View.VISIBLE);
@@ -113,17 +107,6 @@ public class MenuActivity extends BaseActivity {
         return R.id.nav_game;
     }
 
-  /*  public void onClick(View view) {
-        switch(view.getId()) {
-            case R.id.arrow_left:
-                mViewPager.arrowScroll(View.FOCUS_LEFT);
-                break;
-            case R.id.arrow_right:
-                mViewPager.arrowScroll(View.FOCUS_RIGHT);
-                break;
-            default:
-        }
-    }*/
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
@@ -151,13 +134,13 @@ public class MenuActivity extends BaseActivity {
          * The fragment argument representing the section number for this
          * fragment.
          */
-        private static final String ARG_SECTION_NUMBER = "section_number";
+   /*     private static final String ARG_SECTION_NUMBER = "section_number";
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PageFragment newInstance(int sectionNumber) {
+  /*      public static PageFragment newInstance(int sectionNumber) {
             PageFragment fragment = new PageFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
@@ -187,3 +170,4 @@ public class MenuActivity extends BaseActivity {
     }
 }
 
+*/

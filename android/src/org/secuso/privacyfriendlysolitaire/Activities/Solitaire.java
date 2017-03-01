@@ -35,7 +35,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,23 +62,23 @@ import java.util.TimerTask;
 public class Solitaire extends AndroidApplication implements
         NavigationView.OnNavigationItemSelectedListener, CallBackListener {
 
+    //set color values for backgroundcolor of game field, which can be selected in the settings of the App
     public static final Color GRAY_SOL = new Color(0.75f, 0.75f, 0.75f, 1);
     public static final Color GREEN_SOL = new Color(143 / 255.0f, 188 / 255.0f, 143 / 255.0f, 1f);
     public static final Color BLUE_SOL = new Color(176 / 255.0f, 196 / 255.0f, 222 / 255.0f, 1);
     public static final Color LILA_SOL = new Color(216 / 255.0f, 191 / 255.0f, 216 / 255.0f, 1);
-
+    com.badlogic.gdx.graphics.Color c;
 
     // The following are used for the shake detection
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
 
-
+    // declare the attributes for time, which can be counted in a game
     Timer timer;
     TimerTask timerTask;
     TextView timerView;
     TextView pointsView;
-    com.badlogic.gdx.graphics.Color c;
 
 
     // delay to launch nav drawer item, to allow close animation to play
@@ -99,10 +98,6 @@ public class Solitaire extends AndroidApplication implements
     private Config config;
 
     // SHAKE
-//    private SensorManager sensorMgr;
-//    private long lastUpdate;
-//    private static final int SHAKE_THRESHOLD = 800;
-//    float last_x, last_y, last_z;
     Application application;
     boolean countTime = false;
     boolean showPoints = false;
@@ -113,26 +108,17 @@ public class Solitaire extends AndroidApplication implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
-        // TODO: deprecated ersetzen durch aktuelle Methode(n)
-        //      sensorMgr.registerListener(this,
-        //            SensorManager.SENSOR_ACCELEROMETER,
-        //          SensorManager.SENSOR_DELAY_GAME);
-
         setContentView(R.layout.game_layout);
-
-
         config = new Config(getApplicationContext());
-
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         mHandler = new Handler();
         overridePendingTransition(0, 0);
 
-
         application = new Application();
         application.registerCallBackListener(this);
 
+        //initialize game view an functions, which are implemented in th core package with LibGDX
         final GLSurfaceView20 gameView =
                 (GLSurfaceView20) initializeForView(application, new AndroidApplicationConfiguration());
 
@@ -163,7 +149,7 @@ public class Solitaire extends AndroidApplication implements
         });
 
 
-        //start timer for game
+        //start timer for game if it is selected in setting by the player
         timerView = (TextView) findViewById(R.id.timerView);
         if (time)
             startTimer();
@@ -173,12 +159,12 @@ public class Solitaire extends AndroidApplication implements
         int scoreMode = Constants.MODE_STANDARD;
         int cardDrawMode = Constants.MODE_ONE_CARD_DEALT;
 
+        // settings-> waste
         if (mSharedPreferences.getString("pref_waste", "one").equals("one")) {
             scoreMode = Constants.MODE_ONE_CARD_DEALT;
         } else if (mSharedPreferences.getString("pref_waste", "three").equals("three")) {
             cardDrawMode = Constants.MODE_THREE_CARDS_DEALT;
         }
-
 
         //pointsView && select point counting mode in settings
         pointsView = (TextView) findViewById(R.id.points);
@@ -234,8 +220,6 @@ public class Solitaire extends AndroidApplication implements
 
         // start game
         application.customConstructor(cardDrawMode, scoreMode, sound, c);
-
-
     }
 
 
@@ -293,7 +277,7 @@ public class Solitaire extends AndroidApplication implements
         }
     }
 
-    //display time   in Alertbox
+    //display time in Alertbox
     String timeAlert;
 
     public String timeForAlert(int t) {
@@ -578,6 +562,7 @@ public class Solitaire extends AndroidApplication implements
 
             final int itemId = getArguments().getInt("itemId");
 
+            //selectable checkbox if player do not want, that the message box is shown agin next time
             LayoutInflater i = getActivity().getLayoutInflater();
             View view = i.inflate(R.layout.custom_dialog, null);
             final CheckBox checkbox = (CheckBox) view.findViewById(R.id.checkbox);
@@ -585,6 +570,7 @@ public class Solitaire extends AndroidApplication implements
             checkbox.setText(getString(R.string.warning_box_show_future));
 
 
+            //warning message, if player wants to leave game
             android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
             builder.setView(view)
                     .setIcon(R.mipmap.ic_launcher)
@@ -619,38 +605,4 @@ public class Solitaire extends AndroidApplication implements
     private void setDoNotShowWarningInFuture() {
         config.setShowWarningWhenLeavingGame(false);
     }
-
-
-    //  @Override
-    //  public void onSensorChanged(int sensor, float[] values) {
-    // TODO: deprecated ersetzen durch aktuelle Methode(n)
-  /*      if (sensor == SensorManager.SENSOR_ACCELEROMETER) {
-            long curTime = System.currentTimeMillis();
-            // only allow one update every 100ms.
-            if ((curTime - lastUpdate) > 100) {
-                long diffTime = (curTime - lastUpdate);
-                lastUpdate = curTime;
-
-                float x = values[SensorManager.DATA_X];
-                float y = values[SensorManager.DATA_Y];
-                float z = values[SensorManager.DATA_Z];
-
-                float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
-
-                if (speed > SHAKE_THRESHOLD) {
-                    application.autoFoundations();
-                 //   Log.d("sensor", "shake detected w/ speed: " + speed);
-                   // Toast.makeText(this, "shake detected w/ speed: " + speed, Toast.LENGTH_SHORT).show();
-                }
-                last_x = x;
-                last_y = y;
-                last_z = z;
-            }
-        }*/
-    //  }
-
-    //   @Override
-    //   public void onAccuracyChanged(int sensor, int accuracy) {
-
-    // }
 }

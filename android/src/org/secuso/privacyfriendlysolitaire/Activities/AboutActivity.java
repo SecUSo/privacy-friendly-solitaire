@@ -28,12 +28,13 @@ import org.secuso.privacyfriendlysolitaire.R;
  */
 public class AboutActivity extends AppCompatActivity {
 
+    //Help Activity of Solitaire App
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
         ActionBar ab = getSupportActionBar();
-        if(ab != null) {
+        if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
@@ -45,13 +46,9 @@ public class AboutActivity extends AppCompatActivity {
 
         overridePendingTransition(0, 0);
 
-        ((TextView)findViewById(R.id.secusoWebsite)).setMovementMethod(LinkMovementMethod.getInstance());
-        ((TextView)findViewById(R.id.githubURL)).setMovementMethod(LinkMovementMethod.getInstance());
+        ((TextView) findViewById(R.id.secusoWebsite)).setMovementMethod(LinkMovementMethod.getInstance());
+        ((TextView) findViewById(R.id.githubURL)).setMovementMethod(LinkMovementMethod.getInstance());
     }
 
-    //@Override
-    //protected int getNavigationDrawerID() {
-    //    return R.id.nav_about;
-    //}
 }
 

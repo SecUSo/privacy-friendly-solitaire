@@ -38,9 +38,11 @@ public class Config {
             editor.apply();
         }
 
+        // first call of app
         return isFirstCall;
     }
 
+    // alerbox warning, if player wants to leave game
     public boolean showWarningWhenLeavingGame() {
         return settings.getBoolean(Constant.SHOW_WARNING, true);
     }

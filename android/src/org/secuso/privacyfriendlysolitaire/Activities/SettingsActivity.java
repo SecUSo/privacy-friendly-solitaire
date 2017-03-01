@@ -17,37 +17,18 @@ This program is free software: you can redistribute it and/or modify
  * Created by meric-doga on 27.11.16.
  */
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.preference.SwitchPreference;
-import android.text.Html;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.secuso.privacyfriendlysolitaire.R;
-
-import static com.badlogic.gdx.Input.Keys.G;
 
 public class SettingsActivity extends BaseActivity {
     final Context context = this;
@@ -116,63 +97,19 @@ public class SettingsActivity extends BaseActivity {
         setContentView(R.layout.activity_settings);
         overridePendingTransition(0, 0);
 
+        //initiate SharedPreferences
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         edit = mSharedPreferences.edit();
 
 
     }
 
-
+    //Do not open new Settings Activity if in drawer is Settings selected again
     @Override
     protected int getNavigationDrawerID() {
         return R.id.nav_settings;
     }
 
-    /**
-     * Set up the {@link android.app.ActionBar}, if the API is available.
-     */
-    /*private void setupActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            // Show the Up button in the action bar.
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-    }*/
-
-    /*@Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            //finish();
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
-            return true;
-            // (!super.onMenuItemSelected(featureId, item)) {
-            //    NavUtils.navigateUpFromSameTask(this);
-            //}
-            //return true;
-        }
-        return super.onMenuItemSelected(featureId, item);
-    }*/
-
-    /**
-     * {@inheritDoc}
-     */
-    /*@Override
-    public boolean onIsMultiPane() {
-        return isXLargeTablet(this);
-    }*/
-
-    /**
-     * {@inheritDoc}
-     */
-    /*@Override
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public void onBuildHeaders(List<Header> target) {
-        loadHeadersFromResource(R.xml.pref_headers, target);
-    }*/
 
     /**
      * This method stops fragment injection in malicious applications.
@@ -197,16 +134,8 @@ public class SettingsActivity extends BaseActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_settings);
 
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
-            //bindPreferenceSummaryToValue(findPreference("example_text"));
-            //bindPreferenceSummaryToValue(findPreference("example_list"));
-
-
+            //set selection of the settings in Backgroundcolor, Waste, Point counts in the Game
             final ListPreference color_list = (ListPreference) findPreference(getString(R.string.sp_key_background_color));
-
 
             color_list.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override

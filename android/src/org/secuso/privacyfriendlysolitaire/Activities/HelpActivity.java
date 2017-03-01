@@ -23,21 +23,17 @@ import org.secuso.privacyfriendlysolitaire.R;
  * Created by meric-doga on 25.11.16.
  */
 
+//Help Activity of Solitaire App
 public class HelpActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
-
-
         setContentView(R.layout.activity_help);
-        //getFragmentManager().beginTransaction().replace(android.R.id.content, new HelpFragment()).commit();
-
         overridePendingTransition(0, 0);
-        
     }
 
-
+    //set Help Activity functionality on navigation drwer of the App
     @Override
     protected int getNavigationDrawerID() {
         return R.id.nav_help;
@@ -50,9 +46,6 @@ public class HelpActivity extends BaseActivity {
             super.onCreate(savedInstanceState);
 
             addPreferencesFromResource(R.xml.help);
-
-
-
         }
     }
 
