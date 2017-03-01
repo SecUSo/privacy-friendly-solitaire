@@ -1,13 +1,23 @@
 package org.secuso.privacyfriendlysolitaire.Activities;
+/*
+This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /**
  * Created by meric-doga on 27.11.16.
  */
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -46,31 +56,31 @@ public class MenuActivity extends BaseActivity {
             welcomeDialog.show(getFragmentManager(), "WelcomeDialog");
         }
 
-        Button button=(Button)findViewById(R.id.game_button_start);
+        Button button = (Button) findViewById(R.id.game_button_start);
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MenuActivity.this,Solitaire.class));
+                startActivity(new Intent(MenuActivity.this, Solitaire.class));
             }
         });
 
         final SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
-   //     mViewPager = (ViewPager) findViewById(R.id.scroller);
-    //    if(mViewPager != null) {
-      //      mViewPager.setAdapter(mSectionsPagerAdapter);
-      //  }
+        //     mViewPager = (ViewPager) findViewById(R.id.scroller);
+        //    if(mViewPager != null) {
+        //      mViewPager.setAdapter(mSectionsPagerAdapter);
+        //  }
 
         int index = mSharedPreferences.getInt("lastChosenPage", 0);
 
         mViewPager.setCurrentItem(index);
-    //    mArrowLeft = (ImageView) findViewById(R.id.arrow_left);
-    //    mArrowRight = (ImageView) findViewById(R.id.arrow_right);
+        //    mArrowLeft = (ImageView) findViewById(R.id.arrow_left);
+        //    mArrowRight = (ImageView) findViewById(R.id.arrow_right);
 
         //care for initial postiton of the ViewPager
-        mArrowLeft.setVisibility((index==0)?View.INVISIBLE:View.VISIBLE);
-        mArrowRight.setVisibility((index==mSectionsPagerAdapter.getCount()-1)?View.INVISIBLE:View.VISIBLE);
+        mArrowLeft.setVisibility((index == 0) ? View.INVISIBLE : View.VISIBLE);
+        mArrowRight.setVisibility((index == mSectionsPagerAdapter.getCount() - 1) ? View.INVISIBLE : View.VISIBLE);
 
         //Update ViewPager on change
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -81,8 +91,8 @@ public class MenuActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-                mArrowLeft.setVisibility((position==0)?View.INVISIBLE:View.VISIBLE);
-                mArrowRight.setVisibility((position==mSectionsPagerAdapter.getCount()-1)?View.INVISIBLE:View.VISIBLE);
+                mArrowLeft.setVisibility((position == 0) ? View.INVISIBLE : View.VISIBLE);
+                mArrowRight.setVisibility((position == mSectionsPagerAdapter.getCount() - 1) ? View.INVISIBLE : View.VISIBLE);
 
                 //save position in settings
                 SharedPreferences.Editor editor = mSharedPreferences.edit();
@@ -96,8 +106,6 @@ public class MenuActivity extends BaseActivity {
         });
 
     }
-
-
 
 
     @Override
@@ -166,14 +174,14 @@ public class MenuActivity extends BaseActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             int id = 0;
-            if(getArguments() != null) {
+            if (getArguments() != null) {
                 id = getArguments().getInt(ARG_SECTION_NUMBER);
             }
 
             View rootView = inflater.inflate(R.layout.fragment_main_menu, container, false);
 
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText("Mode: "+String.valueOf(id));
+            textView.setText("Mode: " + String.valueOf(id));
             return rootView;
         }
     }
