@@ -23,9 +23,12 @@ import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 
 import org.secuso.privacyfriendlysolitaire.GameListener;
 import org.secuso.privacyfriendlysolitaire.model.Action;
@@ -34,6 +37,8 @@ import org.secuso.privacyfriendlysolitaire.model.DeckWaste;
 import org.secuso.privacyfriendlysolitaire.model.Foundation;
 import org.secuso.privacyfriendlysolitaire.model.GameObject;
 import org.secuso.privacyfriendlysolitaire.model.Move;
+import org.secuso.privacyfriendlysolitaire.model.Rank;
+import org.secuso.privacyfriendlysolitaire.model.Suit;
 import org.secuso.privacyfriendlysolitaire.model.Tableau;
 
 import static org.secuso.privacyfriendlysolitaire.game.Constants.NR_OF_FOUNDATIONS;
@@ -56,6 +61,8 @@ public class View implements GameListener {
     private final ImageWrapper backsideCardOnDeck;
 
     private boolean playSounds;
+
+    protected DragAndDrop dragAndDrop = new DragAndDrop();
 
     private final HashMap<String, ImageWrapper> faceUpCards = new HashMap<String, ImageWrapper>(52);
     private final List<ImageWrapper> faceDownCards = new ArrayList<ImageWrapper>(21);
@@ -166,12 +173,49 @@ public class View implements GameListener {
             // add face-up cards
             int faceUpSize = t.getFaceUp().size();
             for (int j = 0; j < faceUpSize; j++) {
-                ImageWrapper faceUpCard = loadActorForCardAndSaveInMap(t.getFaceUp().get(j));
+                final ImageWrapper faceUpCard = loadActorForCardAndSaveInMap(t.getFaceUp().get(j));
                 // y position is dependant on nr in faceDown-Vector
                 float y = 10.5f * ViewConstants.heightOneSpace -
                         ((faceDownSize + j) * ViewConstants.offsetHeightBetweenCards);
 
                 setImageScalingAndPositionAndStackCardIndicesAndAddToStage(faceUpCard, GameObject.TABLEAU, x, y, i, t.getFaceDown().size());
+
+
+                // ------------------- Test f. DragAndDrop -------------------
+                // TODO: nur Test, nicht fertig!!
+                dragAndDrop.addSource(new DragAndDrop.Source(faceUpCard) {
+                    @Override
+                    public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
+                        DragAndDrop.Payload payload = new DragAndDrop.Payload();
+
+                        // TODO: hier richtige Karte nutzen (rank und suit oder textureName später mit übergeben)
+                        ImageWrapper payloadCard = loadActorForCardWithoutSavingInMap(new Card(Rank.ACE, Suit.CLUBS));
+                        payloadCard.setWidth(ViewConstants.scalingWidthCard * ViewConstants.widthOneSpace);
+                        payloadCard.setHeight(ViewConstants.scalingHeightCard * ViewConstants.heightOneSpace);
+                        payload.setDragActor(payloadCard);
+
+                        faceUpCard.setVisible(false);
+                        return payload;
+                    }
+
+                    @Override
+                    public void dragStop(InputEvent event, float x, float y, int pointer,
+                                         DragAndDrop.Payload payload, DragAndDrop.Target target) {
+                        Actor dragActor = payload.getDragActor();
+                        getActor().setVisible(true);
+                        getActor().toFront();
+                        getActor().setPosition(dragActor.getX(), dragActor.getY());
+
+                        // TODO: erstelle Klick-Action für game (getActionForTap(x,y))
+                        // TODO: informiere Model über Action2
+
+                        // TODO: in update checke, ob das ein valid oder invalid move war
+                        // TODO: und bewege gedraggte Karten an entsprechende Position
+
+                        // getActor().addAction(Actions.moveTo(1200, 270, 0.2f));
+                    }
+                });
+                // ------------------- Test End -------------------
             }
 
             setNewSmallestY(i, t);
@@ -1464,6 +1508,11 @@ public class View implements GameListener {
         faceUpCards.put(textureString, textureForCard);
 
         return textureForCard;
+    }
+
+    private ImageWrapper loadActorForCardWithoutSavingInMap(Card card){
+        String textureString = loader.getCardTextureName(card);
+        return loader.getImageForPath("cards/" + textureString + ".png");
     }
 
 

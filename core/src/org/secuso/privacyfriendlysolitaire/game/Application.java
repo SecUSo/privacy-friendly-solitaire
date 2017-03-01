@@ -17,6 +17,8 @@ This program is free software: you can redistribute it and/or modify
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -51,18 +53,16 @@ public class Application extends ApplicationAdapter implements ScoreListener {
     private int cardDrawMode;
     private int scoreMode;
     private boolean playSounds;
-    private boolean dragAndDrop;
 
     private Color backgroundColour;
 
     private boolean won = false;
 
     public void customConstructor(int cardDrawMode, int scoreMode, boolean playSounds,
-                                  boolean dragAndDrop, Color backgroundColour) {
+                                  Color backgroundColour) {
         this.cardDrawMode = cardDrawMode;
         this.scoreMode = scoreMode;
         this.playSounds = playSounds;
-        this.dragAndDrop = dragAndDrop;
         this.backgroundColour = backgroundColour;
     }
 
@@ -77,12 +77,12 @@ public class Application extends ApplicationAdapter implements ScoreListener {
         game = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(cardDrawMode, scoreMode);
         initVC();
 
-        //        dragAndDrop=true;
-        if (dragAndDrop) {
-            Gdx.input.setInputProcessor(stage);
-        } else {
-            Gdx.input.setInputProcessor(new GestureDetector(controller));
-        }
+        InputProcessor inputProcessorStage = stage;
+        InputProcessor inputProcessorController = new GestureDetector(controller);
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(inputProcessorStage);
+        inputMultiplexer.addProcessor(inputProcessorController);
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     private void initVC() {
