@@ -51,16 +51,18 @@ public class Application extends ApplicationAdapter implements ScoreListener {
     private int cardDrawMode;
     private int scoreMode;
     private boolean playSounds;
+    private boolean dragAndDrop;
 
     private Color backgroundColour;
 
     private boolean won = false;
 
     public void customConstructor(int cardDrawMode, int scoreMode, boolean playSounds,
-                                  Color backgroundColour) {
+                                  boolean dragAndDrop, Color backgroundColour) {
         this.cardDrawMode = cardDrawMode;
         this.scoreMode = scoreMode;
         this.playSounds = playSounds;
+        this.dragAndDrop = dragAndDrop;
         this.backgroundColour = backgroundColour;
     }
 
@@ -75,7 +77,12 @@ public class Application extends ApplicationAdapter implements ScoreListener {
         game = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(cardDrawMode, scoreMode);
         initVC();
 
-        Gdx.input.setInputProcessor(new GestureDetector(controller));
+        //        dragAndDrop=true;
+        if (dragAndDrop) {
+            Gdx.input.setInputProcessor(stage);
+        } else {
+            Gdx.input.setInputProcessor(new GestureDetector(controller));
+        }
     }
 
     private void initVC() {
