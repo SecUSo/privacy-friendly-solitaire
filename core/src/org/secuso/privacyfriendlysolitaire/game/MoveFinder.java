@@ -38,8 +38,6 @@ class MoveFinder {
         }
         foundMove = findMoveWasteToTableau(game);
         if (foundMove != null) {
-            Gdx.app.log("moveWasteToTableau ", foundMove.toString());
-
             return foundMove;
         }
 //        foundMove = findMoveFoundationToTableau(game);

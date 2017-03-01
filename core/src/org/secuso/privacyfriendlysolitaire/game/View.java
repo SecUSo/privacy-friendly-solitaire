@@ -264,14 +264,8 @@ public class View implements GameListener {
             ImageWrapper card = faceUpCards.get(texString);
 
             if (card != null && card.isVisible()) {
-//                try {
                 throw new RuntimeException("Karte " + texString + " ist sichtbar, " +
                         "aber sollte unsichtbar sein");
-//                } catch (Exception e) {
-//                    Gdx.app.log("Exception ", e.getMessage());
-//                    Gdx.app.log("Deck ", deck.toString());
-//                    Gdx.app.log("Waste ", waste.toString());
-//                }
             }
         }
 
@@ -1516,7 +1510,7 @@ public class View implements GameListener {
         private static float widthOneSpace;        // the widthScreen is divided into spaces (37)
         private static float heightOneSpace;        // the heightScreen is divided into spaces (21)
 
-        private static float offsetHeightBetweenCards = 30;
+        private static float offsetHeightBetweenCards = 35;
 
         private static float heightCard;
         private static float widthCard;
