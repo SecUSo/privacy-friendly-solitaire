@@ -59,6 +59,7 @@ public class View implements GameListener {
     private final Stage stage;
     private final ImageWrapper marker;
     private final ImageWrapper backsideCardOnDeck;
+    private SolitaireGame game;
 
     private boolean playSounds;
 
@@ -71,6 +72,7 @@ public class View implements GameListener {
 
     public View(SolitaireGame game, Stage stage, boolean playSounds) {
         this.stage = stage;
+        this.game = game;
         this.playSounds = playSounds;
         initialiseViewConstants();
 
@@ -683,7 +685,7 @@ public class View implements GameListener {
                     moveCard(ViewConstants.WasteX1Fan, ViewConstants.WasteDeckFoundationY, card, 5, true);
                 } else {
                     setImageScalingAndPositionAndStackCardIndicesAndAddToStage(card, GameObject.WASTE,
-                            ViewConstants.WasteX1Fan, ViewConstants.WasteDeckFoundationY, -1, 5);
+                            ViewConstants.WasteX1Fan, ViewConstants.WasteDeckFoundationY, 5, -1);
                 }
 
                 card.setVisible(true);
@@ -698,9 +700,9 @@ public class View implements GameListener {
                     moveCard(ViewConstants.WasteX2Fan2, ViewConstants.WasteDeckFoundationY, card1, 5, true);
                 } else {
                     setImageScalingAndPositionAndStackCardIndicesAndAddToStage(card0, GameObject.WASTE,
-                            ViewConstants.WasteX2Fan1, ViewConstants.WasteDeckFoundationY, -1, 5);
+                            ViewConstants.WasteX2Fan1, ViewConstants.WasteDeckFoundationY, 5, -1);
                     setImageScalingAndPositionAndStackCardIndicesAndAddToStage(card1, GameObject.WASTE,
-                            ViewConstants.WasteX2Fan2, ViewConstants.WasteDeckFoundationY, -1, 5);
+                            ViewConstants.WasteX2Fan2, ViewConstants.WasteDeckFoundationY, 5, -1);
                 }
 
                 card0.setVisible(true);
@@ -719,11 +721,11 @@ public class View implements GameListener {
                     moveCard(ViewConstants.WasteX3Fan3, ViewConstants.WasteDeckFoundationY, card2, 5, true);
                 } else {
                     setImageScalingAndPositionAndStackCardIndicesAndAddToStage(card0, GameObject.WASTE,
-                            ViewConstants.WasteX3Fan1, ViewConstants.WasteDeckFoundationY, -1, -1);
+                            ViewConstants.WasteX3Fan1, ViewConstants.WasteDeckFoundationY, 5, -1);
                     setImageScalingAndPositionAndStackCardIndicesAndAddToStage(card1, GameObject.WASTE,
-                            ViewConstants.WasteX3Fan2, ViewConstants.WasteDeckFoundationY, -1, -1);
+                            ViewConstants.WasteX3Fan2, ViewConstants.WasteDeckFoundationY, 5, -1);
                     setImageScalingAndPositionAndStackCardIndicesAndAddToStage(card2, GameObject.WASTE,
-                            ViewConstants.WasteX3Fan3, ViewConstants.WasteDeckFoundationY, -1, -1);
+                            ViewConstants.WasteX3Fan3, ViewConstants.WasteDeckFoundationY, 5, -1);
                 }
 
                 card0.setVisible(true);
@@ -1510,7 +1512,7 @@ public class View implements GameListener {
         return textureForCard;
     }
 
-    private ImageWrapper loadActorForCardWithoutSavingInMap(Card card){
+    private ImageWrapper loadActorForCardWithoutSavingInMap(Card card) {
         String textureString = loader.getCardTextureName(card);
         return loader.getImageForPath("cards/" + textureString + ".png");
     }
@@ -1655,5 +1657,26 @@ public class View implements GameListener {
                 e.printStackTrace();
             }
         }
+    }
+
+    private boolean createActionAndSendToModel(ImageWrapper draggingCard) {
+        float x = draggingCard.getX() + ViewConstants.offsetHeightBetweenCards / 2;
+        float y = draggingCard.getY() - ViewConstants.offsetHeightBetweenCards / 2 +
+                ViewConstants.heightCard;
+        Action action = getActionForTap(x, y);
+
+        int index = action.getStackIndex();
+        Tableau tableau = game.getTableauAtPos(index);
+        int cardIndex = action.getCardIndex();
+
+        int cardIndexInFaceUp = cardIndex - tableau.getFaceDown().size();
+        // View can not distinguish between just one card on the stack and no card
+        if (tableau.getFaceDown().size() + tableau.getFaceUp().size() == 0) {
+            action = new Action(GameObject.TABLEAU, index, -1);
+        } else {
+            action = new Action(GameObject.TABLEAU, index, cardIndexInFaceUp);
+        }
+
+        return game.handleAction(action, false);
     }
 }
