@@ -57,6 +57,7 @@ public class Application extends ApplicationAdapter implements ScoreListener {
     private Color backgroundColour;
 
     private boolean won = false;
+    private boolean clickPossible = true;
 
     public void customConstructor(int cardDrawMode, int scoreMode, boolean playSounds,
                                   Color backgroundColour) {
@@ -133,24 +134,42 @@ public class Application extends ApplicationAdapter implements ScoreListener {
     }
 
     public void undo() {
-        if (game.canUndo()) {
+        if (clickPossible && game.canUndo()) {
+            clickPossible = false;
+
             playUndoRedoSound();
             Gdx.app.postRunnable(new Runnable() {
                 @Override
                 public void run() {
                     game.undo();
+
+                    try {
+                        sleep(300);
+                        clickPossible = true;
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }
     }
 
     public void redo() {
-        if (game.canRedo()) {
+        if (clickPossible && game.canRedo()) {
+            clickPossible = false;
+
             playUndoRedoSound();
             Gdx.app.postRunnable(new Runnable() {
                 @Override
                 public void run() {
                     game.redo();
+
+                    try {
+                        sleep(300);
+                        clickPossible = true;
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }
@@ -162,54 +181,68 @@ public class Application extends ApplicationAdapter implements ScoreListener {
     }
 
     public void autoFoundations() {
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
+        if (clickPossible) {
+            clickPossible = false;
+            Gdx.app.postRunnable(new Runnable() {
+                @Override
+                public void run() {
 
 
-                Move move;
-                while (true) {
-                    move = MoveFinder.findMoveTableauToFoundation(game);
-                    if (move == null) {
-                        break;
-                    }
-                    game.handleAction(move.getAction1(), false);
-                    game.handleAction(move.getAction2(), false);
+                    Move move;
+                    while (true) {
+                        move = MoveFinder.findMoveTableauToFoundation(game);
+                        if (move == null) {
+                            break;
+                        }
+                        game.handleAction(move.getAction1(), false);
+                        game.handleAction(move.getAction2(), false);
 
-                    try {
-                        sleep(300);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        try {
+                            sleep(300);
+
+                            clickPossible = true;
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
-            }
 
-        });
+            });
+        }
     }
 
     public void autoMove() {
-        // all of this needs to run on libgdx's open gl rendering thread
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
+        if (clickPossible) {
+            clickPossible = false;
+            // all of this needs to run on libgdx's open gl rendering thread
+            Gdx.app.postRunnable(new Runnable() {
+                @Override
+                public void run() {
 
-                Move move = MoveFinder.findMove(game);
-                try {
-                    if (move != null) {
-                        //break;
-                        game.handleAction(move.getAction1(), false);
+                    Move move = MoveFinder.findMove(game);
+                    try {
+                        if (move != null) {
+                            //break;
+                            game.handleAction(move.getAction1(), false);
 
-                        if (move.getAction2() != null) {
-                            game.handleAction(move.getAction2(), false);
+                            if (move.getAction2() != null) {
+                                game.handleAction(move.getAction2(), false);
+                            }
+
+                            try {
+                                sleep(300);
+                                clickPossible = true;
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
-
+                    } catch (Exception e) {
+                        Gdx.app.log("----FEHLER----, gesamter Move war ", move.toString());
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    Gdx.app.log("----FEHLER----, gesamter Move war ", move.toString());
-                    e.printStackTrace();
                 }
-            }
-        });
+            });
+        }
     }
 
 
