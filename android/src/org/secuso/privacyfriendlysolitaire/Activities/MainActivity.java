@@ -43,6 +43,7 @@ public class MainActivity extends BaseActivity {
             welcomeDialog.show(getFragmentManager(), "WelcomeDialog");
         }
 
+        //set NEW GAME button and the function to start a new game on Main Activity
         Button button = (Button) findViewById(R.id.game_button_start);
         button.setOnClickListener(new View.OnClickListener() {
 
@@ -56,7 +57,7 @@ public class MainActivity extends BaseActivity {
 
     }
 
-
+//do not open new activity by selecting Main Activity again
     @Override
     protected int getNavigationDrawerID() {
         return R.id.nav_example;
@@ -87,7 +88,6 @@ public class MainActivity extends BaseActivity {
 
     public void onClick(View view) {
         switch (view.getId()) {
-            // do something with all these buttons?
             default:
         }
     }

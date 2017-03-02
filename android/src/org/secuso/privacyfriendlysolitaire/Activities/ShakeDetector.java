@@ -50,7 +50,6 @@ public class ShakeDetector implements SensorEventListener {
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // ignore
     }
 
     @Override

@@ -14,6 +14,8 @@ This program is free software: you can redistribute it and/or modify
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.badlogic.gdx.Gdx;
+
 import org.secuso.privacyfriendlysolitaire.model.GameObject;
 import org.secuso.privacyfriendlysolitaire.model.Move;
 
@@ -60,14 +62,15 @@ class StandardScorer extends Scorer {
                     if (m.getAction2() != null) {
                         if (m.getAction1().getGameObject() == GameObject.DECK && m.getAction2().getGameObject() == GameObject.DECK) {
                             addScore(-100);
+
                         }
                     }
                 }
+                if (getScore() < 0) {
+                    setScore(0);
+                }
             }
             addScore(game.getTurnedOverTableau() * 5);
-            if (getScore() < 0) {
-                setScore(0);
-            }
             notifyListener();
         }
     }

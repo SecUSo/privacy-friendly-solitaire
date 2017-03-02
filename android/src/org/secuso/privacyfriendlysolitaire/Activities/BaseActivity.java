@@ -30,7 +30,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.preference.PreferenceActivity;
-import android.widget.Button;
 
 import org.secuso.privacyfriendlysolitaire.R;
 
@@ -58,20 +57,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
 
+        //set SharedPreferences
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mHandler = new Handler();
-
-        //ActionBar ab = getSupportActionBar();
-        //if (ab != null) {
-        //    mActionBar = ab;
-        //    ab.setDisplayHomeAsUpEnabled(true);
-        //}
-
         overridePendingTransition(0, 0);
-
-
     }
 
     @Override
@@ -91,12 +81,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         final int itemId = item.getItemId();
-
         return goToNavigationItem(itemId);
     }
 
     protected boolean goToNavigationItem(final int itemId) {
-
         if (itemId == getNavigationDrawerID()) {
             // just close drawer because we are already in this activity
             mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -112,7 +100,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         }, NAVDRAWER_LAUNCH_DELAY);
 
         mDrawerLayout.closeDrawer(GravityCompat.START);
-
         selectNavigationItem(itemId);
 
         // fade out the active activity
@@ -148,8 +135,8 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    //set Drawer items in xml ot the corresponding classes and activieties of the Solitaire App
     private void callDrawerItem(final int itemId) {
-
         Intent intent;
 
         switch (itemId) {
@@ -183,10 +170,9 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (getSupportActionBar() == null) {
-              setSupportActionBar(toolbar);
+            setSupportActionBar(toolbar);
         }
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -206,6 +192,4 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             mainContent.animate().alpha(1).setDuration(MAIN_CONTENT_FADEIN_DURATION);
         }
     }
-
-
 }

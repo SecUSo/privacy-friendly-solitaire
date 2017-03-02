@@ -4,11 +4,7 @@
     android:versionCode="0"
     android:versionName="0.1">
 
-    <!-- already in gradle script, if it is removed from gradle, uncomment here -->
-    <!-- <uses-sdk -->
-    <!-- android:minSdkVersion="17" -->
-    <!-- android:targetSdkVersion="24" /> -->
-    <!-- android:theme="@style/GdxTheme" -->
+    <!-- Building the activities for Solitaire App-->
 
     <application
         android:allowBackup="true"
@@ -25,43 +21,39 @@
         </activity>
         <activity
             android:name=".Activities.MainActivity"
-            android:label="@string/app_name"
             android:configChanges="screenSize|orientation"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.AboutActivity"
+            android:configChanges="screenSize|orientation"
             android:label="@string/about"
-            android:parentActivityName=".Activities.MainActivity"
-            android:configChanges="screenSize|orientation">
+            android:parentActivityName=".Activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activities.MainActivity" />
         </activity>
-
         <activity
             android:name=".Activities.HelpActivity"
+            android:configChanges="screenSize|orientation"
             android:label="@string/help"
             android:parentActivityName=".Activities.MainActivity"
-            android:configChanges="screenSize|orientation"
-            android:theme="@style/AppTheme.NoActionBar"
-            >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activities.MainActivity" />
         </activity>
         <activity
             android:name=".Activities.SettingsActivity"
+            android:configChanges="screenSize|orientation"
             android:label="@string/action_settings"
             android:parentActivityName=".Activities.MainActivity"
-            android:configChanges="screenSize|orientation"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activities.MainActivity" />
         </activity>
-
-
-        <activity
+    <!--    <activity
             android:name=".Activities.MenuActivity"
             android:label="@string/title_activity_game"
             android:parentActivityName=".Activities.MainActivity"
@@ -70,27 +62,20 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activities.MainActivity" />
-        </activity>
+        </activity>-->
         <activity
             android:name=".Activities.Solitaire"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:parentActivityName=".Activities.MainActivity"
             android:screenOrientation="landscape">
-            <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
+            <uses-feature
+                android:name="android.hardware.sensor.accelerometer"
+                android:required="true" />
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activities.MainActivity" />
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
         </activity>
-
-
     </application>
 
 </manifest>
