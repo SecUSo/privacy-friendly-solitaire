@@ -191,7 +191,7 @@ public class View implements GameListener {
                         DragAndDrop.Payload payload = new DragAndDrop.Payload();
 
                         // TODO: hier richtige Karte nutzen (rank und suit oder textureName später mit übergeben)
-                        ImageWrapper payloadCard = loadActorForCardWithoutSavingInMap(new Card(Rank.ACE, Suit.CLUBS));
+                        ImageWrapper payloadCard = loadActorForCardWithoutSavingInMap(new Card(t.getFaceUp().get(j).getRank(), t.getFaceUp().get(j).getSuit()));
                         payloadCard.setWidth(ViewConstants.scalingWidthCard * ViewConstants.widthOneSpace);
                         payloadCard.setHeight(ViewConstants.scalingHeightCard * ViewConstants.heightOneSpace);
                         payload.setDragActor(payloadCard);
@@ -1679,4 +1679,48 @@ public class View implements GameListener {
 
         return game.handleAction(action, false);
     }
+
+    private ImageWrapper getFaceUpImageWrapperByCard(Card card) {
+        String cardTextureName = loader.getCardTextureName(card);
+        return faceUpCards.get(cardTextureName);
+    }
+
+    private void addCardToDragAndDrop(final Card card) {
+        final ImageWrapper imageWrapperCard = getFaceUpImageWrapperByCard(card);
+        dragAndDrop.addSource(new DragAndDrop.Source(imageWrapperCard) {
+            @Override
+            public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
+                DragAndDrop.Payload payload = new DragAndDrop.Payload();
+
+                // TODO: hier richtige Karte nutzen (rank und suit oder textureName später mit übergeben)
+                ImageWrapper payloadCard = loadActorForCardWithoutSavingInMap(card);
+                payloadCard.setWidth(ViewConstants.scalingWidthCard * ViewConstants.widthOneSpace);
+                payloadCard.setHeight(ViewConstants.scalingHeightCard * ViewConstants.heightOneSpace);
+                payload.setDragActor(payloadCard);
+
+                imageWrapperCard.setVisible(false);
+                return payload;
+            }
+
+            @Override
+            public void dragStop(InputEvent event, float x, float y, int pointer,
+                                 DragAndDrop.Payload payload, DragAndDrop.Target target) {
+                Actor dragActor = payload.getDragActor();
+                getActor().setVisible(true);
+                getActor().toFront();
+                getActor().setPosition(dragActor.getX(), dragActor.getY());
+
+                // TODO: erstelle Klick-Action für game (getActionForTap(x,y))
+                // TODO: informiere Model über Action2
+
+                // TODO: in update checke, ob das ein valid oder invalid move war
+                // TODO: und bewege gedraggte Karten an entsprechende Position
+
+                // getActor().addAction(Actions.moveTo(1200, 270, 0.2f));
+            }
+        });
+    }
+
+
+
 }
