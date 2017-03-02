@@ -163,7 +163,7 @@ public class Solitaire extends AndroidApplication implements
 
         // settings-> waste
         if (waste_sel.equals("1")) {
-            scoreMode = Constants.MODE_ONE_CARD_DEALT;
+            cardDrawMode = Constants.MODE_ONE_CARD_DEALT;
         } else if (waste_sel.equals("2")) {
             cardDrawMode = Constants.MODE_THREE_CARDS_DEALT;
         }
