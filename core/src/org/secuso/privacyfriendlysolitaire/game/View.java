@@ -64,6 +64,7 @@ public class View implements GameListener {
     private boolean playSounds;
 
     protected DragAndDrop dragAndDrop = new DragAndDrop();
+    private boolean isDragging = false;
 
     private final HashMap<String, ImageWrapper> faceUpCards = new HashMap<String, ImageWrapper>(52);
     private final List<ImageWrapper> faceDownCards = new ArrayList<ImageWrapper>(21);
@@ -181,43 +182,6 @@ public class View implements GameListener {
                         ((faceDownSize + j) * ViewConstants.offsetHeightBetweenCards);
 
                 setImageScalingAndPositionAndStackCardIndicesAndAddToStage(faceUpCard, GameObject.TABLEAU, x, y, i, t.getFaceDown().size());
-
-
-                // ------------------- Test f. DragAndDrop -------------------
-                // TODO: nur Test, nicht fertig!!
-                dragAndDrop.addSource(new DragAndDrop.Source(faceUpCard) {
-                    @Override
-                    public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
-                        DragAndDrop.Payload payload = new DragAndDrop.Payload();
-
-                        // TODO: hier richtige Karte nutzen (rank und suit oder textureName später mit übergeben)
-                        ImageWrapper payloadCard = loadActorForCardWithoutSavingInMap(new Card(t.getFaceUp().get(j).getRank(), t.getFaceUp().get(j).getSuit()));
-                        payloadCard.setWidth(ViewConstants.scalingWidthCard * ViewConstants.widthOneSpace);
-                        payloadCard.setHeight(ViewConstants.scalingHeightCard * ViewConstants.heightOneSpace);
-                        payload.setDragActor(payloadCard);
-
-                        faceUpCard.setVisible(false);
-                        return payload;
-                    }
-
-                    @Override
-                    public void dragStop(InputEvent event, float x, float y, int pointer,
-                                         DragAndDrop.Payload payload, DragAndDrop.Target target) {
-                        Actor dragActor = payload.getDragActor();
-                        getActor().setVisible(true);
-                        getActor().toFront();
-                        getActor().setPosition(dragActor.getX(), dragActor.getY());
-
-                        // TODO: erstelle Klick-Action für game (getActionForTap(x,y))
-                        // TODO: informiere Model über Action2
-
-                        // TODO: in update checke, ob das ein valid oder invalid move war
-                        // TODO: und bewege gedraggte Karten an entsprechende Position
-
-                        // getActor().addAction(Actions.moveTo(1200, 270, 0.2f));
-                    }
-                });
-                // ------------------- Test End -------------------
             }
 
             setNewSmallestY(i, t);
@@ -258,54 +222,59 @@ public class View implements GameListener {
     public void update(SolitaireGame game) {
         Action prevAction = game.getPrevAction();
 
-        // get whether this was a marking action
-        if (prevAction != null) {
-            int stackIndex = prevAction.getStackIndex();
+        if (!isDragging) {
+            // get whether this was a marking action
+            if (prevAction != null) {
+                int stackIndex = prevAction.getStackIndex();
 
-            List<Card> cardsToBeMarked = new ArrayList<Card>();
+                List<Card> cardsToBeMarked = new ArrayList<Card>();
 
-            switch (prevAction.getGameObject()) {
-                case TABLEAU:
-                    Vector<Card> faceUpList = game.getTableauAtPos(stackIndex).getFaceUp();
-                    cardsToBeMarked = faceUpList.subList(prevAction.getCardIndex(), faceUpList.size());
-                    break;
-                case FOUNDATION:
-                    cardsToBeMarked.add(game.getFoundationAtPos(stackIndex).getFoundationTop());
-                    break;
-                case WASTE:
-                    cardsToBeMarked.add(game.getDeckWaste().getWasteTop());
-                    break;
-            }
-
-            List<String> textureStrings = new ArrayList<String>(cardsToBeMarked.size());
-            for (Card c : cardsToBeMarked) {
-                textureStrings.add(loader.getCardTextureName(c));
-            }
-
-            markCards(textureStrings);
-        }
-        // or a move
-        else {
-            // with successful or invalid move, remove marker
-            marker.setVisible(false);
-
-            try {
-                if (!game.wasInvalidMove()) {
-                    if (!game.wasUndoMove()) {
-                        // usual move
-                        Move prevMove = game.getMoves().elementAt(game.getMovePointer());
-                        handleMove(prevMove, game);
-                    } else {
-                        // undo move
-                        Move undoMove = game.getMoves().elementAt(game.getMovePointer() + 1);
-                        handleUndoMove(undoMove, game);
-                    }
+                switch (prevAction.getGameObject()) {
+                    case TABLEAU:
+                        Vector<Card> faceUpList = game.getTableauAtPos(stackIndex).getFaceUp();
+                        cardsToBeMarked = faceUpList.subList(prevAction.getCardIndex(), faceUpList.size());
+                        break;
+                    case FOUNDATION:
+                        cardsToBeMarked.add(game.getFoundationAtPos(stackIndex).getFoundationTop());
+                        break;
+                    case WASTE:
+                        cardsToBeMarked.add(game.getDeckWaste().getWasteTop());
+                        break;
                 }
-            } catch (Exception e) {
-                Gdx.app.log("Error", e.getClass().toString() + ": " + e.getMessage() + ", probably an invalid move");
-                e.printStackTrace();
 
+                List<String> textureStrings = new ArrayList<String>(cardsToBeMarked.size());
+                for (Card c : cardsToBeMarked) {
+                    textureStrings.add(loader.getCardTextureName(c));
+                }
+
+                markCards(textureStrings);
             }
+            // or a move
+            else {
+                // with successful or invalid move, remove marker
+                marker.setVisible(false);
+
+                try {
+                    if (!game.wasInvalidMove()) {
+                        if (!game.wasUndoMove()) {
+                            // usual move
+                            Move prevMove = game.getMoves().elementAt(game.getMovePointer());
+                            handleMove(prevMove, game);
+                        } else {
+                            // undo move
+                            Move undoMove = game.getMoves().elementAt(game.getMovePointer() + 1);
+                            handleUndoMove(undoMove, game);
+                        }
+                    }
+                } catch (Exception e) {
+                    Gdx.app.log("Error", e.getClass().toString() + ": " + e.getMessage() + ", probably an invalid move");
+                    e.printStackTrace();
+
+                }
+            }
+            //drag and drop is used
+        } else {
+
         }
 //        Gdx.app.log("---VIEW--- game after ", game.toString());
 
@@ -1691,32 +1660,24 @@ public class View implements GameListener {
             @Override
             public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
                 DragAndDrop.Payload payload = new DragAndDrop.Payload();
-
-                // TODO: hier richtige Karte nutzen (rank und suit oder textureName später mit übergeben)
                 ImageWrapper payloadCard = loadActorForCardWithoutSavingInMap(card);
                 payloadCard.setWidth(ViewConstants.scalingWidthCard * ViewConstants.widthOneSpace);
                 payloadCard.setHeight(ViewConstants.scalingHeightCard * ViewConstants.heightOneSpace);
                 payload.setDragActor(payloadCard);
-
                 imageWrapperCard.setVisible(false);
+                createActionAndSendToModel(imageWrapperCard);
+                isDragging = true;
                 return payload;
             }
-
             @Override
             public void dragStop(InputEvent event, float x, float y, int pointer,
                                  DragAndDrop.Payload payload, DragAndDrop.Target target) {
                 Actor dragActor = payload.getDragActor();
-                getActor().setVisible(true);
-                getActor().toFront();
-                getActor().setPosition(dragActor.getX(), dragActor.getY());
-
-                // TODO: erstelle Klick-Action für game (getActionForTap(x,y))
-                // TODO: informiere Model über Action2
-
-                // TODO: in update checke, ob das ein valid oder invalid move war
-                // TODO: und bewege gedraggte Karten an entsprechende Position
-
-                // getActor().addAction(Actions.moveTo(1200, 270, 0.2f));
+                Actor originalActor = getActor();
+                originalActor.setVisible(true);
+                originalActor.toFront();
+                originalActor.setPosition(dragActor.getX(), dragActor.getY());
+                createActionAndSendToModel((ImageWrapper) originalActor);
             }
         });
     }
