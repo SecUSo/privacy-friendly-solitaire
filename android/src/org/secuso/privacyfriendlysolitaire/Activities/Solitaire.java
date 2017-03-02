@@ -159,35 +159,42 @@ public class Solitaire extends AndroidApplication implements
         int scoreMode = Constants.MODE_STANDARD;
         int cardDrawMode = Constants.MODE_ONE_CARD_DEALT;
 
+        String waste_sel = mSharedPreferences.getString(getString(R.string.pref_waste), "1");
+
         // settings-> waste
-        if (mSharedPreferences.getString("pref_waste", "one").equals("one")) {
+        if (waste_sel.equals("1")) {
             scoreMode = Constants.MODE_ONE_CARD_DEALT;
-        } else if (mSharedPreferences.getString("pref_waste", "three").equals("three")) {
+        } else if (waste_sel.equals("2")) {
             cardDrawMode = Constants.MODE_THREE_CARDS_DEALT;
         }
 
         //pointsView && select point counting mode in settings
         pointsView = (TextView) findViewById(R.id.points);
+        String point_count = mSharedPreferences.getString(getString(R.string.pref_count_point), "1");
 
-        if (mSharedPreferences.getString("pref_points", "none").equals("none")) {
+        if (point_count.equals("1")) {
             scoreMode = Constants.MODE_NONE;
-        } else if (mSharedPreferences.getString("pref_points", "standard").equals("standard")) {
+        } else if (point_count.equals("2")) {
             scoreMode = Constants.MODE_STANDARD;
             showPoints = true;
-        } else if (mSharedPreferences.getString("pref_points", "vegas").equals("vegas")) {
+        } else if (point_count.equals("3")) {
             scoreMode = Constants.MODE_VEGAS;
             showPoints = true;
         }
 
         // Set the background color of the game panel
-        if (mSharedPreferences.getString("pref_col", "green").equals("green")) {
+        String color = mSharedPreferences.getString(getString(R.string.sp_key_background_color), "1");
+
+        if (color.equals("1")) {
             c = GREEN_SOL;
-        } else if (mSharedPreferences.getString("pref_col", "grey").equals("grey")) {
-            c = GRAY_SOL;
-        } else if (mSharedPreferences.getString("pref_col", "blue").equals("blue")) {
+        } else if (color.equals("2")) {
             c = BLUE_SOL;
-        } else if (mSharedPreferences.getString("pref_col", "brown").equals("brown")) {
+        } else if (color.equals("3")) {
+            c = GRAY_SOL;
+        } else if (color.equals("4")) {
             c = LILA_SOL;
+        } else {
+            c = GREEN_SOL;
         }
 
         //undo Button in game panel
