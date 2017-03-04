@@ -42,6 +42,11 @@ public class SolitaireGame {
     private DeckWaste deckAndWaste;
 
     /**
+     * the tabeleau of the game
+     */
+    private Tableau tableauGame;
+
+    /**
      * the foundations of the game
      */
     private ArrayList<Foundation> foundations;
@@ -494,6 +499,17 @@ public class SolitaireGame {
             }
         }
         return allKings;
+    }
+
+    /**
+     * @return true if the game is practically won
+     */
+    boolean isPracticallyWon() {
+      if((deckAndWaste.getNumTurnOver() == 1) && (tableauGame.getFaceDown().isEmpty())){
+           return true;
+        }
+
+        return false;
     }
 
     void registerGameListener(GameListener gameListener) {
