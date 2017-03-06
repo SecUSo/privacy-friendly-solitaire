@@ -462,21 +462,15 @@ public class Solitaire extends AndroidApplication implements
         return R.id.nav_game;
     }
 
-    Boolean alert_box_ok = false;
-
     @Override
     public void onWon() {
-        if (!alert_box_ok) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    stoptimertask(timerView);
-                    alertBoxWonMessage();
-                    alert_box_ok = true;
-                }
-            });
-        }
-
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                stoptimertask(timerView);
+                alertBoxWonMessage();
+            }
+        });
     }
 
     @Override

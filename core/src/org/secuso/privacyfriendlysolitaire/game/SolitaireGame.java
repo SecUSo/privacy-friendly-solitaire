@@ -42,11 +42,6 @@ public class SolitaireGame {
     private DeckWaste deckAndWaste;
 
     /**
-     * the tabeleau of the game
-     */
-    private Tableau tableauGame;
-
-    /**
      * the foundations of the game
      */
     private ArrayList<Foundation> foundations;
@@ -505,11 +500,16 @@ public class SolitaireGame {
      * @return true if the game is practically won
      */
     boolean isPracticallyWon() {
-      if((deckAndWaste.getNumTurnOver() == 1) && (tableauGame.getFaceDown().isEmpty())){
-           return true;
-        }
+        boolean practicallyWon = deckAndWaste != null && (deckAndWaste.getNumTurnOver() == 1);
 
-        return false;
+        for (Tableau tab : tableaus) {
+            if (practicallyWon) {
+                practicallyWon = practicallyWon && (tab.getFaceDown().isEmpty());
+            } else {
+                break;
+            }
+        }
+        return practicallyWon;
     }
 
     void registerGameListener(GameListener gameListener) {
