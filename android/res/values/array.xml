@@ -9,7 +9,6 @@
         <item name="color_p_brown">PURPLE</item>
     </string-array>
 
-
     <string-array name="color_palete_value">
         <item name="color_p_green">1</item>
         <item name="color_p_blue">2</item>
