@@ -162,15 +162,17 @@ public class SolitaireGame {
      * @return true if the action was valid and succesfully handled
      */
     boolean handleAction(Action action, boolean redoMove) {
-        switch (action.getGameObject()) {
-            case DECK:
-                return handleDeck(action, redoMove);
-            case WASTE:
-                return handleWaste(action);
-            case TABLEAU:
-                return handleTableau(action, redoMove);
-            case FOUNDATION:
-                return handleFoundation(action, redoMove);
+        if(action != null) {
+            switch (action.getGameObject()) {
+                case DECK:
+                    return handleDeck(action, redoMove);
+                case WASTE:
+                    return handleWaste(action);
+                case TABLEAU:
+                    return handleTableau(action, redoMove);
+                case FOUNDATION:
+                    return handleFoundation(action, redoMove);
+            }
         }
         return false;
     }

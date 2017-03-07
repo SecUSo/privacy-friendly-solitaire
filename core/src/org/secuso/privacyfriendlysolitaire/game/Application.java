@@ -87,7 +87,7 @@ public class Application extends ApplicationAdapter implements ScoreListener {
     }
 
     private void initVC() {
-        View view = new View(game, stage, playSounds);
+        View view = new View(game, stage, playSounds, true);
         game.registerGameListener(view);
 
         if (scoreMode == Constants.MODE_STANDARD) {

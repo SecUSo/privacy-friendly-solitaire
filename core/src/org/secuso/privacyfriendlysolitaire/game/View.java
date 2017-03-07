@@ -64,6 +64,7 @@ public class View implements GameListener {
     private boolean playSounds;
 
     protected DragAndDrop dragAndDrop = new DragAndDrop();
+    private boolean useDragAndDrop;
     private boolean isDragging = false;
 
     private final HashMap<String, ImageWrapper> faceUpCards = new HashMap<String, ImageWrapper>(52);
@@ -71,10 +72,11 @@ public class View implements GameListener {
     // describes the y at which the given tableau is positioned at the smallest
     private final HashMap<Integer, Float> smallestYForTableau = new HashMap<Integer, Float>(7);
 
-    public View(SolitaireGame game, Stage stage, boolean playSounds) {
+    public View(SolitaireGame game, Stage stage, boolean playSounds, boolean useDragAndDrop) {
         this.stage = stage;
         this.game = game;
         this.playSounds = playSounds;
+        this.useDragAndDrop = useDragAndDrop;
         initialiseViewConstants();
 
         // add mark and make it invisible
@@ -128,6 +130,8 @@ public class View implements GameListener {
         paintInitialFoundations(game.getFoundations());
         paintInitialTableaus(game.getTableaus());
         paintInitialDeckWaste(game.getDeckWaste());
+        //TODO testing, should be done with regard to the settings
+        addCurrentFaceUpCardsToDragAndDrop();
     }
 
     private void paintInitialFoundations(ArrayList<Foundation> foundations) {
@@ -222,7 +226,7 @@ public class View implements GameListener {
     public void update(SolitaireGame game) {
         Action prevAction = game.getPrevAction();
 
-        if (!isDragging) {
+        if (!useDragAndDrop) {
             // get whether this was a marking action
             if (prevAction != null) {
                 int stackIndex = prevAction.getStackIndex();
@@ -274,12 +278,33 @@ public class View implements GameListener {
             }
             //drag and drop is used
         } else {
+            if(prevAction == null) {
+                //TODO just copied from tap-control, to see what happens
+                try {
+                    if (!game.wasInvalidMove()) {
+                        if (!game.wasUndoMove()) {
+                            // usual move
+                            Move prevMove = game.getMoves().elementAt(game.getMovePointer());
+                            handleMove(prevMove, game);
+                        } else {
+                            // undo move
+                            Move undoMove = game.getMoves().elementAt(game.getMovePointer() + 1);
+                            handleUndoMove(undoMove, game);
+                        }
+                        isDragging = false;
+                    }
+                } catch (Exception e) {
+                    Gdx.app.log("Error", e.getClass().toString() + ": " + e.getMessage() + ", probably an invalid move");
+                    e.printStackTrace();
 
+                }
+                addCurrentFaceUpCardsToDragAndDrop();
+            }
         }
 //        Gdx.app.log("---VIEW--- game after ", game.toString());
 
         // TODO: delete later, only for debug reasons
-        checkModelAndViewCorrect(game);
+        //checkModelAndViewCorrect(game);
     }
 
 
@@ -1634,39 +1659,36 @@ public class View implements GameListener {
                 ViewConstants.heightCard;
         Action action = getActionForTap(x, y);
 
-        int index = action.getStackIndex();
-        Tableau tableau = game.getTableauAtPos(index);
-        int cardIndex = action.getCardIndex();
+        if(action != null) {
+            int index = action.getStackIndex();
+            Tableau tableau = game.getTableauAtPos(index);
+            int cardIndex = action.getCardIndex();
 
-        int cardIndexInFaceUp = cardIndex - tableau.getFaceDown().size();
-        // View can not distinguish between just one card on the stack and no card
-        if (tableau.getFaceDown().size() + tableau.getFaceUp().size() == 0) {
-            action = new Action(GameObject.TABLEAU, index, -1);
-        } else {
-            action = new Action(GameObject.TABLEAU, index, cardIndexInFaceUp);
+            int cardIndexInFaceUp = cardIndex - tableau.getFaceDown().size();
+            // View can not distinguish between just one card on the stack and no card
+            if (tableau.getFaceDown().size() + tableau.getFaceUp().size() == 0) {
+                action = new Action(GameObject.TABLEAU, index, -1);
+            } else {
+                action = new Action(GameObject.TABLEAU, index, cardIndexInFaceUp);
+            }
         }
-
-        return game.handleAction(action, false);
+            return game.handleAction(action, false);
     }
 
-    private ImageWrapper getFaceUpImageWrapperByCard(Card card) {
-        String cardTextureName = loader.getCardTextureName(card);
-        return faceUpCards.get(cardTextureName);
-    }
-
-    private void addCardToDragAndDrop(final Card card) {
-        final ImageWrapper imageWrapperCard = getFaceUpImageWrapperByCard(card);
-        dragAndDrop.addSource(new DragAndDrop.Source(imageWrapperCard) {
+    private void addTextureNameToDragAndDrop(final String textureName) {
+        final ImageWrapper imageWrapper = faceUpCards.get(textureName);
+        dragAndDrop.addSource(new DragAndDrop.Source(imageWrapper) {
             @Override
             public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
                 DragAndDrop.Payload payload = new DragAndDrop.Payload();
-                ImageWrapper payloadCard = loadActorForCardWithoutSavingInMap(card);
+                ImageWrapper payloadCard = loader.getImageForPath("cards/" + textureName + ".png");
                 payloadCard.setWidth(ViewConstants.scalingWidthCard * ViewConstants.widthOneSpace);
                 payloadCard.setHeight(ViewConstants.scalingHeightCard * ViewConstants.heightOneSpace);
                 payload.setDragActor(payloadCard);
-                imageWrapperCard.setVisible(false);
-                createActionAndSendToModel(imageWrapperCard);
+                imageWrapper.setVisible(false);
+                boolean startActionResult = createActionAndSendToModel(imageWrapper);
                 isDragging = true;
+                Gdx.app.log("dragstart result:",String.valueOf(startActionResult));
                 return payload;
             }
             @Override
@@ -1676,10 +1698,24 @@ public class View implements GameListener {
                 Actor originalActor = getActor();
                 originalActor.setVisible(true);
                 originalActor.toFront();
+                //store original position in case of invalid move
+                float originalX = originalActor.getX();
+                float originalY = originalActor.getY();
                 originalActor.setPosition(dragActor.getX(), dragActor.getY());
-                createActionAndSendToModel((ImageWrapper) originalActor);
+                boolean stopActionResult = createActionAndSendToModel((ImageWrapper) originalActor);
+                if(!stopActionResult) {
+                    originalActor.setPosition(originalX,originalY);
+                }
+                Gdx.app.log("dragstop result:",String.valueOf(stopActionResult));
             }
         });
+    }
+
+    private void addCurrentFaceUpCardsToDragAndDrop() {
+        dragAndDrop.clear();
+        for(String s : faceUpCards.keySet()) {
+            addTextureNameToDragAndDrop(s);
+        }
     }
 
 
