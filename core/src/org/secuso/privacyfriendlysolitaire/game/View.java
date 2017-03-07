@@ -279,7 +279,7 @@ public class View implements GameListener {
             //drag and drop is used
         } else {
             if(prevAction == null) {
-                //TODO just copied from tap-control, to see what happens
+                //TODO just copied from tap-control to see what happens
                 try {
                     if (!game.wasInvalidMove()) {
                         if (!game.wasUndoMove()) {
@@ -1660,16 +1660,18 @@ public class View implements GameListener {
         Action action = getActionForTap(x, y);
 
         if(action != null) {
-            int index = action.getStackIndex();
-            Tableau tableau = game.getTableauAtPos(index);
-            int cardIndex = action.getCardIndex();
+            if(action.getGameObject() == GameObject.TABLEAU) {
+                int index = action.getStackIndex();
+                Tableau tableau = game.getTableauAtPos(index);
+                int cardIndex = action.getCardIndex();
 
-            int cardIndexInFaceUp = cardIndex - tableau.getFaceDown().size();
-            // View can not distinguish between just one card on the stack and no card
-            if (tableau.getFaceDown().size() + tableau.getFaceUp().size() == 0) {
-                action = new Action(GameObject.TABLEAU, index, -1);
-            } else {
-                action = new Action(GameObject.TABLEAU, index, cardIndexInFaceUp);
+                int cardIndexInFaceUp = cardIndex - tableau.getFaceDown().size();
+                // View can not distinguish between just one card on the stack and no card
+                if (tableau.getFaceDown().size() + tableau.getFaceUp().size() == 0) {
+                    action = new Action(GameObject.TABLEAU, index, -1);
+                } else {
+                    action = new Action(GameObject.TABLEAU, index, cardIndexInFaceUp);
+                }
             }
         }
             return game.handleAction(action, false);
