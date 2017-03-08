@@ -65,6 +65,7 @@ public class View implements GameListener {
 
     protected DragAndDrop dragAndDrop = new DragAndDrop();
     private boolean useDragAndDrop;
+    private boolean dragStartResult = false;
     private boolean isDragging = false;
 
     private final HashMap<String, ImageWrapper> faceUpCards = new HashMap<String, ImageWrapper>(52);
@@ -1660,6 +1661,7 @@ public class View implements GameListener {
         Action action = getActionForTap(x, y);
 
         if(action != null) {
+            Gdx.app.log("actionForTap",action.toString());
             if(action.getGameObject() == GameObject.TABLEAU) {
                 int index = action.getStackIndex();
                 Tableau tableau = game.getTableauAtPos(index);
@@ -1672,6 +1674,9 @@ public class View implements GameListener {
                 } else {
                     action = new Action(GameObject.TABLEAU, index, cardIndexInFaceUp);
                 }
+            } else if(action.getGameObject() == GameObject.DECK) {
+                game.failMove();
+                return false;
             }
         }
             return game.handleAction(action, false);
@@ -1688,9 +1693,9 @@ public class View implements GameListener {
                 payloadCard.setHeight(ViewConstants.scalingHeightCard * ViewConstants.heightOneSpace);
                 payload.setDragActor(payloadCard);
                 imageWrapper.setVisible(false);
-                boolean startActionResult = createActionAndSendToModel(imageWrapper);
+                dragStartResult = createActionAndSendToModel(imageWrapper);
                 isDragging = true;
-                Gdx.app.log("dragstart result:",String.valueOf(startActionResult));
+                Gdx.app.log("dragstart result:",String.valueOf(dragStartResult));
                 return payload;
             }
             @Override
@@ -1704,11 +1709,12 @@ public class View implements GameListener {
                 float originalX = originalActor.getX();
                 float originalY = originalActor.getY();
                 originalActor.setPosition(dragActor.getX(), dragActor.getY());
-                boolean stopActionResult = createActionAndSendToModel((ImageWrapper) originalActor);
-                if(!stopActionResult) {
+                boolean dragStopResult = createActionAndSendToModel((ImageWrapper) originalActor);
+                if(!dragStartResult ||!dragStopResult) {
                     originalActor.setPosition(originalX,originalY);
                 }
-                Gdx.app.log("dragstop result:",String.valueOf(stopActionResult));
+                Gdx.app.log("dragstop result:",String.valueOf(dragStopResult));
+                //dragStartResult = false;
             }
         });
     }

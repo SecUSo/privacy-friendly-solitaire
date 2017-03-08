@@ -174,6 +174,7 @@ public class SolitaireGame {
                     return handleFoundation(action, redoMove);
             }
         }
+        failMove();
         return false;
     }
 
@@ -343,7 +344,7 @@ public class SolitaireGame {
      * resets prevAction and notifies observers, to be called if an action could not be handled
      * succesfully
      */
-    private void failMove() {
+    void failMove() {
         invalidMove = true;
         this.prevAction = null;
         notifyListeners();
