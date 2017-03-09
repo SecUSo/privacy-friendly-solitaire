@@ -19,7 +19,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- ###GAME###-->
-    <string name="title_activity_game">Spiel</string>
     <string name="game_button_start">Neues Spiel</string>
     <string name="game_button_continue">Spiel fortsetzten</string>
 
@@ -31,7 +30,6 @@
     <string name="sel_card_summary">Eine ausgewählte Karte im Spiel wird durch eine gelbe Umrandung veranschaulicht</string>
 
     <string name="help">Hilfe</string>
-    <string name="help_general_heading">Überblick</string>
 
     <string name="help_undo">Rückgängig</string>
     <string name="help_undo_summary">Den letzten Zug rückgängig machen</string>
@@ -75,8 +73,6 @@
 
 
     <!-- ###SETTINGS### -->
-    <string name="title_activity_settings">Einstellungen</string>
-    <string name="pref_header_general">Allgemein</string>
     <string name="pref_sound_switch">Ton</string>
     <string name="pref_sound_switch_summary_on">An</string>
     <string name="pref_sound_switch_summary_off">Aus</string>
@@ -84,6 +80,11 @@
     <string name="pref_shake_switch">Schüttelfunktion </string>
     <string name="pref_shake_switch_summary_on">An</string>
     <string name="pref_shake_switch_summary_off">Aus</string>
+
+    <string name="pref_dnd_switch">Per "Drag and Drop"</string>
+    <string name="pref_dnd_switch_summary_on">An</string>
+    <string name="pref_dnd_switch_summary_off">Aus</string>
+
 
     <string name="pref_count_point">Punkte</string>
 
@@ -97,7 +98,6 @@
 
     <!-- Backgroundcolor-->
     <string name="sp_key_background_color">Hintergrundfarbe wählen</string>
-    <string name="summary_backroundcolor">Wählen Sie die Hintergrundfarbe des Spielfeldes</string>
 
 
     <!-- ### WELCOME DIALOG ### -->

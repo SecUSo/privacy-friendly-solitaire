@@ -67,6 +67,7 @@ public class Solitaire extends AndroidApplication implements
     public static final Color GREEN_SOL = new Color(143 / 255.0f, 188 / 255.0f, 143 / 255.0f, 1f);
     public static final Color BLUE_SOL = new Color(176 / 255.0f, 196 / 255.0f, 222 / 255.0f, 1);
     public static final Color LILA_SOL = new Color(216 / 255.0f, 191 / 255.0f, 216 / 255.0f, 1);
+    public static final Color WHITE_SOL = new Color(255 / 255.0f, 255 / 255.0f, 255 / 255.0f, 1);
     com.badlogic.gdx.graphics.Color c;
 
     // The following are used for the shake detection
@@ -130,9 +131,16 @@ public class Solitaire extends AndroidApplication implements
         final boolean sound = mSharedPreferences.getBoolean(getString(R.string.pref_sound_switch), false);
         final boolean shake = mSharedPreferences.getBoolean(getString(R.string.pref_shake_switch), false);
         final boolean time = mSharedPreferences.getBoolean(getString(R.string.pref_time), false);
+        final boolean draganddrop = mSharedPreferences.getBoolean(getString(R.string.pref_dnd_switch), false);
         countTime = time;
 
 
+        //Drag and Drop function for card moving
+        if(draganddrop){
+            //TODO: DnD true
+        }else{
+            //TODO: DnD false
+        }
         // ShakeDetector initialization
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager
@@ -193,7 +201,9 @@ public class Solitaire extends AndroidApplication implements
             c = GRAY_SOL;
         } else if (color.equals("4")) {
             c = LILA_SOL;
-        } else {
+        } else if (color.equals("5")) {
+            c = WHITE_SOL;
+        } else{
             c = GREEN_SOL;
         }
 

@@ -7,7 +7,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
-            android:id="@+id/playfield"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
@@ -17,7 +16,6 @@
     <TextView
         android:text="@string/rules_description"
         android:layout_height="wrap_content"
-        android:id="@+id/rules_description"
         android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_marginLeft="35px"
@@ -38,7 +36,6 @@
     <TextView
         android:text="@string/rules_point_desc"
         android:layout_height="wrap_content"
-        android:id="@+id/rules_point_desc"
         android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_marginLeft="35px"
@@ -49,7 +46,6 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/standard_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
@@ -59,7 +55,6 @@
     <TextView
         android:text="@string/rules_point_desc_vegas"
         android:layout_height="wrap_content"
-        android:id="@+id/rules_point_desc_vegas"
         android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_marginLeft="35px"

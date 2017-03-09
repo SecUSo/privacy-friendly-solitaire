@@ -7,6 +7,7 @@
         <item name="color_p_blue">BLUE</item>
         <item name="color_p_gray">GREY</item>
         <item name="color_p_brown">PURPLE</item>
+        <item name="color_p_brown">WHITE</item>
     </string-array>
 
     <string-array name="color_palete_value">
@@ -14,6 +15,7 @@
         <item name="color_p_blue">2</item>
         <item name="color_p_gray">3</item>
         <item name="color_p_brown">4</item>
+        <item name="color_p_brown">5</item>
     </string-array>
 
 
