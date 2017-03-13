@@ -222,7 +222,7 @@ public class Application extends ApplicationAdapter implements ScoreListener {
                 @Override
                 public void run() {
 
-                    Move move = MoveFinder.findMove(game);
+                    Move move = MoveFinder.findMove(game, listener);
                     try {
                         if (move != null) {
                             //break;

@@ -115,8 +115,13 @@
     <string name="alert_box_won_generic_message">You did it! Awesome!</string>
     <string name="alert_box_won_time">Total Time: </string>
     <string name="alert_box_won_points">Points: </string>
-    <string name="alert_box_won_main">Main Menu</string>
-    <string name="alert_box_won_another">New Game</string>
+    <string name="alert_box_won_lost_main">Main Menu</string>
+    <string name="alert_box_won_lost_another">New Game</string>
+
+
+    <!-- ### LOST DIALOG ### -->
+    <string name="alert_box_lost">You lost!</string>
+    <string name="alert_box_lost_generic_message">Sorry, no more moves possible!</string>
 
 
     <!-- ### WARNING DIALOG ### -->

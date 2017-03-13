@@ -90,6 +90,17 @@ public class Controller implements GestureDetector.GestureListener {
             }
         }
 
+        // if we get a user-move that is not a deck-move we reset the MoveFinder's counter
+        // if we get a deck-action we do not reset the number, but we also do not increment it
+        // this is a behaviour that we implemented, such that the user can tap through the deck
+        // by hand, if he wants to see its content, but if he is 'asking the game for help' by
+        // invoking the MoveFinder and only gets deck-moves the game is definitely lost
+        if (actionForClick != null) {
+            if (actionForClick.getGameObject() != GameObject.DECK) {
+                MoveFinder.resetNrOfMovesThroughDeck();
+            }
+        }
+
         return actionForClick != null && game.handleAction(actionForClick, false);
     }
 

@@ -113,8 +113,13 @@
     <string name="alert_box_won_generic_message">Du hast es geschafft! Super!</string>
     <string name="alert_box_won_time">Zeit: </string>
     <string name="alert_box_won_points">Punkte: </string>
-    <string name="alert_box_won_main">Hauptmenü</string>
-    <string name="alert_box_won_another">Neues Spiel</string>
+    <string name="alert_box_won_lost_main">Hauptmenü</string>
+    <string name="alert_box_won_lost_another">Neues Spiel</string>
+
+
+    <!-- ### LOST DIALOG ### -->
+    <string name="alert_box_lost">Verloren!</string>
+    <string name="alert_box_lost_generic_message">Leider keine Züge mehr möglich!</string>
 
 
     <!-- ### WARNING DIALOG ### -->
