@@ -24,6 +24,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -305,7 +306,7 @@ public class View implements GameListener {
 //        Gdx.app.log("---VIEW--- game after ", game.toString());
 
         // TODO: delete later, only for debug reasons
-        //checkModelAndViewCorrect(game);
+        checkModelAndViewCorrect(game);
     }
 
 
@@ -1700,11 +1701,35 @@ public class View implements GameListener {
                 ImageWrapper payloadCard = loader.getImageForPath("cards/" + textureName + ".png");
                 payloadCard.setWidth(ViewConstants.scalingWidthCard * ViewConstants.widthOneSpace);
                 payloadCard.setHeight(ViewConstants.scalingHeightCard * ViewConstants.heightOneSpace);
-                payload.setDragActor(payloadCard);
-                imageWrapper.setVisible(false);
+                if(imageWrapper.getGameObject() == GameObject.TABLEAU){
+                    Gdx.app.log("dragstart","on tableau");
+                    Group payloadGroup = new Group();
+                    Vector<Actor> originalActors = new Vector<Actor>();
+                    payloadGroup.addActor(payloadCard);
+                    originalActors.add(imageWrapper);
+                    //add cards on top of tableau card, too
+                    int stackIndex = imageWrapper.getWrapperStackIndex();
+                    int faceUpIndex = imageWrapper.getWrapperCardIndex() - game.getTableauAtPos(stackIndex).getFaceDown().size();
+                    while(faceUpIndex < game.getTableauAtPos(stackIndex).getFaceUp().size() - 1) {
+                        faceUpIndex++;
+                        Card nextCard = game.getTableauAtPos(stackIndex).getFaceUp().get(faceUpIndex);
+                        ImageWrapper nextImageWrapper = loadActorForCardWithoutSavingInMap(nextCard);
+                        nextImageWrapper.setWidth(ViewConstants.scalingWidthCard * ViewConstants.widthOneSpace);
+                        nextImageWrapper.setHeight(ViewConstants.scalingHeightCard * ViewConstants.heightOneSpace);
+                        nextImageWrapper.moveBy(0,-ViewConstants.offsetHeightBetweenCards);
+                        payloadGroup.addActor(nextImageWrapper);
+                    }
+                    payload.setDragActor(payloadGroup);
+                    for(Actor a : originalActors) {
+                        a.setVisible(false);
+                    }
+                }else {
+                    payload.setDragActor(payloadCard);
+                    imageWrapper.setVisible(false);
+                }
                 dragStartResult = createActionAndSendToModelForStart(imageWrapper);
                 isDragging = true;
-                Gdx.app.log("dragstart result:",String.valueOf(dragStartResult));
+                //Gdx.app.log("dragstart result:",String.valueOf(dragStartResult));
                 return payload;
             }
             @Override
@@ -1720,9 +1745,9 @@ public class View implements GameListener {
                 originalActor.setPosition(dragActor.getX(), dragActor.getY());
                 boolean dragStopResult = createActionAndSendToModelForStop((ImageWrapper) originalActor);
                 if(!dragStartResult ||!dragStopResult) {
-                    originalActor.setPosition(originalX,originalY);
+                    moveCard(originalX,originalY,(ImageWrapper)originalActor,((ImageWrapper) originalActor).getWrapperStackIndex(),true);
                 }
-                Gdx.app.log("dragstop result:",String.valueOf(dragStopResult));
+                //Gdx.app.log("dragstop result:",String.valueOf(dragStopResult));
                 //dragStartResult = false;
             }
         });
