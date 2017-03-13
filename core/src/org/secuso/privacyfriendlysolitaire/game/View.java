@@ -1654,12 +1654,8 @@ public class View implements GameListener {
         }
     }
 
-    private boolean createActionAndSendToModel(ImageWrapper draggingCard) {
-        float x = draggingCard.getX() + ViewConstants.offsetHeightBetweenCards / 2;
-        float y = draggingCard.getY() - ViewConstants.offsetHeightBetweenCards / 2 +
-                ViewConstants.heightCard;
+    private boolean createActionAndSendToModel(ImageWrapper draggingCard, float x, float y) {
         Action action = getActionForTap(x, y);
-
         if(action != null) {
             Gdx.app.log("actionForTap",action.toString());
             if(action.getGameObject() == GameObject.TABLEAU) {
@@ -1682,6 +1678,19 @@ public class View implements GameListener {
             return game.handleAction(action, false);
     }
 
+    private boolean createActionAndSendToModelForStart(ImageWrapper draggingCard) {
+        float x = draggingCard.getX() + ViewConstants.offsetHeightBetweenCards / 2;
+        float y = draggingCard.getY() - ViewConstants.offsetHeightBetweenCards / 2 +
+                ViewConstants.heightCard;
+        return createActionAndSendToModel(draggingCard, x, y);
+    }
+
+    private boolean createActionAndSendToModelForStop(ImageWrapper draggingCard) {
+        float x = draggingCard.getX() + ViewConstants.widthCard / 2;
+        float y = draggingCard.getY() + ViewConstants.heightCard/2;
+        return createActionAndSendToModel(draggingCard, x, y);
+    }
+
     private void addTextureNameToDragAndDrop(final String textureName) {
         final ImageWrapper imageWrapper = faceUpCards.get(textureName);
         dragAndDrop.addSource(new DragAndDrop.Source(imageWrapper) {
@@ -1693,7 +1702,7 @@ public class View implements GameListener {
                 payloadCard.setHeight(ViewConstants.scalingHeightCard * ViewConstants.heightOneSpace);
                 payload.setDragActor(payloadCard);
                 imageWrapper.setVisible(false);
-                dragStartResult = createActionAndSendToModel(imageWrapper);
+                dragStartResult = createActionAndSendToModelForStart(imageWrapper);
                 isDragging = true;
                 Gdx.app.log("dragstart result:",String.valueOf(dragStartResult));
                 return payload;
@@ -1709,7 +1718,7 @@ public class View implements GameListener {
                 float originalX = originalActor.getX();
                 float originalY = originalActor.getY();
                 originalActor.setPosition(dragActor.getX(), dragActor.getY());
-                boolean dragStopResult = createActionAndSendToModel((ImageWrapper) originalActor);
+                boolean dragStopResult = createActionAndSendToModelForStop((ImageWrapper) originalActor);
                 if(!dragStartResult ||!dragStopResult) {
                     originalActor.setPosition(originalX,originalY);
                 }
