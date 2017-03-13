@@ -81,7 +81,6 @@
     <string name="pref_shake_switch_summary_on">An</string>
     <string name="pref_shake_switch_summary_off">Aus</string>
 
-    <string name="pref_dnd_switch">Per "Drag and Drop"</string>
     <string name="pref_dnd_switch_summary_on">An</string>
     <string name="pref_dnd_switch_summary_off">Aus</string>
 

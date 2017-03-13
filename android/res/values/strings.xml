@@ -83,7 +83,7 @@
     <string name="pref_shake_switch_summary_on">On</string>
     <string name="pref_shake_switch_summary_off">Off</string>
 
-    <string name="pref_dnd_switch">Drag and drop </string>
+
     <string name="pref_dnd_switch_summary_on">On</string>
     <string name="pref_dnd_switch_summary_off">Off</string>
 
