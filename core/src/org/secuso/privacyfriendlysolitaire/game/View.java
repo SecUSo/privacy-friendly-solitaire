@@ -941,7 +941,7 @@ public class View implements GameListener {
 
                 setImageScalingAndPositionAndStackCardIndicesAndAddToStage(beneathSourceCardImageWrapper,
                         GameObject.TABLEAU, backsideImage.getX(), backsideImage.getY(), sourceStack,
-                        nrOfFaceDownInSourceTableau - 1);
+                        nrOfFaceDownInSourceTableau);
             }
 
         } else {
@@ -1021,7 +1021,7 @@ public class View implements GameListener {
 
                 setImageScalingAndPositionAndStackCardIndicesAndAddToStage(beneathSourceCardImageWrapper,
                         GameObject.TABLEAU, backsideImage.getX(), backsideImage.getY(), sourceStack,
-                        nrOfFaceDownInSourceTableau - 1);
+                        nrOfFaceDownInSourceTableau);
             }
         } else {
             throw new RuntimeException("source or target of move could not be found");
