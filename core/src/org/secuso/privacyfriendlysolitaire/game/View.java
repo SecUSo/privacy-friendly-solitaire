@@ -280,7 +280,7 @@ public class View implements GameListener {
             }
             //drag and drop is used
         } else {
-            if(prevAction == null) {
+            if (prevAction == null) {
                 //TODO just copied from tap-control to see what happens
                 try {
                     if (!game.wasInvalidMove()) {
@@ -349,7 +349,7 @@ public class View implements GameListener {
                 if (card == null) {
                     throw new RuntimeException("Karte " + texString + " war null");
                 } else {
-                   // assert (card.isVisible());
+                    // assert (card.isVisible());
                     assert (card.getWrapperStackIndex() == stack);
                     assert (card.getGameObject().equals(GameObject.FOUNDATION));
                     assert (Math.abs(card.getX() - ViewConstants.TableauFoundationX[stack]) <= 1);
@@ -370,7 +370,7 @@ public class View implements GameListener {
                     throw new RuntimeException("Backside an stack=" + stack + " und card=" +
                             cardIndex + " war null");
                 } else {
-                   // assert (backside.isVisible());
+                    // assert (backside.isVisible());
                     assert (backside.getGameObject().equals(GameObject.TABLEAU));
                     assert (Math.abs(backside.getX() - ViewConstants.TableauFoundationX[stack]) <= 1);
                     float shouldBeY = ViewConstants.TableauBaseY -
@@ -501,6 +501,7 @@ public class View implements GameListener {
                 }
 
                 paintWaste(game.getDeckWaste(), false, true);
+                Gdx.app.log("Hi", "hi");
                 break;
 
             // possibilities: Tableau -> Tableau, Tableau -> Foundation
@@ -563,6 +564,7 @@ public class View implements GameListener {
 
                 // set new smallestY for source
                 setNewSmallestY(sourceStack, tabAtSourceStack);
+                Gdx.app.log("Hi", "hi");
                 break;
 
             // possibilities: Foundation -> Tableau
@@ -592,6 +594,7 @@ public class View implements GameListener {
                     // set new smallestY for target
                     setNewSmallestY(targetStack, tabAtTargetStack);
                 }
+                Gdx.app.log("Hi", "hi");
                 break;
         }
     }
@@ -941,7 +944,7 @@ public class View implements GameListener {
 
                 setImageScalingAndPositionAndStackCardIndicesAndAddToStage(beneathSourceCardImageWrapper,
                         GameObject.TABLEAU, backsideImage.getX(), backsideImage.getY(), sourceStack,
-                        0);
+                        nrOfFaceDownInSourceTableau - 1);
             }
 
         } else {
@@ -1021,7 +1024,7 @@ public class View implements GameListener {
 
                 setImageScalingAndPositionAndStackCardIndicesAndAddToStage(beneathSourceCardImageWrapper,
                         GameObject.TABLEAU, backsideImage.getX(), backsideImage.getY(), sourceStack,
-                        0);
+                        nrOfFaceDownInSourceTableau - 1);
             }
         } else {
             throw new RuntimeException("source or target of move could not be found");
@@ -1657,9 +1660,9 @@ public class View implements GameListener {
 
     private boolean createActionAndSendToModel(ImageWrapper draggingCard, float x, float y) {
         Action action = getActionForTap(x, y);
-        if(action != null) {
-            Gdx.app.log("actionForTap",action.toString());
-            if(action.getGameObject() == GameObject.TABLEAU) {
+        if (action != null) {
+            Gdx.app.log("actionForTap", action.toString());
+            if (action.getGameObject() == GameObject.TABLEAU) {
                 int index = action.getStackIndex();
                 Tableau tableau = game.getTableauAtPos(index);
                 int cardIndex = action.getCardIndex();
@@ -1671,12 +1674,12 @@ public class View implements GameListener {
                 } else {
                     action = new Action(GameObject.TABLEAU, index, cardIndexInFaceUp);
                 }
-            } else if(action.getGameObject() == GameObject.DECK) {
+            } else if (action.getGameObject() == GameObject.DECK) {
                 game.failMove();
                 return false;
             }
         }
-            return game.handleAction(action, false);
+        return game.handleAction(action, false);
     }
 
     private boolean createActionAndSendToModelForStart(ImageWrapper draggingCard) {
@@ -1688,7 +1691,7 @@ public class View implements GameListener {
 
     private boolean createActionAndSendToModelForStop(ImageWrapper draggingCard) {
         float x = draggingCard.getX() + ViewConstants.widthCard / 2;
-        float y = draggingCard.getY() + ViewConstants.heightCard/2;
+        float y = draggingCard.getY() + ViewConstants.heightCard / 2;
         return createActionAndSendToModel(draggingCard, x, y);
     }
 
@@ -1701,32 +1704,32 @@ public class View implements GameListener {
                 ImageWrapper payloadCard = loader.getImageForPath("cards/" + textureName + ".png");
                 payloadCard.setWidth(ViewConstants.scalingWidthCard * ViewConstants.widthOneSpace);
                 payloadCard.setHeight(ViewConstants.scalingHeightCard * ViewConstants.heightOneSpace);
-                if(imageWrapper.getGameObject() == GameObject.TABLEAU){
-                    Gdx.app.log("dragstart","on tableau");
+                if (imageWrapper.getGameObject() == GameObject.TABLEAU) {
+                    Gdx.app.log("dragstart", "on tableau");
                     Group payloadGroup = new Group();
                     Vector<Actor> originalActors = new Vector<Actor>();
                     payloadGroup.addActor(payloadCard);
                     originalActors.add(imageWrapper);
                     //add cards on top of tableau card, too
                     int stackIndex = imageWrapper.getWrapperStackIndex();
-                    Gdx.app.log("wrapperCardIndex",String.valueOf(imageWrapper.getWrapperCardIndex()));
-                    Gdx.app.log("tableauFaceDownSize",String.valueOf(game.getTableauAtPos(stackIndex).getFaceDown().size()));
+                    Gdx.app.log("wrapperCardIndex", String.valueOf(imageWrapper.getWrapperCardIndex()));
+                    Gdx.app.log("tableauFaceDownSize", String.valueOf(game.getTableauAtPos(stackIndex).getFaceDown().size()));
                     int faceUpIndex = imageWrapper.getWrapperCardIndex() - game.getTableauAtPos(stackIndex).getFaceDown().size();
-                    Gdx.app.log("computed faceUpIndex",String.valueOf(faceUpIndex));
-                    while(faceUpIndex < game.getTableauAtPos(stackIndex).getFaceUp().size() - 1) {
+                    Gdx.app.log("computed faceUpIndex", String.valueOf(faceUpIndex));
+                    while (faceUpIndex < game.getTableauAtPos(stackIndex).getFaceUp().size() - 1) {
                         faceUpIndex++;
                         Card nextCard = game.getTableauAtPos(stackIndex).getFaceUp().get(faceUpIndex);
                         ImageWrapper nextImageWrapper = loadActorForCardWithoutSavingInMap(nextCard);
                         nextImageWrapper.setWidth(ViewConstants.scalingWidthCard * ViewConstants.widthOneSpace);
                         nextImageWrapper.setHeight(ViewConstants.scalingHeightCard * ViewConstants.heightOneSpace);
-                        nextImageWrapper.moveBy(0,-ViewConstants.offsetHeightBetweenCards);
+                        nextImageWrapper.moveBy(0, -ViewConstants.offsetHeightBetweenCards);
                         payloadGroup.addActor(nextImageWrapper);
                     }
                     payload.setDragActor(payloadGroup);
-                    for(Actor a : originalActors) {
+                    for (Actor a : originalActors) {
                         a.setVisible(false);
                     }
-                }else {
+                } else {
                     payload.setDragActor(payloadCard);
                     imageWrapper.setVisible(false);
                 }
@@ -1735,6 +1738,7 @@ public class View implements GameListener {
                 //Gdx.app.log("dragstart result:",String.valueOf(dragStartResult));
                 return payload;
             }
+
             @Override
             public void dragStop(InputEvent event, float x, float y, int pointer,
                                  DragAndDrop.Payload payload, DragAndDrop.Target target) {
@@ -1747,8 +1751,8 @@ public class View implements GameListener {
                 float originalY = originalActor.getY();
                 originalActor.setPosition(dragActor.getX(), dragActor.getY());
                 boolean dragStopResult = createActionAndSendToModelForStop((ImageWrapper) originalActor);
-                if(!dragStartResult ||!dragStopResult) {
-                    moveCard(originalX,originalY,(ImageWrapper)originalActor,((ImageWrapper) originalActor).getWrapperStackIndex(),true);
+                if (!dragStartResult || !dragStopResult) {
+                    moveCard(originalX, originalY, (ImageWrapper) originalActor, ((ImageWrapper) originalActor).getWrapperStackIndex(), true);
                 }
                 //Gdx.app.log("dragstop result:",String.valueOf(dragStopResult));
                 //dragStartResult = false;
@@ -1758,11 +1762,10 @@ public class View implements GameListener {
 
     private void addCurrentFaceUpCardsToDragAndDrop() {
         dragAndDrop.clear();
-        for(String s : faceUpCards.keySet()) {
+        for (String s : faceUpCards.keySet()) {
             addTextureNameToDragAndDrop(s);
         }
     }
-
 
 
 }
