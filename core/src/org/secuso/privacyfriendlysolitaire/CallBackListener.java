@@ -26,6 +26,8 @@ public interface CallBackListener {
 
     void onWon();
 
+    void onLost();
+
     void isUndoRedoPossible(final boolean canUndo, final boolean canRedo);
 
     void score(int score);

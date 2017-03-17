@@ -114,6 +114,10 @@ public class DeckWaste {
         return fanSize;
     }
 
+    public int getSizeOfDeckAndWaste() {
+        return deck.size() + waste.size();
+    }
+
     /**
      * tries to turn over cards from deck to waste
      *

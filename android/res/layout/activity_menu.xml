@@ -36,7 +36,6 @@
 
             <ImageView
                 android:layout_weight="9"
-                android:id="@+id/gameTypeImage"
                 android:layout_width="match_parent"
                 android:adjustViewBounds="true"
                 android:layout_centerInParent="true"
@@ -73,7 +72,6 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
                     android:text="@string/game_button_continue"
-                    android:id="@+id/game_button_continue"
                     android:onClick="onClick"
                     android:visibility="invisible"/>
 

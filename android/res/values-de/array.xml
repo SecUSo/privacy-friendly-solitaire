@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Array value for background color -->
+    <string-array name="color_palete">
+        <item name="color_p_green">GRÜN</item>
+        <item name="color_p_blue">BLAU</item>
+        <item name="color_p_gray">GRAU</item>
+        <item name="color_p_brown">LILA</item>
+        <item name="color_p_brown">WEISS</item>
+    </string-array>
+
+    <string-array name="color_palete_value">
+        <item name="color_p_green">1</item>
+        <item name="color_p_blue">2</item>
+        <item name="color_p_gray">3</item>
+        <item name="color_p_brown">4</item>
+        <item name="color_p_brown">5</item>
+    </string-array>
+
+
+    <!--Array value for points -->
+    <string-array name="point_screen">
+        <item name="sel_points_off">Keine</item>
+        <item name="sel_standard">Standard</item>
+        <item name="sel_vegas">Vegas</item>
+    </string-array>
+
+    <string-array name="point_screen_value">
+        <item name="sel_points_off">1</item>
+        <item name="sel_standard">2</item>
+        <item name="sel_vegas">3</item>
+    </string-array>
+
+    <!--Array value for waste -->
+    <string-array name="waste_screen">
+        <item name="sel_waste_one">1 Karte</item>
+        <item name="sel_waste_three">3  Karten</item>
+    </string-array>
+
+    <string-array name="waste_screen_value">
+        <item name="sel_waste_one">1</item>
+        <item name="sel_waste_three">2</item>
+    </string-array>
+    <!--<string-array name="color_palete">-->
+    <!--<item name="color_p_green">GRÜN</item>-->
+    <!--<item name="color_p_blue">BLAU</item>-->
+    <!--<item name="color_p_gray">GRAU</item>-->
+    <!--<item name="color_p_brown">LILA</item>-->
+    <!--</string-array>-->
+
+    <!--<string-array name="color_palete_value">-->
+    <!--<item name="color_p_green">1</item>-->
+    <!--<item name="color_p_blue">2</item>-->
+    <!--<item name="color_p_gray">3</item>-->
+    <!--<item name="color_p_brown">4</item>-->
+    <!--</string-array>-->
+
+    <!--&lt;!&ndash;Array value for points &ndash;&gt;-->
+    <!--<string-array name="point_screen">-->
+    <!--<item name="sel_points_off">Keine</item>-->
+    <!--<item name="sel_standard">Standard</item>-->
+    <!--<item name="sel_vegas">Vegas</item>-->
+    <!--</string-array>-->
+
+    <!--<string-array name="point_screen_value">-->
+    <!--<item name="sel_points_off">1</item>-->
+    <!--<item name="sel_standard">2</item>-->
+    <!--<item name="sel_vegas">3</item>-->
+    <!--</string-array>-->
+
+    <!--&lt;!&ndash;Array value for waste &ndash;&gt;-->
+    <!--<string-array name="waste_screen">-->
+    <!--<item name="sel_waste_one">1 Karte</item>-->
+    <!--<item name="sel_waste_three">3 Karten</item>-->
+    <!--</string-array>-->
+
+    <!--<string-array name="waste_screen_value">-->
+    <!--<item name="sel_waste_one">1</item>-->
+    <!--<item name="sel_waste_three">2</item>-->
+    <!--</string-array>-->
+
+
+</resources>

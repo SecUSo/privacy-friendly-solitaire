@@ -67,6 +67,7 @@ public class Solitaire extends AndroidApplication implements
     public static final Color GREEN_SOL = new Color(143 / 255.0f, 188 / 255.0f, 143 / 255.0f, 1f);
     public static final Color BLUE_SOL = new Color(176 / 255.0f, 196 / 255.0f, 222 / 255.0f, 1);
     public static final Color LILA_SOL = new Color(216 / 255.0f, 191 / 255.0f, 216 / 255.0f, 1);
+    public static final Color WHITE_SOL = new Color(255 / 255.0f, 255 / 255.0f, 255 / 255.0f, 1);
     com.badlogic.gdx.graphics.Color c;
 
     // The following are used for the shake detection
@@ -130,9 +131,16 @@ public class Solitaire extends AndroidApplication implements
         final boolean sound = mSharedPreferences.getBoolean(getString(R.string.pref_sound_switch), false);
         final boolean shake = mSharedPreferences.getBoolean(getString(R.string.pref_shake_switch), false);
         final boolean time = mSharedPreferences.getBoolean(getString(R.string.pref_time), false);
+        final boolean draganddrop = mSharedPreferences.getBoolean(getString(R.string.pref_dnd_switch), false);
         countTime = time;
 
 
+        //Drag and Drop function for card moving
+        if(draganddrop){
+            //TODO: DnD true
+        }else{
+            //TODO: DnD false
+        }
         // ShakeDetector initialization
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager
@@ -193,7 +201,9 @@ public class Solitaire extends AndroidApplication implements
             c = GRAY_SOL;
         } else if (color.equals("4")) {
             c = LILA_SOL;
-        } else {
+        } else if (color.equals("5")) {
+            c = WHITE_SOL;
+        } else{
             c = GREEN_SOL;
         }
 
@@ -303,7 +313,7 @@ public class Solitaire extends AndroidApplication implements
         return timeAlert;
     }
 
-    //Alert box for won a game which prints the total time and the reached points
+    //Alert box for winning a game which prints the total time and the reached points
     public void alertBoxWonMessage() {
 
         WonDialog dia = new WonDialog();
@@ -313,6 +323,12 @@ public class Solitaire extends AndroidApplication implements
         args.putString("timeForAlert", timeForAlert(time));
         args.putString("pointsString", pointsView.getText().toString());
         dia.setArguments(args);
+        dia.show(getFragmentManager(), "WonDialog");
+    }
+
+    //Alert box for losing a game which prints the total time and the reached points
+    public void alertBoxLostMessage() {
+        LostDialog dia = new LostDialog();
         dia.show(getFragmentManager(), "WonDialog");
     }
 
@@ -462,21 +478,26 @@ public class Solitaire extends AndroidApplication implements
         return R.id.nav_game;
     }
 
-    Boolean alert_box_ok = false;
-
     @Override
     public void onWon() {
-        if (!alert_box_ok) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    stoptimertask(timerView);
-                    alertBoxWonMessage();
-                    alert_box_ok = true;
-                }
-            });
-        }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                stoptimertask(timerView);
+                alertBoxWonMessage();
+            }
+        });
+    }
 
+    @Override
+    public void onLost() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                stoptimertask(timerView);
+                alertBoxLostMessage();
+            }
+        });
     }
 
     @Override
@@ -532,7 +553,7 @@ public class Solitaire extends AndroidApplication implements
                     .setMessage(message)
                     .setCancelable(false)
                     // go back to main menu
-                    .setNegativeButton(getString(R.string.alert_box_won_main), new DialogInterface.OnClickListener() {
+                    .setNegativeButton(getString(R.string.alert_box_won_lost_main), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // if this button is clicked, close current activity
                             dialog.dismiss();
@@ -541,7 +562,7 @@ public class Solitaire extends AndroidApplication implements
                         }
                     })
                     // or start another game
-                    .setPositiveButton(getString(R.string.alert_box_won_another), new DialogInterface.OnClickListener() {
+                    .setPositiveButton(getString(R.string.alert_box_won_lost_another), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // if this button is clicked, start current activity anew
                             dialog.dismiss();
@@ -606,6 +627,53 @@ public class Solitaire extends AndroidApplication implements
                     });
 
             return builder.create();
+        }
+    }
+
+    // if we did make this dialog static, we could not close the surrounding activity
+    @SuppressLint("ValidFragment")
+    public class LostDialog extends DialogFragment {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("\n\n" + getString(R.string.alert_box_lost_generic_message) + "\n\n");
+            String message = sb.toString();
+
+
+            LayoutInflater i = getActivity().getLayoutInflater();
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
+            builder.setView(i.inflate(R.layout.custom_dialog, null))
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setTitle(getActivity().getString(R.string.alert_box_lost))
+                    .setMessage(message)
+                    .setCancelable(false)
+                    // go back to main menu
+                    .setNegativeButton(getString(R.string.alert_box_won_lost_main), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // if this button is clicked, close current activity
+                            dialog.dismiss();
+
+                            Solitaire.this.finish();
+                        }
+                    })
+                    // or start another game
+                    .setPositiveButton(getString(R.string.alert_box_won_lost_another), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // if this button is clicked, start current activity anew
+                            dialog.dismiss();
+                            Solitaire.this.recreate();
+                        }
+                    });
+
+            return builder.create();
+        }
+
+        @Override
+        public void onCancel(DialogInterface dialog) {
+            alertBoxLostMessage();
         }
     }
 

@@ -14,6 +14,7 @@ This program is free software: you can redistribute it and/or modify
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import org.secuso.privacyfriendlysolitaire.CallBackListener;
 import org.secuso.privacyfriendlysolitaire.model.Action;
 import org.secuso.privacyfriendlysolitaire.model.Card;
 import org.secuso.privacyfriendlysolitaire.model.GameObject;
@@ -30,38 +31,66 @@ import java.util.Vector;
  */
 
 class MoveFinder {
+    private static int nrCardsInDeck = 52;
+    private static int nrOfConsecutiveMovesThroughDeck = 0;
 
     /**
      * @param game the SolitaireGame in which a Move shall be found
      * @return a possible Move to progress the Game or null if none could be found
      */
-    public static Move findMove(SolitaireGame game) {
+    public static Move findMove(SolitaireGame game, CallBackListener listener) {
+        nrCardsInDeck = game.getDeckWaste().getSizeOfDeckAndWaste();
+        checkWhetherNoMoves(listener);
+
         Move foundMove = findMoveTableauToFoundation(game);
         if (foundMove != null) {
-            return foundMove;
-        }
-        foundMove = findMoveWasteToFoundation(game);
-        if (foundMove != null) {
-            return foundMove;
-        }
-        foundMove = findMoveTableauToTableau(game);
-        if (foundMove != null) {
+            nrOfConsecutiveMovesThroughDeck = 0;
             return foundMove;
         }
         foundMove = findMoveWasteToTableau(game);
         if (foundMove != null) {
+            nrOfConsecutiveMovesThroughDeck = 0;
             return foundMove;
         }
-//        foundMove = findMoveFoundationToTableau(game);
-//        if (foundMove != null) {
-//            return foundMove;
-//        }
+        foundMove = findMoveWasteToFoundation(game);
+        if (foundMove != null) {
+            nrOfConsecutiveMovesThroughDeck = 0;
+            return foundMove;
+        }
+        foundMove = findMoveTableauToTableau(game);
+        if (foundMove != null) {
+            nrOfConsecutiveMovesThroughDeck = 0;
+            return foundMove;
+        }
         foundMove = findMoveDeck(game);
         if (foundMove != null) {
+            nrOfConsecutiveMovesThroughDeck++;
             return foundMove;
         }
         return null;
     }
+
+
+    /**
+     * resets the nrOfConsecutiveMovesThroughDeck to 0, if another moves was made
+     */
+    protected static void resetNrOfMovesThroughDeck() {
+        nrOfConsecutiveMovesThroughDeck = 0;
+    }
+
+
+    /**
+     * check whether there are no more moves (we already clicked through the deck as often as
+     * there are cards in there)
+     *
+     * @param listener the CallBackListener, that should react if the game is lost
+     */
+    private static void checkWhetherNoMoves(CallBackListener listener) {
+        if (nrOfConsecutiveMovesThroughDeck > nrCardsInDeck) {
+            listener.onLost();
+        }
+    }
+
 
     /**
      * @param game the SolitaireGame in which a Move from Tableau to Foundation shall be found

@@ -57,7 +57,10 @@ public class Application extends ApplicationAdapter implements ScoreListener {
     private Color backgroundColour;
 
     private boolean won = false;
+    private boolean practicallyWon = false;
     private boolean clickPossible = true;
+
+    private int intervallBetweenAutoMoves = 0;
 
     public void customConstructor(int cardDrawMode, int scoreMode, boolean playSounds,
                                   Color backgroundColour) {
@@ -115,6 +118,17 @@ public class Application extends ApplicationAdapter implements ScoreListener {
             listener.onWon();
             playWonSound();
             won = true;
+        } else if (practicallyWon && !won) {
+            if (intervallBetweenAutoMoves >= 4) {
+                autoMove();
+                intervallBetweenAutoMoves = 0;
+            } else {
+                intervallBetweenAutoMoves++;
+            }
+        }
+        if (game.isPracticallyWon() && !won && listener != null && !practicallyWon) {
+            Gdx.input.setInputProcessor(null);
+            practicallyWon = true;
         }
 
         stage.act();
@@ -136,7 +150,6 @@ public class Application extends ApplicationAdapter implements ScoreListener {
     public void undo() {
         if (clickPossible && game.canUndo()) {
             clickPossible = false;
-
             playUndoRedoSound();
             Gdx.app.postRunnable(new Runnable() {
                 @Override
@@ -157,7 +170,6 @@ public class Application extends ApplicationAdapter implements ScoreListener {
     public void redo() {
         if (clickPossible && game.canRedo()) {
             clickPossible = false;
-
             playUndoRedoSound();
             Gdx.app.postRunnable(new Runnable() {
                 @Override
@@ -187,7 +199,6 @@ public class Application extends ApplicationAdapter implements ScoreListener {
                 @Override
                 public void run() {
 
-
                     Move move;
                     while (true) {
                         move = MoveFinder.findMoveTableauToFoundation(game);
@@ -199,7 +210,6 @@ public class Application extends ApplicationAdapter implements ScoreListener {
 
                         try {
                             sleep(300);
-
                             clickPossible = true;
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -212,14 +222,14 @@ public class Application extends ApplicationAdapter implements ScoreListener {
     }
 
     public void autoMove() {
-        if (clickPossible) {
+        if (clickPossible || practicallyWon) {
             clickPossible = false;
             // all of this needs to run on libgdx's open gl rendering thread
             Gdx.app.postRunnable(new Runnable() {
                 @Override
                 public void run() {
 
-                    Move move = MoveFinder.findMove(game);
+                    Move move = MoveFinder.findMove(game, listener);
                     try {
                         if (move != null) {
                             //break;
@@ -229,12 +239,15 @@ public class Application extends ApplicationAdapter implements ScoreListener {
                                 game.handleAction(move.getAction2(), false);
                             }
 
-                            try {
-                                sleep(300);
-                                clickPossible = true;
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+                            if (!practicallyWon) {
+                                try {
+                                    sleep(300);
+                                    clickPossible = true;
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                             }
+
                         }
                     } catch (Exception e) {
                         Gdx.app.log("----FEHLER----, gesamter Move war ", move.toString());

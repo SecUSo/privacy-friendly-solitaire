@@ -499,6 +499,22 @@ public class SolitaireGame {
         return allKings;
     }
 
+    /**
+     * @return true if the game is practically won
+     */
+    boolean isPracticallyWon() {
+        boolean practicallyWon = deckAndWaste != null && (deckAndWaste.getNumTurnOver() == 1);
+
+        for (Tableau tab : tableaus) {
+            if (practicallyWon) {
+                practicallyWon = practicallyWon && (tab.getFaceDown().isEmpty());
+            } else {
+                break;
+            }
+        }
+        return practicallyWon;
+    }
+
     void registerGameListener(GameListener gameListener) {
         this.gameListeners.add(gameListener);
     }
