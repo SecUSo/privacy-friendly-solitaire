@@ -501,7 +501,6 @@ public class View implements GameListener {
                 }
 
                 paintWaste(game.getDeckWaste(), false, true);
-                Gdx.app.log("Hi", "hi");
                 break;
 
             // possibilities: Tableau -> Tableau, Tableau -> Foundation
@@ -564,7 +563,6 @@ public class View implements GameListener {
 
                 // set new smallestY for source
                 setNewSmallestY(sourceStack, tabAtSourceStack);
-                Gdx.app.log("Hi", "hi");
                 break;
 
             // possibilities: Foundation -> Tableau
@@ -594,7 +592,6 @@ public class View implements GameListener {
                     // set new smallestY for target
                     setNewSmallestY(targetStack, tabAtTargetStack);
                 }
-                Gdx.app.log("Hi", "hi");
                 break;
         }
     }
