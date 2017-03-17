@@ -68,6 +68,7 @@ public class View implements GameListener {
     private boolean useDragAndDrop;
     private boolean dragStartResult = false;
     private boolean isDragging = false;
+    private Vector<Actor> originalActors = new Vector<Actor>();
 
     private final HashMap<String, ImageWrapper> faceUpCards = new HashMap<String, ImageWrapper>(52);
     private final List<ImageWrapper> faceDownCards = new ArrayList<ImageWrapper>(21);
@@ -1704,7 +1705,6 @@ public class View implements GameListener {
                 if (imageWrapper.getGameObject() == GameObject.TABLEAU) {
                     Gdx.app.log("dragstart", "on tableau");
                     Group payloadGroup = new Group();
-                    Vector<Actor> originalActors = new Vector<Actor>();
                     payloadGroup.addActor(payloadCard);
                     originalActors.add(imageWrapper);
                     //add cards on top of tableau card, too
@@ -1713,14 +1713,15 @@ public class View implements GameListener {
                     Gdx.app.log("tableauFaceDownSize", String.valueOf(game.getTableauAtPos(stackIndex).getFaceDown().size()));
                     int faceUpIndex = imageWrapper.getWrapperCardIndex() - game.getTableauAtPos(stackIndex).getFaceDown().size();
                     Gdx.app.log("computed faceUpIndex", String.valueOf(faceUpIndex));
-                    while (faceUpIndex < game.getTableauAtPos(stackIndex).getFaceUp().size() - 1) {
+                    for (int additionalCard = 1; faceUpIndex < game.getTableauAtPos(stackIndex).getFaceUp().size() - 1; additionalCard++) {
                         faceUpIndex++;
                         Card nextCard = game.getTableauAtPos(stackIndex).getFaceUp().get(faceUpIndex);
                         ImageWrapper nextImageWrapper = loadActorForCardWithoutSavingInMap(nextCard);
                         nextImageWrapper.setWidth(ViewConstants.scalingWidthCard * ViewConstants.widthOneSpace);
                         nextImageWrapper.setHeight(ViewConstants.scalingHeightCard * ViewConstants.heightOneSpace);
-                        nextImageWrapper.moveBy(0, -ViewConstants.offsetHeightBetweenCards);
+                        nextImageWrapper.moveBy(0, -ViewConstants.offsetHeightBetweenCards * additionalCard);
                         payloadGroup.addActor(nextImageWrapper);
+                        originalActors.add(faceUpCards.get(loader.getCardTextureName(nextCard)));
                     }
                     payload.setDragActor(payloadGroup);
                     for (Actor a : originalActors) {
@@ -1747,10 +1748,21 @@ public class View implements GameListener {
                 float originalX = originalActor.getX();
                 float originalY = originalActor.getY();
                 originalActor.setPosition(dragActor.getX(), dragActor.getY());
+                for(int i = 0 ; i < originalActors.size(); i++) {
+                    originalActors.get(i).setPosition(dragActor.getX(), dragActor.getY() - (i* ViewConstants.offsetHeightBetweenCards));
+                }
+
                 boolean dragStopResult = createActionAndSendToModelForStop((ImageWrapper) originalActor);
                 if (!dragStartResult || !dragStopResult) {
-                    moveCard(originalX, originalY, (ImageWrapper) originalActor, ((ImageWrapper) originalActor).getWrapperStackIndex(), true);
+                    for(int i = 0; i < originalActors.size(); i++) {
+                        moveCard(originalX, originalY - (i * ViewConstants.offsetHeightBetweenCards), (ImageWrapper) originalActors.get(i), ((ImageWrapper) originalActors.get(i)).getWrapperStackIndex(), true);
+                    }
                 }
+                for (Actor a : originalActors) {
+                    a.setVisible(true);
+                    a.toFront();
+                }
+                originalActors.clear();
                 //Gdx.app.log("dragstop result:",String.valueOf(dragStopResult));
                 //dragStartResult = false;
             }
