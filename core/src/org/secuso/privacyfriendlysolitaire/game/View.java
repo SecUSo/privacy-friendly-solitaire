@@ -67,7 +67,6 @@ public class View implements GameListener {
     protected DragAndDrop dragAndDrop = new DragAndDrop();
     private boolean useDragAndDrop;
     private boolean dragStartResult = false;
-    private boolean isDragging = false;
     private Vector<Actor> originalActors = new Vector<Actor>();
 
     private final HashMap<String, ImageWrapper> faceUpCards = new HashMap<String, ImageWrapper>(52);
@@ -133,8 +132,9 @@ public class View implements GameListener {
         paintInitialFoundations(game.getFoundations());
         paintInitialTableaus(game.getTableaus());
         paintInitialDeckWaste(game.getDeckWaste());
-        //TODO testing, should be done with regard to the settings
-        addCurrentFaceUpCardsToDragAndDrop();
+        if(useDragAndDrop) {
+            addCurrentFaceUpCardsToDragAndDrop();
+        }
     }
 
     private void paintInitialFoundations(ArrayList<Foundation> foundations) {
@@ -282,7 +282,6 @@ public class View implements GameListener {
             //drag and drop is used
         } else {
             if (prevAction == null) {
-                //TODO just copied from tap-control to see what happens
                 try {
                     if (!game.wasInvalidMove()) {
                         if (!game.wasUndoMove()) {
@@ -294,7 +293,6 @@ public class View implements GameListener {
                             Move undoMove = game.getMoves().elementAt(game.getMovePointer() + 1);
                             handleUndoMove(undoMove, game);
                         }
-                        isDragging = false;
                     }
                 } catch (Exception e) {
                     Gdx.app.log("Error", e.getClass().toString() + ": " + e.getMessage() + ", probably an invalid move");
@@ -1335,7 +1333,7 @@ public class View implements GameListener {
      * @return an action containing whether the click was on deck, waste, foundation or tableau,
      * which foundation/tableau was tapped and which card in this tableau
      */
-    protected Action getActionForTap(float x, float y) {
+    Action getActionForTap(float x, float y) {
         GameObject gameObject = null;
         int stackIndex = getStackIndexForX(x);      // caution can be -1
         int cardIndex = -1;
@@ -1607,31 +1605,31 @@ public class View implements GameListener {
         int cardIndex = -1;
         GameObject gameObject = null;
 
-        protected GameObject getGameObject() {
+        GameObject getGameObject() {
             return gameObject;
         }
 
-        protected void setGameObject(GameObject gameObject) {
+        void setGameObject(GameObject gameObject) {
             this.gameObject = gameObject;
         }
 
-        protected ImageWrapper(Texture texture) {
+        ImageWrapper(Texture texture) {
             super(texture);
         }
 
-        protected int getWrapperStackIndex() {
+        int getWrapperStackIndex() {
             return stackIndex;
         }
 
-        protected void setWrapperStackIndex(int stackIndex) {
+        void setWrapperStackIndex(int stackIndex) {
             this.stackIndex = stackIndex;
         }
 
-        protected int getWrapperCardIndex() {
+        int getWrapperCardIndex() {
             return cardIndex;
         }
 
-        protected void setWrapperCardIndex(int cardIndex) {
+        void setWrapperCardIndex(int cardIndex) {
             this.cardIndex = cardIndex;
         }
 
@@ -1656,6 +1654,12 @@ public class View implements GameListener {
         }
     }
 
+    /**
+     * @param draggingCard the card that is being dragged
+     * @param x card's value on the x-axis
+     * @param y card's value on the y-axis
+     * @return true if the action was valid and the model returned true in response to sent action
+     */
     private boolean createActionAndSendToModel(ImageWrapper draggingCard, float x, float y) {
         Action action = getActionForTap(x, y);
         if (action != null) {
@@ -1693,6 +1697,9 @@ public class View implements GameListener {
         return createActionAndSendToModel(draggingCard, x, y);
     }
 
+    /**
+     * @param textureName the name of the texture whose ImageWrapper is added as a source to DragAndDrop
+     */
     private void addTextureNameToDragAndDrop(final String textureName) {
         final ImageWrapper imageWrapper = faceUpCards.get(textureName);
         dragAndDrop.addSource(new DragAndDrop.Source(imageWrapper) {
@@ -1724,16 +1731,14 @@ public class View implements GameListener {
                         originalActors.add(faceUpCards.get(loader.getCardTextureName(nextCard)));
                     }
                     payload.setDragActor(payloadGroup);
-                    for (Actor a : originalActors) {
-                        a.setVisible(false);
-                    }
                 } else {
                     payload.setDragActor(payloadCard);
-                    imageWrapper.setVisible(false);
+                    originalActors.add(imageWrapper);
+                }
+                for (Actor a : originalActors) {
+                    a.setVisible(false);
                 }
                 dragStartResult = createActionAndSendToModelForStart(imageWrapper);
-                isDragging = true;
-                //Gdx.app.log("dragstart result:",String.valueOf(dragStartResult));
                 return payload;
             }
 
@@ -1751,7 +1756,6 @@ public class View implements GameListener {
                 for(int i = 0 ; i < originalActors.size(); i++) {
                     originalActors.get(i).setPosition(dragActor.getX(), dragActor.getY() - (i* ViewConstants.offsetHeightBetweenCards));
                 }
-
                 boolean dragStopResult = createActionAndSendToModelForStop((ImageWrapper) originalActor);
                 if (!dragStartResult || !dragStopResult) {
                     for(int i = 0; i < originalActors.size(); i++) {
@@ -1763,16 +1767,27 @@ public class View implements GameListener {
                     a.toFront();
                 }
                 originalActors.clear();
-                //Gdx.app.log("dragstop result:",String.valueOf(dragStopResult));
-                //dragStartResult = false;
             }
         });
     }
 
+    /**
+     * all cards that are currently face up are added as sources to the DragAndDrop Object
+     */
     private void addCurrentFaceUpCardsToDragAndDrop() {
         dragAndDrop.clear();
+        //add all face up cards except the waste
         for (String s : faceUpCards.keySet()) {
+            if(faceUpCards.get(s).getGameObject() == GameObject.WASTE) {
+                continue;
+            }
             addTextureNameToDragAndDrop(s);
+        }
+        //add the top of the waste
+        if(!game.getDeckWaste().isWasteEmpty()) {
+            Card wasteTop = game.getDeckWaste().getWasteTop();
+            String wasteTopString = loader.getCardTextureName(wasteTop);
+            addTextureNameToDragAndDrop(wasteTopString);
         }
     }
 

@@ -236,7 +236,7 @@ public class Solitaire extends AndroidApplication implements
         });
 
         // start game
-        application.customConstructor(cardDrawMode, scoreMode, sound, c);
+        application.customConstructor(cardDrawMode, scoreMode, sound, c, draganddrop);
     }
 
 

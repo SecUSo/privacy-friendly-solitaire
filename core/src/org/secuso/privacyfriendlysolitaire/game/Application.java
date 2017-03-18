@@ -56,6 +56,8 @@ public class Application extends ApplicationAdapter implements ScoreListener {
 
     private Color backgroundColour;
 
+    private boolean dragAndDrop;
+
     private boolean won = false;
     private boolean practicallyWon = false;
     private boolean clickPossible = true;
@@ -63,11 +65,12 @@ public class Application extends ApplicationAdapter implements ScoreListener {
     private int intervallBetweenAutoMoves = 0;
 
     public void customConstructor(int cardDrawMode, int scoreMode, boolean playSounds,
-                                  Color backgroundColour) {
+                                  Color backgroundColour, boolean dragAndDrop) {
         this.cardDrawMode = cardDrawMode;
         this.scoreMode = scoreMode;
         this.playSounds = playSounds;
         this.backgroundColour = backgroundColour;
+        this.dragAndDrop = dragAndDrop;
     }
 
     @Override
@@ -90,7 +93,7 @@ public class Application extends ApplicationAdapter implements ScoreListener {
     }
 
     private void initVC() {
-        View view = new View(game, stage, playSounds, true);
+        View view = new View(game, stage, playSounds, dragAndDrop);
         game.registerGameListener(view);
 
         if (scoreMode == Constants.MODE_STANDARD) {
