@@ -94,15 +94,15 @@ public class View implements GameListener {
         ViewConstants.WasteX1Fan = (2 + 5 * (1 + 3)) * ViewConstants.widthOneSpace;
         // fan.size=2
         ViewConstants.WasteX2Fan1 = (2 + 5 * (1 + 3)) * ViewConstants.widthOneSpace -
-                0.2f * ViewConstants.widthOneSpace;
+                0.3f * ViewConstants.widthOneSpace;
         ViewConstants.WasteX2Fan2 = (2 + 5 * (1 + 3)) * ViewConstants.widthOneSpace +
-                0.2f * ViewConstants.widthOneSpace;
+                0.3f * ViewConstants.widthOneSpace;
         // fan.size=3
         ViewConstants.WasteX3Fan1 = (2 + 5 * (1 + 3)) * ViewConstants.widthOneSpace -
-                0.4f * ViewConstants.widthOneSpace;
+                0.6f * ViewConstants.widthOneSpace;
         ViewConstants.WasteX3Fan2 = ViewConstants.WasteX1Fan;
         ViewConstants.WasteX3Fan3 = (2 + 5 * (1 + 3)) * ViewConstants.widthOneSpace +
-                0.4f * ViewConstants.widthOneSpace;
+                0.6f * ViewConstants.widthOneSpace;
 
         ViewConstants.DeckX = (2 + 6 * (1 + 3)) * ViewConstants.widthOneSpace;
         ViewConstants.TableauFoundationX = new float[7];
