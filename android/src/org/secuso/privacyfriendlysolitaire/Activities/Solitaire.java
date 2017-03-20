@@ -136,9 +136,9 @@ public class Solitaire extends AndroidApplication implements
 
 
         //Drag and Drop function for card moving
-        if(draganddrop){
+        if (draganddrop) {
             //TODO: DnD true
-        }else{
+        } else {
             //TODO: DnD false
         }
         // ShakeDetector initialization
@@ -159,8 +159,12 @@ public class Solitaire extends AndroidApplication implements
 
         //start timer for game if it is selected in setting by the player
         timerView = (TextView) findViewById(R.id.timerView);
-        if (time)
+        if (time) {
             startTimer();
+        } else {
+            // hide timer
+            timerView.setVisibility(View.INVISIBLE);
+        }
 
 
         // default modes for cardDraw and score
@@ -182,6 +186,9 @@ public class Solitaire extends AndroidApplication implements
 
         if (point_count.equals("1")) {
             scoreMode = Constants.MODE_NONE;
+            // hide points text and value
+            pointsView.setVisibility(View.INVISIBLE);
+            findViewById(R.id.point).setVisibility(View.INVISIBLE);
         } else if (point_count.equals("2")) {
             scoreMode = Constants.MODE_STANDARD;
             showPoints = true;
@@ -203,7 +210,7 @@ public class Solitaire extends AndroidApplication implements
             c = LILA_SOL;
         } else if (color.equals("5")) {
             c = WHITE_SOL;
-        } else{
+        } else {
             c = GREEN_SOL;
         }
 

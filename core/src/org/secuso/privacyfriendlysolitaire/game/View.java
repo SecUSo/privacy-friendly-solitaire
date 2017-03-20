@@ -263,8 +263,19 @@ public class View implements GameListener {
         }
 //        Gdx.app.log("---VIEW--- game after ", game.toString());
 
+        setAllFaceUpCardsToCorrectOrder(game);
+
         // TODO: delete later, only for debug reasons
         checkModelAndViewCorrect(game);
+    }
+
+    private void setAllFaceUpCardsToCorrectOrder(SolitaireGame game) {
+        for (Tableau t : game.getTableaus()) {
+            for (Card faceUpCard : t.getFaceUp()) {
+                ImageWrapper image = faceUpCards.get(loader.getCardTextureName(faceUpCard));
+                image.toFront();
+            }
+        }
     }
 
 
