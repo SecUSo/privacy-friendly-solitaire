@@ -17,6 +17,8 @@ This program is free software: you can redistribute it and/or modify
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -54,6 +56,8 @@ public class Application extends ApplicationAdapter implements ScoreListener {
 
     private Color backgroundColour;
 
+    private boolean dragAndDrop;
+
     private boolean won = false;
     private boolean practicallyWon = false;
     private boolean clickPossible = true;
@@ -61,11 +65,12 @@ public class Application extends ApplicationAdapter implements ScoreListener {
     private int intervallBetweenAutoMoves = 0;
 
     public void customConstructor(int cardDrawMode, int scoreMode, boolean playSounds,
-                                  Color backgroundColour) {
+                                  Color backgroundColour, boolean dragAndDrop) {
         this.cardDrawMode = cardDrawMode;
         this.scoreMode = scoreMode;
         this.playSounds = playSounds;
         this.backgroundColour = backgroundColour;
+        this.dragAndDrop = dragAndDrop;
     }
 
     @Override
@@ -79,11 +84,16 @@ public class Application extends ApplicationAdapter implements ScoreListener {
         game = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(cardDrawMode, scoreMode);
         initVC();
 
-        Gdx.input.setInputProcessor(new GestureDetector(controller));
+        InputProcessor inputProcessorStage = stage;
+        InputProcessor inputProcessorController = new GestureDetector(controller);
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(inputProcessorStage);
+        inputMultiplexer.addProcessor(inputProcessorController);
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     private void initVC() {
-        View view = new View(game, stage, playSounds);
+        View view = new View(game, stage, playSounds, dragAndDrop);
         game.registerGameListener(view);
 
         if (scoreMode == Constants.MODE_STANDARD) {
