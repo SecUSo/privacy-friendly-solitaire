@@ -31,7 +31,6 @@ import org.secuso.privacyfriendlysolitaire.R;
  * @author M. Saracoglu
  */
 public class SettingsActivity extends BaseActivity {
-    final Context context = this;
     static SharedPreferences mSharedPreferences;
     static SharedPreferences.Editor edit;
 

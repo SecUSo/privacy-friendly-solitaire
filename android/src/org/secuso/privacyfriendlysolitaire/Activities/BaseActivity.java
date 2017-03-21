@@ -16,7 +16,6 @@ This program is free software: you can redistribute it and/or modify
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
