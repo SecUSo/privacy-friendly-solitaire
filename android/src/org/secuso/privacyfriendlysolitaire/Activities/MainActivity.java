@@ -29,14 +29,12 @@ import org.secuso.privacyfriendlysolitaire.R;
 import org.secuso.privacyfriendlysolitaire.Utils.Config;
 
 public class MainActivity extends BaseActivity {
-    private Config config;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        config = new Config(getApplicationContext());
+        Config config = new Config(getApplicationContext());
         // the method will
         if (config.isFirstCall()) {
             WelcomeDialog welcomeDialog = new WelcomeDialog();

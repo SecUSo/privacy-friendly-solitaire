@@ -13,9 +13,6 @@ This program is free software: you can redistribute it and/or modify
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * Created by meric-doga on 27.11.16.
- */
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -30,6 +27,9 @@ import android.preference.PreferenceManager;
 
 import org.secuso.privacyfriendlysolitaire.R;
 
+/**
+ * @author M. Saracoglu
+ */
 public class SettingsActivity extends BaseActivity {
     final Context context = this;
     static SharedPreferences mSharedPreferences;

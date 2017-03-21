@@ -125,14 +125,9 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
      * @param intent
      */
     private void createBackStack(Intent intent) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            TaskStackBuilder builder = TaskStackBuilder.create(this);
-            builder.addNextIntentWithParentStack(intent);
-            builder.startActivities();
-        } else {
-            startActivity(intent);
-            finish();
-        }
+        TaskStackBuilder builder = TaskStackBuilder.create(this);
+        builder.addNextIntentWithParentStack(intent);
+        builder.startActivities();
     }
 
     //set Drawer items in xml ot the corresponding classes and activieties of the Solitaire App

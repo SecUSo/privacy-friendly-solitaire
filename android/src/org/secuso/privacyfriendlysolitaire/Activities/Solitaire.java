@@ -177,34 +177,44 @@ public class Solitaire extends AndroidApplication implements
         pointsView = (TextView) findViewById(R.id.points);
         String point_count = mSharedPreferences.getString(getString(R.string.pref_count_point), "1");
 
-        if (point_count.equals("1")) {
-            scoreMode = Constants.MODE_NONE;
-            // hide points text and value
-            pointsView.setVisibility(View.INVISIBLE);
-            findViewById(R.id.point).setVisibility(View.INVISIBLE);
-        } else if (point_count.equals("2")) {
-            scoreMode = Constants.MODE_STANDARD;
-            showPoints = true;
-        } else if (point_count.equals("3")) {
-            scoreMode = Constants.MODE_VEGAS;
-            showPoints = true;
+        switch (point_count) {
+            case "1":
+                scoreMode = Constants.MODE_NONE;
+                // hide points text and value
+                pointsView.setVisibility(View.INVISIBLE);
+                findViewById(R.id.point).setVisibility(View.INVISIBLE);
+                break;
+            case "2":
+                scoreMode = Constants.MODE_STANDARD;
+                showPoints = true;
+                break;
+            case "3":
+                scoreMode = Constants.MODE_VEGAS;
+                showPoints = true;
+                break;
         }
 
         // Set the background color of the game panel
         String color = mSharedPreferences.getString(getString(R.string.sp_key_background_color), "1");
 
-        if (color.equals("1")) {
-            c = GREEN_SOL;
-        } else if (color.equals("2")) {
-            c = BLUE_SOL;
-        } else if (color.equals("3")) {
-            c = GRAY_SOL;
-        } else if (color.equals("4")) {
-            c = LILA_SOL;
-        } else if (color.equals("5")) {
-            c = WHITE_SOL;
-        } else {
-            c = GREEN_SOL;
+        switch (color) {
+            case "1":
+                c = GREEN_SOL;
+                break;
+            case "2":
+                c = BLUE_SOL;
+                break;
+            case "3":
+                c = GRAY_SOL;
+                break;
+            case "4":
+                c = LILA_SOL;
+                break;
+            case "5":
+                c = WHITE_SOL;
+                break;
+            default:
+                c = GREEN_SOL;
         }
 
         //undo Button in game panel
@@ -390,14 +400,9 @@ public class Solitaire extends AndroidApplication implements
      * @param intent
      */
     private void createBackStack(Intent intent) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            TaskStackBuilder builder = TaskStackBuilder.create(this);
-            builder.addNextIntentWithParentStack(intent);
-            builder.startActivities();
-        } else {
-            startActivity(intent);
-            finish();
-        }
+        TaskStackBuilder builder = TaskStackBuilder.create(this);
+        builder.addNextIntentWithParentStack(intent);
+        builder.startActivities();
     }
 
     private void callDrawerItem(final int itemId) {
@@ -534,12 +539,12 @@ public class Solitaire extends AndroidApplication implements
             String pointsString = getArguments().getString("pointsString");
 
             StringBuilder sb = new StringBuilder();
-            sb.append("\n\n" + getString(R.string.alert_box_won_generic_message) + "\n\n");
+            sb.append("\n\n").append(getString(R.string.alert_box_won_generic_message)).append("\n\n");
             if (countTime) {
-                sb.append(getString(R.string.alert_box_won_time) + timeForAlert + "\n");
+                sb.append(getString(R.string.alert_box_won_time)).append(timeForAlert).append("\n");
             }
             if (showPoints) {
-                sb.append(getString(R.string.alert_box_won_points) + pointsString);
+                sb.append(getString(R.string.alert_box_won_points)).append(pointsString);
             }
 
             String message = sb.toString();

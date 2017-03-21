@@ -20,7 +20,7 @@ import android.preference.PreferenceFragment;
 import org.secuso.privacyfriendlysolitaire.R;
 
 /**
- * Created by meric-doga on 25.11.16.
+ * @author M. Saracoglu
  */
 
 //Help Activity of Solitaire App

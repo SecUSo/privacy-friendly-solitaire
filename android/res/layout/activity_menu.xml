@@ -18,69 +18,55 @@
 
         <LinearLayout
             android:id="@+id/main_content"
+            style="?android:buttonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context="org.secuso.privacyfriendlyexample.GameActivity"
-            tools:showIn="@layout/activity_menu"
             android:orientation="vertical"
             android:weightSum="10"
-            style="?android:buttonBarStyle">
-
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:layoutDirection="ltr"
-                android:layout_weight="0"/>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:context="org.secuso.privacyfriendlyexample.GameActivity"
+            tools:showIn="@layout/activity_menu">
 
             <ImageView
-                android:layout_weight="9"
                 android:layout_width="match_parent"
-                android:adjustViewBounds="true"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_icon__game_main"
-                android:layout_height="0dp" />
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:layoutDirection="ltr"
-                android:layout_weight="0">
+                android:layout_centerInParent="true"
+                android:layout_weight="9"
+                android:adjustViewBounds="true"
+                android:contentDescription="Icon Hauptmenue"
+                android:src="@drawable/ic_icon__game_main" />
 
-            </RelativeLayout>
-                <Button
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:background="@drawable/button_fullwidth"
-                    android:textSize="25sp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:text="@string/game_button_start"
-                    android:id="@+id/game_button_start"
-                    android:onClick="onClick"/>
+            <Button
+                android:id="@+id/game_button_start"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/button_fullwidth"
+                android:onClick="onClick"
+                android:text="@string/game_button_start"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
 
-                <Button
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:background="@drawable/button_disabled"
-                    android:textSize="25sp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:text="@string/game_button_continue"
-                    android:onClick="onClick"
-                    android:visibility="invisible"/>
-
-
+            <!-- invisible continue button, can be used later -->
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/button_disabled"
+                android:onClick="onClick"
+                android:text="@string/game_button_continue"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:visibility="invisible" />
 
 
         </LinearLayout>
 
-        <include layout="@layout/toolbar"/>
+        <include layout="@layout/toolbar" />
 
     </android.support.design.widget.CoordinatorLayout>
 
@@ -92,7 +78,6 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer" />
-
 
 
 </android.support.v4.widget.DrawerLayout>
