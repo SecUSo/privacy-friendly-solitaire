@@ -132,7 +132,7 @@ public class View implements GameListener {
         paintInitialFoundations(game.getFoundations());
         paintInitialTableaus(game.getTableaus());
         paintInitialDeckWaste(game.getDeckWaste());
-        if(useDragAndDrop) {
+        if (useDragAndDrop) {
             addCurrentFaceUpCardsToDragAndDrop();
         }
     }
@@ -1349,7 +1349,18 @@ public class View implements GameListener {
         int stackIndex = getStackIndexForX(x);      // caution can be -1
         int cardIndex = -1;
 
-        if (stackIndex != -1) {
+        if (stackIndex == -1) {
+            if (y >= 16 * ViewConstants.heightOneSpace &&
+                    y <= 16 * ViewConstants.heightOneSpace + ViewConstants.heightCard) {
+                if (x >= 22 * ViewConstants.widthOneSpace
+                        && x <= ViewConstants.WasteX3Fan3 + ViewConstants.widthCard) {
+                    Gdx.app.log("3-Fan Waste", "");
+                    // case when fan with size 3 is open
+                    stackIndex = 5;
+                    gameObject = GameObject.WASTE;
+                }
+            }
+        } else {
             // ------------ FOUNDATION, WASTE, DECK ------------
             if (y >= 16 * ViewConstants.heightOneSpace &&
                     y <= 16 * ViewConstants.heightOneSpace + ViewConstants.heightCard) {
@@ -1666,12 +1677,11 @@ public class View implements GameListener {
     }
 
     /**
-     * @param draggingCard the card that is being dragged
      * @param x card's value on the x-axis
      * @param y card's value on the y-axis
      * @return true if the action was valid and the model returned true in response to sent action
      */
-    private boolean createActionAndSendToModel(ImageWrapper draggingCard, float x, float y) {
+    private boolean createActionAndSendToModel(float x, float y) {
         Action action = getActionForTap(x, y);
         if (action != null) {
             Gdx.app.log("actionForTap", action.toString());
@@ -1699,13 +1709,13 @@ public class View implements GameListener {
         float x = draggingCard.getX() + ViewConstants.offsetHeightBetweenCards / 2;
         float y = draggingCard.getY() - ViewConstants.offsetHeightBetweenCards / 2 +
                 ViewConstants.heightCard;
-        return createActionAndSendToModel(draggingCard, x, y);
+        return createActionAndSendToModel(x, y);
     }
 
     private boolean createActionAndSendToModelForStop(ImageWrapper draggingCard) {
         float x = draggingCard.getX() + ViewConstants.widthCard / 2;
         float y = draggingCard.getY() + ViewConstants.heightCard / 2;
-        return createActionAndSendToModel(draggingCard, x, y);
+        return createActionAndSendToModel(x, y);
     }
 
     /**
@@ -1764,12 +1774,12 @@ public class View implements GameListener {
                 float originalX = originalActor.getX();
                 float originalY = originalActor.getY();
                 originalActor.setPosition(dragActor.getX(), dragActor.getY());
-                for(int i = 0 ; i < originalActors.size(); i++) {
-                    originalActors.get(i).setPosition(dragActor.getX(), dragActor.getY() - (i* ViewConstants.offsetHeightBetweenCards));
+                for (int i = 0; i < originalActors.size(); i++) {
+                    originalActors.get(i).setPosition(dragActor.getX(), dragActor.getY() - (i * ViewConstants.offsetHeightBetweenCards));
                 }
                 boolean dragStopResult = createActionAndSendToModelForStop((ImageWrapper) originalActor);
                 if (!dragStartResult || !dragStopResult) {
-                    for(int i = 0; i < originalActors.size(); i++) {
+                    for (int i = 0; i < originalActors.size(); i++) {
                         moveCard(originalX, originalY - (i * ViewConstants.offsetHeightBetweenCards), (ImageWrapper) originalActors.get(i), ((ImageWrapper) originalActors.get(i)).getWrapperStackIndex(), true);
                     }
                 }
@@ -1789,13 +1799,13 @@ public class View implements GameListener {
         dragAndDrop.clear();
         //add all face up cards except the waste
         for (String s : faceUpCards.keySet()) {
-            if(faceUpCards.get(s).getGameObject() == GameObject.WASTE) {
+            if (faceUpCards.get(s).getGameObject() == GameObject.WASTE) {
                 continue;
             }
             addTextureNameToDragAndDrop(s);
         }
         //add the top of the waste
-        if(!game.getDeckWaste().isWasteEmpty()) {
+        if (!game.getDeckWaste().isWasteEmpty()) {
             Card wasteTop = game.getDeckWaste().getWasteTop();
             String wasteTopString = loader.getCardTextureName(wasteTop);
             addTextureNameToDragAndDrop(wasteTopString);

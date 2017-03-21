@@ -162,7 +162,7 @@ public class SolitaireGame {
      * @return true if the action was valid and succesfully handled
      */
     boolean handleAction(Action action, boolean redoMove) {
-        if(action != null) {
+        if (action != null) {
             switch (action.getGameObject()) {
                 case DECK:
                     return handleDeck(action, redoMove);
@@ -253,9 +253,12 @@ public class SolitaireGame {
      */
     private boolean handleFoundation(Action action, boolean redoMove) {
         if (this.prevAction == null) {
-            saveAction(action);
-            notifyListeners();
-            return true;
+            if (!foundations.get(action.getStackIndex()).isEmpty()) {
+                saveAction(action);
+                notifyListeners();
+                return true;
+            }
+            return false;
         } else if (this.prevAction.getGameObject() == GameObject.TABLEAU) {
             if (handleTableauToFoundation(action)) {
                 makeMove(action, redoMove);

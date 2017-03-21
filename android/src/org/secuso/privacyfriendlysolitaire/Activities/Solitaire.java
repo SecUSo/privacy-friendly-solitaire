@@ -134,13 +134,6 @@ public class Solitaire extends AndroidApplication implements
         final boolean draganddrop = mSharedPreferences.getBoolean(getString(R.string.pref_dnd_switch), false);
         countTime = time;
 
-
-        //Drag and Drop function for card moving
-        if (draganddrop) {
-            //TODO: DnD true
-        } else {
-            //TODO: DnD false
-        }
         // ShakeDetector initialization
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager
