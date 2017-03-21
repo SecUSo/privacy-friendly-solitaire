@@ -23,7 +23,7 @@ import org.secuso.privacyfriendlysolitaire.model.GameObject;
 import org.secuso.privacyfriendlysolitaire.model.Tableau;
 
 /**
- * @author: I. Dix
+ * @author I. Dix
  * <p>
  * the controller manages the game, it
  * <ul>

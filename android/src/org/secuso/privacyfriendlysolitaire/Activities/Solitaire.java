@@ -510,7 +510,7 @@ public class Solitaire extends AndroidApplication implements
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //TODO change undo-button and redo-button images here so that user knows if action is possible
+                //change undo-button and redo-button images here so that user knows if action is possible
             }
         });
     }

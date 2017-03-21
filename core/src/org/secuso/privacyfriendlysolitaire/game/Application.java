@@ -80,7 +80,6 @@ public class Application extends ApplicationAdapter implements ScoreListener {
     }
 
     private void initMVC() {
-//        game = GeneratorSolitaireInstance.buildAlmostWonSolitaireInstance();
         game = GeneratorSolitaireInstance.buildPlayableSolitaireInstance(cardDrawMode, scoreMode);
         initVC();
 
@@ -253,7 +252,6 @@ public class Application extends ApplicationAdapter implements ScoreListener {
 
                         }
                     } catch (Exception e) {
-                        Gdx.app.log("----FEHLER----, gesamter Move war ", move.toString());
                         e.printStackTrace();
                     }
                 }

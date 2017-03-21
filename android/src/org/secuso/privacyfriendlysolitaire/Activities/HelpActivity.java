@@ -33,7 +33,7 @@ public class HelpActivity extends BaseActivity {
         overridePendingTransition(0, 0);
     }
 
-    //set Help Activity functionality on navigation drwer of the App
+    //set Help Activity functionality on navigation drawer of the App
     @Override
     protected int getNavigationDrawerID() {
         return R.id.nav_help;
@@ -44,7 +44,6 @@ public class HelpActivity extends BaseActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-
             addPreferencesFromResource(R.xml.help);
         }
     }
