@@ -36,7 +36,7 @@ import static org.junit.Assert.assertTrue;
 import static org.secuso.privacyfriendlysolitaire.game.Constants.*;
 
 /**
- * @author: I. Dix
+ * @author I. Dix
  */
 
 public class GeneratorTest {

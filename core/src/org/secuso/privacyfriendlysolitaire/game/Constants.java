@@ -15,7 +15,7 @@ This program is free software: you can redistribute it and/or modify
  */
 
 /**
- * @author: I. Dix
+ * @author I. Dix
  * represents a class to store and retrieve constants
  */
 

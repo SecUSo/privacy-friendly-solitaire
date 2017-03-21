@@ -15,7 +15,7 @@ This program is free software: you can redistribute it and/or modify
  */
 
 /**
- * @author: M. Fischer
+ * @author M. Fischer
  * <p>
  * Listener for the Scorer class
  */

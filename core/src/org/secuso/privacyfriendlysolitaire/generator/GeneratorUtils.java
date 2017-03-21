@@ -13,8 +13,6 @@ This program is free software: you can redistribute it and/or modify
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import com.badlogic.gdx.Gdx;
-
 import org.secuso.privacyfriendlysolitaire.game.SolitaireGame;
 import org.secuso.privacyfriendlysolitaire.model.Card;
 import org.secuso.privacyfriendlysolitaire.model.DeckWaste;
@@ -29,12 +27,11 @@ import static org.secuso.privacyfriendlysolitaire.game.Constants.NR_OF_FOUNDATIO
 import static org.secuso.privacyfriendlysolitaire.game.Constants.NR_OF_TABLEAUS;
 
 /**
- * @author: I. Dix
+ * @author I. Dix
  * <p>
  * holds the methods that are helpful for both generator and generator-test, but not
  * exactly part of the generation
  */
-
 public class GeneratorUtils {
 
     /**
@@ -89,7 +86,7 @@ public class GeneratorUtils {
      * @param foundations  a hashmap of int->Vector<Card> containing the foundations
      * @return an instance generated from the given lists
      */
-    public static SolitaireGame constructInstanceFromCardLists(int cardDrawMode, boolean scoreIsVegas,
+    static SolitaireGame constructInstanceFromCardLists(int cardDrawMode, boolean scoreIsVegas,
                                                                Vector<Card> deck,
                                                                HashMap<Integer, Vector<Card>> tableaus,
                                                                HashMap<Integer, Vector<Card>> foundations) {
@@ -111,6 +108,7 @@ public class GeneratorUtils {
                     tableau.setFaceDown(t);
                 }
             } catch (Exception e){
+                e.printStackTrace();
             }
 
             // add to list

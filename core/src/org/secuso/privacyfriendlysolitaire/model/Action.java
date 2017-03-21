@@ -15,7 +15,7 @@ This program is free software: you can redistribute it and/or modify
  */
 
 /**
- * @author: M. Fischer
+ * @author M. Fischer
  * <p>
  * represents an interaction of the user with the game
  */
@@ -36,16 +36,8 @@ public class Action {
         return stackIndex;
     }
 
-    public void setStackIndex(int stackIndex) {
-        this.stackIndex = stackIndex;
-    }
-
     public GameObject getGameObject() {
         return gameObject;
-    }
-
-    public void setGameObject(GameObject gameObject) {
-        this.gameObject = gameObject;
     }
 
     public int getCardIndex() {

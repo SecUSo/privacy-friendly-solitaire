@@ -32,12 +32,12 @@ import org.secuso.privacyfriendlysolitaire.model.Tableau;
  * </ul>
  */
 
-public class Controller implements GestureDetector.GestureListener {
+class Controller implements GestureDetector.GestureListener {
 
     private final SolitaireGame game;
     private final View view;
 
-    public Controller(SolitaireGame initialGame, View initialView) {
+    Controller(SolitaireGame initialGame, View initialView) {
         game = initialGame;
         view = initialView;
     }
@@ -51,10 +51,9 @@ public class Controller implements GestureDetector.GestureListener {
     /**
      * use this when user taps on the screen (thereby creating an action)
      *
-     * @param x
-     * @param y
+     * @param x the value of the x-coordinate
+     * @param y the value of the y-coordinate
      * @param count  how many consecutive taps (taps within a specified time interval)
-     * @param button
      * @return true if a valid action was done, false else (e.g. because the user did not tap a sensible location)
      */
     @Override
@@ -141,7 +140,7 @@ public class Controller implements GestureDetector.GestureListener {
     /**
      * the positions for y are inverted for positioning and input checking, so we invert it here!
      *
-     * @param y
+     * @param y the value on the y-axis
      * @return heightScreen-y resulting in just the opposite y
      */
     private float invertHeight(float y) {

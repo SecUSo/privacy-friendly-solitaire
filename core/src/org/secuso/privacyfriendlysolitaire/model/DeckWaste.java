@@ -36,10 +36,6 @@ public class DeckWaste {
      */
     private int numTurnOver;
 
-    public boolean isVegas() {
-        return vegas;
-    }
-
     /**
      * true if vegas variant is played
      */
@@ -104,10 +100,6 @@ public class DeckWaste {
 
     public int getNumTurnOver() {
         return numTurnOver;
-    }
-
-    public void setNumTurnOver(int numTurnOver) {
-        this.numTurnOver = numTurnOver;
     }
 
     public int getFanSize() {

@@ -510,7 +510,7 @@ public class SolitaireGame {
 
         for (Tableau tab : tableaus) {
             if (practicallyWon) {
-                practicallyWon = practicallyWon && (tab.getFaceDown().isEmpty());
+                practicallyWon = tab.getFaceDown().isEmpty();
             } else {
                 break;
             }

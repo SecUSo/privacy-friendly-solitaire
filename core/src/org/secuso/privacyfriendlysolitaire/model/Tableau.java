@@ -17,7 +17,7 @@ This program is free software: you can redistribute it and/or modify
 import java.util.Vector;
 
 /**
- * @author: M. Fischer
+ * @author M. Fischer
  */
 
 public class Tableau {
@@ -92,14 +92,6 @@ public class Tableau {
         }
     }
 
-
-    /**
-     * @param card the card to be added on top of the face down cards
-     */
-    public void addFaceDown(Card card) {
-        this.faceDown.add(card);
-    }
-
     /**
      * @param card the card to be added on top of the face up cards
      */
@@ -165,15 +157,6 @@ public class Tableau {
             return result;
         }
     }
-
-    /**
-     * @param vecCards the vector of cards that shall be removed from the tableau
-     * @return true if the tableau changed as a result of the call
-     */
-    public boolean removeAllFaceUpVector(Vector<Card> vecCards) {
-        return this.faceUp.removeAll(vecCards);
-    }
-
 
     public String toString() {
         return "Face-Down: " + faceDown.toString() + "; Face-Up: " + faceUp.toString();

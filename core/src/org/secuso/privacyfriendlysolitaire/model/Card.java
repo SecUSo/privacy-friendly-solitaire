@@ -60,13 +60,6 @@ public class Card {
     }
 
     /**
-     * @param s the Suit to be set for this Card
-     */
-    public void setSuit(Suit s) {
-        this.suit = s;
-    }
-
-    /**
      * @return the color of the card according to its suit
      */
     public Color getColor() {

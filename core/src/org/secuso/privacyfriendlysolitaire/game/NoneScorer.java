@@ -19,7 +19,7 @@ This program is free software: you can redistribute it and/or modify
  *         Empty scorer, if the user does not want to count his points
  */
 
-public class NoneScorer extends Scorer {
+class NoneScorer extends Scorer {
 
     NoneScorer() {
         setScore(0);

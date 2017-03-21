@@ -38,7 +38,7 @@ class MoveFinder {
      * @param game the SolitaireGame in which a Move shall be found
      * @return a possible Move to progress the Game or null if none could be found
      */
-    public static Move findMove(SolitaireGame game, CallBackListener listener) {
+    static Move findMove(SolitaireGame game, CallBackListener listener) {
         nrCardsInDeck = game.getDeckWaste().getSizeOfDeckAndWaste();
         checkWhetherNoMoves(listener);
 
@@ -74,7 +74,7 @@ class MoveFinder {
     /**
      * resets the nrOfConsecutiveMovesThroughDeck to 0, if another moves was made
      */
-    protected static void resetNrOfMovesThroughDeck() {
+    static void resetNrOfMovesThroughDeck() {
         nrOfConsecutiveMovesThroughDeck = 0;
     }
 
@@ -211,35 +211,35 @@ class MoveFinder {
         return null;
     }
 
-    /**
-     * @param game the SolitaireGame in which a Move from Foundation to Tableau shall be found
-     * @return a possible Move from Foundation to Tableau or null if none could be found
-     */
-    private static Move findMoveFoundationToTableau(SolitaireGame game) {
-        for (int f = 0; f < game.getFoundations().size(); f++) {
-            if (game.getFoundationAtPos(f).isEmpty()) {
-                continue;
-            }
-            Vector<Card> toBeMoved = new Vector<Card>();
-            toBeMoved.add(game.getFoundationAtPos(f).getCards().lastElement());
-            for (int t = 0; t < game.getTableaus().size(); t++) {
-                if (game.getTableauAtPos(t).isAddingFaceUpVectorPossible(toBeMoved)) {
-                    //check if reversal of previous move
-                    Move prevMove = game.getMoves().get(game.getMovePointer());
-                    if (prevMove.getAction1().getGameObject() == GameObject.TABLEAU &&
-                            prevMove.getAction2().getGameObject() == GameObject.FOUNDATION &&
-                            prevMove.getAction1().getStackIndex() == t &&
-                            prevMove.getAction2().getStackIndex() == f) {
-                        continue;
-                    }
-                    Action sourceAction = new Action(GameObject.FOUNDATION, f, 0);
-                    Action targetAction = new Action(GameObject.TABLEAU, t, 0);
-                    return new Move(sourceAction, targetAction);
-                }
-            }
-        }
-        return null;
-    }
+//    /**
+//     * @param game the SolitaireGame in which a Move from Foundation to Tableau shall be found
+//     * @return a possible Move from Foundation to Tableau or null if none could be found
+//     */
+//    private static Move findMoveFoundationToTableau(SolitaireGame game) {
+//        for (int f = 0; f < game.getFoundations().size(); f++) {
+//            if (game.getFoundationAtPos(f).isEmpty()) {
+//                continue;
+//            }
+//            Vector<Card> toBeMoved = new Vector<Card>();
+//            toBeMoved.add(game.getFoundationAtPos(f).getCards().lastElement());
+//            for (int t = 0; t < game.getTableaus().size(); t++) {
+//                if (game.getTableauAtPos(t).isAddingFaceUpVectorPossible(toBeMoved)) {
+//                    //check if reversal of previous move
+//                    Move prevMove = game.getMoves().get(game.getMovePointer());
+//                    if (prevMove.getAction1().getGameObject() == GameObject.TABLEAU &&
+//                            prevMove.getAction2().getGameObject() == GameObject.FOUNDATION &&
+//                            prevMove.getAction1().getStackIndex() == t &&
+//                            prevMove.getAction2().getStackIndex() == f) {
+//                        continue;
+//                    }
+//                    Action sourceAction = new Action(GameObject.FOUNDATION, f, 0);
+//                    Action targetAction = new Action(GameObject.TABLEAU, t, 0);
+//                    return new Move(sourceAction, targetAction);
+//                }
+//            }
+//        }
+//        return null;
+//    }
 
     /**
      * @param game the SolitaireGame in which a Move involving the Deck shall be found
