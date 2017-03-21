@@ -111,7 +111,6 @@ public class GeneratorUtils {
                     tableau.setFaceDown(t);
                 }
             } catch (Exception e){
-                Gdx.app.log("exception", "exception unwichtig");
             }
 
             // add to list

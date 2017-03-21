@@ -157,8 +157,6 @@ public class View implements GameListener {
     }
 
     private void paintInitialTableaus(ArrayList<Tableau> tableaus) {
-//        Gdx.app.log("TableauBaseY ", String.valueOf(ViewConstants.TableauBaseY));
-//        Gdx.app.log("biggestY ", String.valueOf(ViewConstants.TableauBaseY + ViewConstants.heightCard - 1));
         for (int i = 0; i < Constants.NR_OF_TABLEAUS; i++) {
             Tableau t = tableaus.get(i);
 
@@ -274,9 +272,7 @@ public class View implements GameListener {
                         }
                     }
                 } catch (Exception e) {
-                    Gdx.app.log("Error", e.getClass().toString() + ": " + e.getMessage() + ", probably an invalid move");
                     e.printStackTrace();
-
                 }
             }
             //drag and drop is used
@@ -295,19 +291,12 @@ public class View implements GameListener {
                         }
                     }
                 } catch (Exception e) {
-                    Gdx.app.log("Error", e.getClass().toString() + ": " + e.getMessage() + ", probably an invalid move");
                     e.printStackTrace();
-
                 }
                 addCurrentFaceUpCardsToDragAndDrop();
             }
         }
-//        Gdx.app.log("---VIEW--- game after ", game.toString());
-
         setAllFaceUpCardsToCorrectOrder(game);
-
-        // TODO: delete later, only for debug reasons
-        checkModelAndViewCorrect(game);
     }
 
     private void setAllFaceUpCardsToCorrectOrder(SolitaireGame game) {
@@ -319,99 +308,84 @@ public class View implements GameListener {
         }
     }
 
-
-    private void checkModelAndViewCorrect(SolitaireGame game) {
-        Vector<Card> waste = game.getDeckWaste().getWaste();
-        Vector<Card> deck = game.getDeckWaste().getDeck();
-
-        // check deck
-        for (Card deckC : deck) {
-            String texString = loader.getCardTextureName(deckC);
-            ImageWrapper card = faceUpCards.get(texString);
-
-//            if (card != null && card.isVisible()) {
-//                throw new RuntimeException("Karte " + texString + " ist sichtbar, " +
-//                        "aber sollte unsichtbar sein");
+//use for debugging. compares if model and view are consistent
+//    private void checkModelAndViewCorrect(SolitaireGame game) {
+//        Vector<Card> waste = game.getDeckWaste().getWaste();
+//        Vector<Card> deck = game.getDeckWaste().getDeck();
+//
+//        // check deck
+//        for (Card deckC : deck) {
+//            String texString = loader.getCardTextureName(deckC);
+//            ImageWrapper card = faceUpCards.get(texString);
+//        }
+//
+//        // check waste
+//        for (Card wasteC : waste) {
+//            String texString = loader.getCardTextureName(wasteC);
+//            ImageWrapper card = faceUpCards.get(texString);
+//        }
+//
+//        // check foundations
+//        for (int stack = 0; stack < NR_OF_FOUNDATIONS; stack++) {
+//            Foundation found = game.getFoundationAtPos(stack);
+//
+//            for (Card foundC : found.getCards()) {
+//                String texString = loader.getCardTextureName(foundC);
+//                ImageWrapper card = faceUpCards.get(texString);
+//
+//                if (card == null) {
+//                    throw new RuntimeException("Karte " + texString + " war null");
+//                } else {
+//                    assert (card.getWrapperStackIndex() == stack);
+//                    assert (card.getGameObject().equals(GameObject.FOUNDATION));
+//                    assert (Math.abs(card.getX() - ViewConstants.TableauFoundationX[stack]) <= 1);
+//                    assert (Math.abs(card.getY() - ViewConstants.WasteDeckFoundationY) <= 1);
+//                }
 //            }
-        }
-
-        // check waste
-        for (Card wasteC : waste) {
-            String texString = loader.getCardTextureName(wasteC);
-            ImageWrapper card = faceUpCards.get(texString);
-
-//            if (card == null) {
-//                throw new RuntimeException("Karte " + texString + " war null");
-//            } else if (!card.isVisible()) {
-//                throw new RuntimeException("Karte " + texString + " ist unsichtbar, " +
-//                        "aber sollte sichtbar sein");
+//        }
+//
+//        // check tableaus
+//        for (int stack = 0; stack < NR_OF_TABLEAUS; stack++) {
+//            Tableau tab = game.getTableauAtPos(stack);
+//            Vector<Card> faceDowns = tab.getFaceDown();
+//            Vector<Card> faceUps = tab.getFaceUp();
+//
+//            for (int cardIndex = 0; cardIndex < faceDowns.size(); cardIndex++) {
+//                ImageWrapper backside = getBackSideCardForStackAndCardIndex(stack, cardIndex);
+//                if (backside == null) {
+//                    throw new RuntimeException("Backside an stack=" + stack + " und card=" +
+//                            cardIndex + " war null");
+//                } else {
+//                    assert (backside.getGameObject().equals(GameObject.TABLEAU));
+//                    assert (Math.abs(backside.getX() - ViewConstants.TableauFoundationX[stack]) <= 1);
+//                    float shouldBeY = ViewConstants.TableauBaseY -
+//                            (cardIndex * ViewConstants.offsetHeightBetweenCards);
+//                    assert (Math.abs(backside.getY() - shouldBeY) <= 1);
+//                }
 //            }
-        }
-
-        // check foundations
-        for (int stack = 0; stack < NR_OF_FOUNDATIONS; stack++) {
-            Foundation found = game.getFoundationAtPos(stack);
-
-            for (Card foundC : found.getCards()) {
-                String texString = loader.getCardTextureName(foundC);
-                ImageWrapper card = faceUpCards.get(texString);
-
-                if (card == null) {
-                    throw new RuntimeException("Karte " + texString + " war null");
-                } else {
-                    // assert (card.isVisible());
-                    assert (card.getWrapperStackIndex() == stack);
-                    assert (card.getGameObject().equals(GameObject.FOUNDATION));
-                    assert (Math.abs(card.getX() - ViewConstants.TableauFoundationX[stack]) <= 1);
-                    assert (Math.abs(card.getY() - ViewConstants.WasteDeckFoundationY) <= 1);
-                }
-            }
-        }
-
-        // check tableaus
-        for (int stack = 0; stack < NR_OF_TABLEAUS; stack++) {
-            Tableau tab = game.getTableauAtPos(stack);
-            Vector<Card> faceDowns = tab.getFaceDown();
-            Vector<Card> faceUps = tab.getFaceUp();
-
-            for (int cardIndex = 0; cardIndex < faceDowns.size(); cardIndex++) {
-                ImageWrapper backside = getBackSideCardForStackAndCardIndex(stack, cardIndex);
-                if (backside == null) {
-                    throw new RuntimeException("Backside an stack=" + stack + " und card=" +
-                            cardIndex + " war null");
-                } else {
-                    // assert (backside.isVisible());
-                    assert (backside.getGameObject().equals(GameObject.TABLEAU));
-                    assert (Math.abs(backside.getX() - ViewConstants.TableauFoundationX[stack]) <= 1);
-                    float shouldBeY = ViewConstants.TableauBaseY -
-                            (cardIndex * ViewConstants.offsetHeightBetweenCards);
-                    assert (Math.abs(backside.getY() - shouldBeY) <= 1);
-                }
-            }
-
-
-            for (int cardIndex = 0; cardIndex < faceUps.size(); cardIndex++) {
-                Card faceU = faceUps.get(cardIndex);
-                String texString = loader.getCardTextureName(faceU);
-                ImageWrapper card = faceUpCards.get(texString);
-
-                if (card == null) {
-                    throw new RuntimeException("Karte " + texString + " war null");
-                } else {
-                    //assert (card.isVisible());
-                    assert (card.getWrapperStackIndex() == stack);
-                    assert (card.getWrapperCardIndex() == cardIndex);
-                    assert (card.getGameObject().equals(GameObject.TABLEAU));
-                    assert (Math.abs(card.getX() - ViewConstants.TableauFoundationX[stack]) <= 1);
-                    float shouldBeY = ViewConstants.TableauBaseY -
-                            ((cardIndex + faceDowns.size()) * ViewConstants.offsetHeightBetweenCards);
-                    assert (Math.abs(card.getY() - shouldBeY) <= 1);
-                }
-            }
-        }
-
-
-    }
+//
+//
+//            for (int cardIndex = 0; cardIndex < faceUps.size(); cardIndex++) {
+//                Card faceU = faceUps.get(cardIndex);
+//                String texString = loader.getCardTextureName(faceU);
+//                ImageWrapper card = faceUpCards.get(texString);
+//
+//                if (card == null) {
+//                    throw new RuntimeException("Karte " + texString + " war null");
+//                } else {
+//                    assert (card.getWrapperStackIndex() == stack);
+//                    assert (card.getWrapperCardIndex() == cardIndex);
+//                    assert (card.getGameObject().equals(GameObject.TABLEAU));
+//                    assert (Math.abs(card.getX() - ViewConstants.TableauFoundationX[stack]) <= 1);
+//                    float shouldBeY = ViewConstants.TableauBaseY -
+//                            ((cardIndex + faceDowns.size()) * ViewConstants.offsetHeightBetweenCards);
+//                    assert (Math.abs(card.getY() - shouldBeY) <= 1);
+//                }
+//            }
+//        }
+//
+//
+//    }
 
 
     // ---------------------------- ACTIONS ----------------------------
@@ -1489,7 +1463,6 @@ public class View implements GameListener {
         stage.addActor(cardImage);
 
         if (!widthHeightOfCardSet) {
-            // for some reason only this works
             ViewConstants.widthCard = ViewConstants.scalingWidthCard * ViewConstants.widthOneSpace;
             ViewConstants.heightCard = ViewConstants.scalingHeightCard * ViewConstants.heightOneSpace;
             widthHeightOfCardSet = true;
@@ -1684,7 +1657,7 @@ public class View implements GameListener {
     private boolean createActionAndSendToModel(float x, float y) {
         Action action = getActionForTap(x, y);
         if (action != null) {
-            Gdx.app.log("actionForTap", action.toString());
+
             if (action.getGameObject() == GameObject.TABLEAU) {
                 int index = action.getStackIndex();
                 Tableau tableau = game.getTableauAtPos(index);
@@ -1731,16 +1704,12 @@ public class View implements GameListener {
                 payloadCard.setWidth(ViewConstants.scalingWidthCard * ViewConstants.widthOneSpace);
                 payloadCard.setHeight(ViewConstants.scalingHeightCard * ViewConstants.heightOneSpace);
                 if (imageWrapper.getGameObject() == GameObject.TABLEAU) {
-                    Gdx.app.log("dragstart", "on tableau");
                     Group payloadGroup = new Group();
                     payloadGroup.addActor(payloadCard);
                     originalActors.add(imageWrapper);
                     //add cards on top of tableau card, too
                     int stackIndex = imageWrapper.getWrapperStackIndex();
-                    Gdx.app.log("wrapperCardIndex", String.valueOf(imageWrapper.getWrapperCardIndex()));
-                    Gdx.app.log("tableauFaceDownSize", String.valueOf(game.getTableauAtPos(stackIndex).getFaceDown().size()));
                     int faceUpIndex = imageWrapper.getWrapperCardIndex() - game.getTableauAtPos(stackIndex).getFaceDown().size();
-                    Gdx.app.log("computed faceUpIndex", String.valueOf(faceUpIndex));
                     for (int additionalCard = 1; faceUpIndex < game.getTableauAtPos(stackIndex).getFaceUp().size() - 1; additionalCard++) {
                         faceUpIndex++;
                         Card nextCard = game.getTableauAtPos(stackIndex).getFaceUp().get(faceUpIndex);
