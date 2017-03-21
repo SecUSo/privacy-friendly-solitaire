@@ -1667,6 +1667,7 @@ public class View implements GameListener {
         dragAndDrop.addSource(new DragAndDrop.Source(imageWrapper) {
             @Override
             public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
+                originalActors.clear();
                 DragAndDrop.Payload payload = new DragAndDrop.Payload();
                 ImageWrapper payloadCard = loader.getImageForPath("cards/" + textureName + ".png");
                 if(payloadCard != null) {
@@ -1674,20 +1675,21 @@ public class View implements GameListener {
                     payloadCard.setHeight(ViewConstants.scalingHeightCard * ViewConstants.heightOneSpace);
                     if (imageWrapper.getGameObject() == GameObject.TABLEAU) {
                         Group payloadGroup = new Group();
-                        payloadGroup.addActor(payloadCard);
-                        originalActors.add(imageWrapper);
-                        //add cards on top of tableau card, too
                         int stackIndex = imageWrapper.getWrapperStackIndex();
                         int faceUpIndex = imageWrapper.getWrapperCardIndex() - game.getTableauAtPos(stackIndex).getFaceDown().size();
-                        for (int additionalCard = 1; faceUpIndex < game.getTableauAtPos(stackIndex).getFaceUp().size() - 1; additionalCard++) {
-                            faceUpIndex++;
-                            Card nextCard = game.getTableauAtPos(stackIndex).getFaceUp().get(faceUpIndex);
-                            ImageWrapper nextImageWrapper = loadActorForCardWithoutSavingInMap(nextCard);
-                            nextImageWrapper.setWidth(ViewConstants.scalingWidthCard * ViewConstants.widthOneSpace);
-                            nextImageWrapper.setHeight(ViewConstants.scalingHeightCard * ViewConstants.heightOneSpace);
-                            nextImageWrapper.moveBy(0, -ViewConstants.offsetHeightBetweenCards * additionalCard);
-                            payloadGroup.addActor(nextImageWrapper);
-                            originalActors.add(faceUpCards.get(loader.getCardTextureName(nextCard)));
+                        for (int i = faceUpIndex; i < game.getTableauAtPos(stackIndex).getFaceUp().size(); i++) {
+                            if(i == faceUpIndex) {
+                                payloadGroup.addActor(payloadCard);
+                                originalActors.add(imageWrapper);
+                            } else {
+                                Card additionalCard = game.getTableauAtPos(stackIndex).getFaceUp().get(i);
+                                ImageWrapper additionalImageWrapper = loadActorForCardWithoutSavingInMap(additionalCard);
+                                additionalImageWrapper.setWidth(ViewConstants.scalingWidthCard * ViewConstants.widthOneSpace);
+                                additionalImageWrapper.setHeight(ViewConstants.scalingHeightCard * ViewConstants.heightOneSpace);
+                                additionalImageWrapper.moveBy(0, -ViewConstants.offsetHeightBetweenCards * (i - faceUpIndex));
+                                payloadGroup.addActor(additionalImageWrapper);
+                                originalActors.add(faceUpCards.get(loader.getCardTextureName(additionalCard)));
+                            }
                         }
                         payload.setDragActor(payloadGroup);
                     } else {
