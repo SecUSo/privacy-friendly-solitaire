@@ -33,7 +33,7 @@
                 android:layout_centerInParent="true"
                 android:layout_weight="9"
                 android:adjustViewBounds="true"
-                android:contentDescription="Icon Hauptmenue"
+                android:contentDescription="@string/string_descr_icon_main_menu"
                 android:src="@drawable/ic_icon__game_main" />
 
             <Button

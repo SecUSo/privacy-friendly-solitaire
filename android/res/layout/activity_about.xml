@@ -27,7 +27,7 @@
             android:layout_weight="0.36">
 
             <ImageView
-                android:contentDescription="PFA Logo"
+                android:contentDescription="@string/string_descr_pfa_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
@@ -88,7 +88,7 @@
             android:textStyle="bold" />
 
         <ImageView
-            android:contentDescription="Secuso Logo Blau"
+            android:contentDescription="@string/string_descr_secuso_blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"

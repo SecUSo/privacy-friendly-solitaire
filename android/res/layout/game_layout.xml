@@ -42,7 +42,7 @@
 
 
                     <ImageButton
-                        android:contentDescription="Undo Button Asset"
+                        android:contentDescription="@string/string_descr_undo_button"
                         android:id="@+id/undo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/point"
                             android:layout_centerHorizontal="true"
-                            android:text=" 0 " />
+                            android:text="@string/hardcoded_points" />
 
                         <TextView
                             android:id="@+id/timerView"
@@ -76,7 +76,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0.73"
                             android:layout_marginStart="80px"
-                            android:text="00:00"
+                            android:text="@string/hardcoded_time"
                             android:layout_toEndOf="@id/point"/>
 
 
@@ -88,7 +88,7 @@
                         android:layout_weight="6">
 
                     <ImageButton
-                        android:contentDescription="Hint Button Asset"
+                        android:contentDescription="@string/string_descr_hint_button"
                         android:id="@+id/hint"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
 
 
                     <ImageButton
-                        android:contentDescription="Redo Button Asset"
+                        android:contentDescription="@string/string_descr_redo_button"
                         android:id="@+id/redo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

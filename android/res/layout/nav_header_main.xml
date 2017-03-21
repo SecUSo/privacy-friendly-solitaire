@@ -17,7 +17,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:contentDescription="Drawer PFA Logo"
+            android:contentDescription="@string/string_descr_drawer_pfa_logo"
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
