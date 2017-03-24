@@ -540,10 +540,10 @@ public class Solitaire extends AndroidApplication implements
             StringBuilder sb = new StringBuilder();
             sb.append("\n\n").append(getString(R.string.alert_box_won_generic_message)).append("\n\n");
             if (countTime) {
-                sb.append(getString(R.string.alert_box_won_time)).append(timeForAlert).append("\n");
+                sb.append(getString(R.string.alert_box_won_time)).append(" ").append(timeForAlert).append("\n");
             }
             if (showPoints) {
-                sb.append(getString(R.string.alert_box_won_points)).append(pointsString);
+                sb.append(getString(R.string.alert_box_won_points)).append(" ").append(pointsString);
             }
 
             String message = sb.toString();
