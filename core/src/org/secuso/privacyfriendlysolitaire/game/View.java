@@ -1336,7 +1336,6 @@ public class View implements GameListener {
                     y <= 16 * ViewConstants.heightOneSpace + ViewConstants.heightCard) {
                 if (x >= 22 * ViewConstants.widthOneSpace
                         && x <= ViewConstants.WasteX3Fan3 + ViewConstants.widthCard) {
-                    Gdx.app.log("3-Fan Waste", "");
                     // case when fan with size 3 is open
                     stackIndex = 5;
                     gameObject = GameObject.WASTE;
@@ -1676,6 +1675,15 @@ public class View implements GameListener {
                     if (imageWrapper.getGameObject() == GameObject.TABLEAU) {
                         Group payloadGroup = new Group();
                         int stackIndex = imageWrapper.getWrapperStackIndex();
+                        //fix wrapperCardIndices -- START
+                        //ugly last minute fix, sorry :(
+                        int currWrapperCardIndex = game.getTableauAtPos(stackIndex).getFaceDown().size();
+                        for(Card faceUpCard : game.getTableauAtPos(stackIndex).getFaceUp()) {
+                            ImageWrapper currImageWrapper = faceUpCards.get(loader.getCardTextureName(faceUpCard));
+                            currImageWrapper.setWrapperCardIndex(currWrapperCardIndex);
+                            currWrapperCardIndex++;
+                        }
+                        //fix wrapperCardIndices -- END
                         int faceUpIndex = imageWrapper.getWrapperCardIndex() - game.getTableauAtPos(stackIndex).getFaceDown().size();
                         for (int i = faceUpIndex; i < game.getTableauAtPos(stackIndex).getFaceUp().size(); i++) {
                             if(i == faceUpIndex) {
