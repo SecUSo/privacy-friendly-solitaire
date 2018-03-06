@@ -21,6 +21,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
+import org.secuso.privacyfriendlysolitaire.BuildConfig;
 import org.secuso.privacyfriendlysolitaire.R;
 
 /**
@@ -48,6 +49,7 @@ public class AboutActivity extends AppCompatActivity {
 
         ((TextView) findViewById(R.id.secusoWebsite)).setMovementMethod(LinkMovementMethod.getInstance());
         ((TextView) findViewById(R.id.githubURL)).setMovementMethod(LinkMovementMethod.getInstance());
+        ((TextView) findViewById(R.id.textFieldVersionName)).setText(BuildConfig.VERSION_NAME);
     }
 
 }
