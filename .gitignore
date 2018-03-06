@@ -1,70 +1,39 @@
-## Java
+# Built application files
+/*/build/
+build/*
 
-*.class
-*.war
-*.ear
-hs_err_pid*
-
-## Robovm
-robovm-build/
-
-## GWT
-war/
-html/war/gwt_bree/
-html/gwt-unitCache/
-.apt_generated/
-html/war/WEB-INF/deploy/
-html/war/WEB-INF/classes/
-.gwt/
-gwt-unitCache/
-www-test/
-.gwt-tmp/
-
-## Android Studio and Intellij and Android in general
-android/libs/armeabi/
-android/libs/armeabi-v7a/
-android/libs/arm64-v8a/
-android/libs/x86/
-android/libs/x86_64/
-android/gen/
-.idea/
-*.ipr
-*.iws
-*.iml
-out/
+# Crashlytics configuations
 com_crashlytics_export_strings.xml
 
-## Eclipse
-.classpath
-.project
-.metadata
-**/bin/
-tmp/
-*.tmp
-*.bak
-*.swp
-*~.nib
+# Local configuration file (sdk path, etc)
 local.properties
-.settings/
-.loadpath
-.externalToolBuilders/
-*.launch
 
-## NetBeans
-**/nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-nbactions.xml
-nb-configuration.xml
+# Gradle generated files
+.gradle/
 
-## Gradle
+# Signing files
+.signing/
 
-.gradle
-gradle-app.setting
-build/
+# User-specific configurations
+.idea/*
+*.iml
 
-## OS Specific
+# OS-specific files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+
+# Documents
+*.pdf
+*.doc
+*.docx
+*.odt
+
+# APKs, release files
+app/release/*
+*.apk
+
