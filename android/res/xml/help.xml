@@ -29,6 +29,10 @@
             android:icon="@drawable/select_card"
             android:summary="@string/sel_card_summary"/>
 
+        <Preference android:title="@string/help_save"
+            android:selectable="false"
+            android:summary="@string/help_save_summary"/>
+
 
     </PreferenceCategory>
 

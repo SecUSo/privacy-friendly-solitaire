@@ -5,6 +5,8 @@
     <string name="app_name">Solitaire</string>
     <string name="app_name_long">Privacy Friendly Solitaire</string>
 
+    <string name="okay">Okay</string>
+
     <!-- ###DRAWER###-->
     <string name="action_help">Help</string>
     <string name="action_about">About</string>
@@ -17,14 +19,11 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-
     <!-- ###GAME###-->
     <string name="game_button_start">New Game</string>
     <string name="game_button_continue">Continue Game</string>
 
-
     <!--###HELP###-->
-
     <string name="help_usage">Operation</string>
 
     <string name="sel_card">Selected card</string>
@@ -43,6 +42,9 @@
 
     <string name="help_hint">Hint</string>
     <string name="help_hint_summary">Hint for a possible move</string>
+
+    <string name="help_save">Saving a game</string>
+    <string name="help_save_summary">In the current version of Privacy Friendly Solitaire games cannot be saved, but we will integrate this function in version 2.</string>
 
     <!--###Play-Rules###-->
     <string name="rules">Rules</string>
@@ -99,15 +101,6 @@
     <!-- Backgroundcolor-->
     <string name="sp_key_background_color">Select background color</string>
 
-
-    <!-- ### WELCOME DIALOG ### -->
-    <string name="welcome_text">\nThis App is a basic Klondike Solitaire Game. A complete manual can be found on the Help page.
-        \n\nThe sourcecode is available at GitHub.\n\n</string>
-    <string name="welcome">Welcome</string>
-    <string name="okay">Okay</string>
-    <string name="viewhelp">View Help</string>
-    <!--<string name="main_button_welcomedialog">Show Welcome</string>-->
-
     <!-- ### TUTORIAL ### -->
     <string name="skip">SKIP</string>
     <string name="start">GOT IT</string>
@@ -128,11 +121,9 @@
     <string name="alert_box_won_lost_main">Main Menu</string>
     <string name="alert_box_won_lost_another">New Game</string>
 
-
     <!-- ### LOST DIALOG ### -->
     <string name="alert_box_lost">You lost!</string>
     <string name="alert_box_lost_generic_message">Sorry, no more moves possible!</string>
-
 
     <!-- ### WARNING DIALOG ### -->
     <string name="warning_box_title">Caution!</string>
@@ -141,11 +132,9 @@
     <string name="warning_box_positive_answer">Yes</string>
     <string name="warning_box_negative_answer">No</string>
 
-
     <!-- ### Hardcoded Strings -->
     <string name="hardcoded_points">0</string>
     <string name="hardcoded_time">00:00</string>
-
 
     <!-- ### Image Description Strings -->
     <string name="string_descr_pfa_logo">PFA Logo</string>
@@ -157,5 +146,4 @@
     <string name="string_descr_hint_button">Hint Button Asset</string>
     <string name="string_descr_example_playfield">Example Playfield</string>
     <string name="string_descr_table_points_standard">Points Table Standard</string>
-
 </resources>

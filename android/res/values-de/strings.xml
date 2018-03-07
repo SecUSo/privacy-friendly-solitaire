@@ -4,7 +4,8 @@
     <!-- ###Start###-->
     <string name="app_name">Solitär</string>
     <string name="app_name_long">Privacy Friendly Solitär</string>
-
+    
+    <string name="okay">Okay</string>
 
     <!-- ###DRAWER###-->
     <string name="action_help">Hilfe</string>
@@ -43,6 +44,10 @@
 
     <string name="help_hint">Hinweis</string>
     <string name="help_hint_summary">Hinweis für einen möglichen Zug </string>
+
+    <string name="help_save">Spielspeichern</string>
+    <string name="help_save_summary">In der aktuellen Version von Privacy Friendly Solitär ist das Speichern von Spielen leider noch nicht möglich, die Version 2 des Spiels wird diese Funktion aber enthalten.</string>
+
 
     <!--###PLAY-RULES###-->
     <string name="rules">Spielregeln</string>
@@ -95,18 +100,8 @@
     <string name="pref_time_summary_on">An</string>
     <string name="pref_time_summary_off">Aus</string>
 
-
     <!-- Backgroundcolor-->
     <string name="sp_key_background_color">Hintergrundfarbe wählen</string>
-
-
-    <!-- ### WELCOME DIALOG ### -->
-    <string name="welcome_text">\nDiese App ist ein grundlegendes Klondike Solitaire Spiel. Eine komplette Anleitung findet sich auf der Hilfe-Seite.
-        \n\nDer Sourcecode ist auf GitHub verfügbar.\n\n</string>
-    <string name="welcome">Willkommen</string>
-    <string name="okay">Okay</string>
-    <string name="viewhelp">Zeige Hilfe Seite</string>
-    <!--<string name="main_button_welcomedialog">Show Welcome</string>-->
 
     <!-- ### TUTORIAL ### -->
     <string name="skip">SKIP</string>
@@ -120,7 +115,6 @@
     <string name="slide_2_desc_one">Sie können ein Spiel durch Drücken von \"Neues Spiel\" starten. </string>
     <string name="slide_2_desc_two">In der aktuellen Version von Privacy Friendly Solitär ist das Speichern von Spielen leider noch nicht möglich, die Version 2 des Spiels wird diese Funktion aber enthalten.</string>
 
-
     <!-- ### WON DIALOG ### -->
     <string name="alert_box_won">Glückwunsch! Du hast gewonnen!</string>
     <string name="alert_box_won_generic_message">Du hast es geschafft! Super!</string>
@@ -129,11 +123,9 @@
     <string name="alert_box_won_lost_main">Hauptmenü</string>
     <string name="alert_box_won_lost_another">Neues Spiel</string>
 
-
     <!-- ### LOST DIALOG ### -->
     <string name="alert_box_lost">Verloren!</string>
     <string name="alert_box_lost_generic_message">Leider keine Züge mehr möglich!</string>
-
 
     <!-- ### WARNING DIALOG ### -->
     <string name="warning_box_title">Vorsicht!</string>
@@ -142,11 +134,9 @@
     <string name="warning_box_positive_answer">Ja</string>
     <string name="warning_box_negative_answer">Nein</string>
 
-
     <!-- ### Hardcoded Strings -->
     <string name="hardcoded_points">0</string>
     <string name="hardcoded_time">00:00</string>
-
 
     <!-- ### Image Description Strings -->
     <string name="string_descr_pfa_logo">PFA Logo</string>
