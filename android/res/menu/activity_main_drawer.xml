@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="all">
+    <group android:checkableBehavior="all"
+        android:id="@+id/nav_group_main">
         <item
             android:id="@+id/nav_example"
             android:icon="@drawable/ic_home_black_24dp"
@@ -11,9 +12,14 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/action_game"
             android:visible="false"/>
+        <item
+            android:id="@+id/nav_tutorial"
+            android:icon="@drawable/ic_menu_tutorial"
+            android:title="@string/action_tutorial" />
     </group>
 
-    <group android:checkableBehavior="all">
+    <group android:id="@+id/nav_group_add"
+        android:checkableBehavior="all">
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"

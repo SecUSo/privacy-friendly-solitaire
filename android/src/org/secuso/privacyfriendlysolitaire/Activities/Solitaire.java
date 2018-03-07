@@ -426,10 +426,6 @@ public class Solitaire extends AndroidApplication implements
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     break;
-                case R.id.nav_game:
-                    intent = new Intent(this, Solitaire.class);
-                    createBackStack(intent);
-                    break;
                 case R.id.nav_about:
                     intent = new Intent(this, AboutActivity.class);
                     createBackStack(intent);

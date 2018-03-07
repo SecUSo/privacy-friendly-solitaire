@@ -31,6 +31,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import org.secuso.privacyfriendlysolitaire.R;
+import org.secuso.privacyfriendlysolitaire.tutorial.TutorialActivity;
 
 /**
  * taken as is from privacy-friendly-example-app, only changed package names, and callDrawerItem to
@@ -141,6 +142,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_game:
                 intent = new Intent(this, Solitaire.class);
+                createBackStack(intent);
+                break;
+            case R.id.nav_tutorial:
+                intent = new Intent(this, TutorialActivity.class);
+                intent.setAction(TutorialActivity.ACTION_SHOW_ANYWAYS);
                 createBackStack(intent);
                 break;
             case R.id.nav_about:
