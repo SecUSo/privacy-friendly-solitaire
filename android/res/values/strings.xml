@@ -115,35 +115,11 @@
     <string name="next">NEXT</string>
 
     <string name="slide_1_title">Welcome!</string>
-    <string name="slide_1_desc">With Privacy Friendly Password Generator you can generate different passwords for all your accounts while remembering only one master password.</string>
+    <string name="slide_1_desc">Privacy Friendly Solitaire is a basic Klondike Solitaire Game.</string>
 
-    <string name="slide_2_title">Generate passwords</string>
-    <string name="slide_2_desc_one">Choose an account from the list. </string>
-    <string name="slide_2_desc_two">Invent a master password as your initial secret. Based on this master password all other passwords are generated.</string>
-    <string name="slide_2_desc_three">Copy the generated password to the website or service.</string>
-
-    <string name="slide_3_title">Accounts</string>
-    <string name="slide_3_desc_one">Website providers often use password composition policies.</string>
-    <string name="slide_3_desc_two">These policies should direct our password choices and might force us to create passwords with special characteristics like a minimum length. </string>
-    <string name="slide_3_desc_three">Characteristics of a password can be set in the account.</string>
-
-    <string name="slide_4_title">Manage accounts</string>
-    <string name="slide_4_desc_one">Add a new account with the plus button.</string>
-    <string name="slide_4_desc_two">Update an account by a long press. </string>
-    <string name="slide_4_desc_three">Delete an account by a swiping gesture from the right to the left.</string>
-
-    <string name="slide_mp_title">Master Password</string>
-    <string name="slide_mp_desc_one">The master password is the only password, that you have to remember.</string>
-    <string name="slide_mp_desc_two">Based on it all other passwords are generated. </string>
-    <string name="slide_mp_desc_three">The master password is not stored in the application. If you loose it you have to reset all your passwords.</string>
-    <string name="slide_mp_desc_four">If you wish you can write it down and keep it in a safe place.</string>
-
-    <string name="slide_mp2_title">Master Password Tips</string>
-    <string name="slide_mp2_desc_one">Do not include personal data (like birthdays).</string>
-    <string name="slide_mp2_desc_two">Do not use character sequences from the keyboard. </string>
-    <string name="slide_mp2_desc_three">Try to make it as long as possible for you.</string>
-
-
+    <string name="slide_2_title">Play</string>
+    <string name="slide_2_desc_one">Play Solitaire by selecting \"New Game\". </string>
+    <string name="slide_2_desc_two">In the current version of Privacy Friendly Solitaire games cannot be saved, but we will integrate this function in version 2.</string>
 
     <!-- ### WON DIALOG ### -->
     <string name="alert_box_won">Congratulations! You won!</string>

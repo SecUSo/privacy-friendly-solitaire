@@ -2,8 +2,8 @@
 <resources>
 
     <!-- ###Start###-->
-    <string name="app_name">Solitaire</string>
-    <string name="app_name_long">Privacy Friendly Solitaire</string>
+    <string name="app_name">Solitär</string>
+    <string name="app_name_long">Privacy Friendly Solitär</string>
 
 
     <!-- ###DRAWER###-->
@@ -52,13 +52,13 @@
         \nDie Karten des Decks werden je nach Einstellung eine nach der anderen oder drei Karten gleichzeitig aufgedeckt und auf den Waste gelegt.
         </string>
 
-    <string name="rules_point">Punktezählen - Solitaire</string>
+    <string name="rules_point">Punktezählen - Solitär</string>
     <string name="rules_point_desc">Es sind zwei Varianten des Punktezählens auswählbar: Standard oder Vegas.
         Im Standard Modus sind die Regeln wie folgt: \n</string>
     <string name="rules_point_desc_vegas">\nBei der Variante Vegas beginnt der Spieler mit -52$. Für das Ablegen einer Karte auf einer Foundation, erhält er 5$ zurück. Das Deck darf nur einmal komplett auf dem Waste abgelegt werden, danach ist das Spiel beendet.</string>
 
     <string name="help_permission">Berechtigungen</string>
-    <string name="help_permission_answer">Privacy Friendly Solitaire verwendet keine Berechtigungen. </string>
+    <string name="help_permission_answer">Privacy Friendly Solitär verwendet keine Berechtigungen. </string>
 
 
     <!--###ABOUT###-->
@@ -106,6 +106,18 @@
     <string name="okay">Okay</string>
     <string name="viewhelp">Zeige Hilfe Seite</string>
     <!--<string name="main_button_welcomedialog">Show Welcome</string>-->
+
+    <!-- ### TUTORIAL ### -->
+    <string name="skip">SKIP</string>
+    <string name="start">FERTIG</string>
+    <string name="next">WEITER</string>
+
+    <string name="slide_1_title">Willkommen!</string>
+    <string name="slide_1_desc">Privacy Friendly Solitär ein grundlegendes Klondike-Solitär Spiel.</string>
+
+    <string name="slide_2_title">Spielen</string>
+    <string name="slide_2_desc_one">Sie können ein Spiel durch Drücken von \"Neues Spiel\" starten. </string>
+    <string name="slide_2_desc_two">In der aktuellen Version von Privacy Friendly Solitär ist das Speichern von Spielen leider noch nicht möglich, die Version 2 des Spiels wird diese Funktion aber enthalten.</string>
 
 
     <!-- ### WON DIALOG ### -->
