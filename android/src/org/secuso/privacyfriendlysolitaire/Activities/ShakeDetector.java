@@ -19,8 +19,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-import java.lang.Math;
-
 
 public class ShakeDetector implements SensorEventListener {
 
