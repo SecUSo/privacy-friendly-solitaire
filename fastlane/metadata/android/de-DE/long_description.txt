@@ -1,0 +1,23 @@
+Privacy Friendly Solitär ist ein Klondike Solitär-Spiel. Das Ziel des Spiels besteht darin alle Karten auf den Ablagestapeln abzulegen. Eine ausführliche Beschreibung der Spielregeln befindet sich auf der Hilfe-Seite der App.
+
+Welche Features hat Privacy Friendly Solitär?
+
+Die App bietet verschiedene Schwierigkeitsgrade, bei denen abhängig von der gewählten Einstellung jeweils eine oder drei Karten vom Stapel gezogen werden. Zusätzlich gibt es folgende Varianten Punkte zu zählen:
+
+- Kein: Es werden keine Punkte gezählt.
+- Standard: Der Spieler beginnt bei null Punkten, Züge geben unterschiedliche Punkte.
+- Vegas: Der Spieler beginnt bei -52 Punkten und versucht über null Punkte zu kommen, wobei der Stapel nur einmal komplett umgedeckt werden kann.
+
+Der Spieler kann sich durch Klick auf den "Hinweis-Button" einen automatischen Zug generieren lassen oder durch Schütteln (falls in den Einstellungen aktiviert) automatisch Karten auf den Ablagestapeln ablegen. Zusätzlich können Züge rückgängig gemacht werden. Ist das Spiel beinahe gewonnen (also es gibt keine umgedrehten Karten mehr), wird es automatisch fertig gespielt.
+
+Was unterscheidet Privacy Friendly Solitär von anderen, ähnlichen Apps?
+
+1) Keine Berechtigungen
+Privacy Friendly Solitär benötigt keine Berechtigungen.
+
+Zum Vergleich: Die Top Ten ähnlicher Apps, die im Google Play Store erhältlich sind, benötigen durchschnittlich 11,1 Berechtigungen (Stand: März 2018). Hierzu zählen unter anderem der Zugriff auf den Telefonspeicher, USB-Speicherinhalte, Konten auf dem Gerät,
+
+2) Keine störende Werbung
+Viele andere kostenlose Apps im Google Play Store blenden störende Werbung ein, die unter anderem auch die Akkulaufzeit verkürzt und Datenvolumen verbrauchen kann.
+
+Die App gehört zur Gruppe der Privacy Friendly Apps, die von der Forschungsgruppe SECUSO der Technischen Universität Darmstadt entwickelt werden. Mehr Informationen unter: https://secuso.org/pfa
