@@ -21,4 +21,4 @@ For comparison: The Top Ten similar apps from the Google Play Store, require an 
 Moreover, Privacy Friendly Solitaire distinguishes from many other applications in the way that it completely relinquishes advertisements. Advertisement might track a user's actions. It could also shorten battery life or use mobile data.
 
 This app is part of the Privacy Friendly Apps group
-developed by the research group SECUSO at Technische Universität Darmstadt.
+developed by the research group SECUSO at Karlsruhe Institute of Technology.
