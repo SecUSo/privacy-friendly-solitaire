@@ -1,6 +1,4 @@
 android {
-    buildToolsVersion '28.0.3'
-    compileSdkVersion 28
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -17,12 +15,18 @@ android {
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'
     }
+    compileSdkVersion 33
     defaultConfig {
         applicationId "org.secuso.privacyfriendlysolitaire"
         minSdkVersion 21
-        targetSdkVersion 26
-        versionCode 3
-        versionName "1.0.2"
+        targetSdkVersion 33
+        versionCode 4
+        versionName "1.1"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 }
 
@@ -31,6 +35,15 @@ dependencies {
 //    testCompile 'junit:junit:4.12'
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:design:28.0.0'
+
+    constraints {
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
+            because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
+        }
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0") {
+            because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
+        }
+    }
 }
 
 
@@ -85,7 +98,7 @@ task run(type: Exec) {
 }
 
 // sets up the Android Eclipse project, using the old Ant based build.
-eclipse {
+/*eclipse {
     // need to specify Java source sets explicitly, SpringSource Gradle Eclipse plugin
     // ignores any nodes added in classpath.file.withXml
     sourceSets {
@@ -113,13 +126,13 @@ eclipse {
         buildCommand "org.eclipse.jdt.core.javabuilder"
         buildCommand "com.android.ide.eclipse.adt.ApkBuilder"
     }
-}
+} */
 
 // sets up the Android Idea project, using the old Ant based build.
 idea {
     module {
         sourceDirs += file("src");
-        scopes = [ COMPILE: [plus:[project.configurations.compile]]]
+//        scopes = [ COMPILE: [plus:[project.configurations.compile]]]
 
         iml {
             withXml {
