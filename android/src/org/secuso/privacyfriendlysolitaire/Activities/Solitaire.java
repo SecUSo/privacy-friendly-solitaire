@@ -27,12 +27,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.TaskStackBuilder;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.navigation.NavigationView;
+import androidx.core.app.TaskStackBuilder;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -324,7 +324,7 @@ public class Solitaire extends AndroidApplication implements
     //Alert box for winning a game which prints the total time and the reached points
     public void alertBoxWonMessage() {
 
-        WonDialog dia = new WonDialog();
+        WonDialog dia = new WonDialog(this, countTime, showPoints);
         Bundle args = new Bundle();
 
         // put necessary arguments to build correct alertBox
@@ -524,7 +524,16 @@ public class Solitaire extends AndroidApplication implements
 
     // if we did make this dialog static, we could not close the surrounding activity
     @SuppressLint("ValidFragment")
-    public class WonDialog extends DialogFragment {
+    public static class WonDialog extends DialogFragment {
+
+        private boolean countTime;
+        private boolean showPoints;
+        private Solitaire game;
+        public WonDialog(Solitaire game, boolean countTime, boolean showPoints) {
+            this.countTime = countTime;
+            this.showPoints = showPoints;
+            this.game = game;
+        }
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -557,7 +566,7 @@ public class Solitaire extends AndroidApplication implements
                             // if this button is clicked, close current activity
                             dialog.dismiss();
 
-                            Solitaire.this.finish();
+                            game.finish();
                         }
                     })
                     // or start another game
@@ -565,7 +574,7 @@ public class Solitaire extends AndroidApplication implements
                         public void onClick(DialogInterface dialog, int id) {
                             // if this button is clicked, start current activity anew
                             dialog.dismiss();
-                            Solitaire.this.recreate();
+                            game.recreate();
                         }
                     });
 
@@ -574,7 +583,7 @@ public class Solitaire extends AndroidApplication implements
 
         @Override
         public void onCancel(DialogInterface dialog) {
-            alertBoxWonMessage();
+            game.alertBoxWonMessage();
         }
     }
 

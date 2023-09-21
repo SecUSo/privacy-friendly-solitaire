@@ -16,7 +16,7 @@ This program is free software: you can redistribute it and/or modify
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.secuso.privacyfriendlysolitaire.tutorial.TutorialActivity;
 
