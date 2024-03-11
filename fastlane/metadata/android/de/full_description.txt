@@ -1,4 +1,6 @@
+Privacy Friendly Solitär ist ein Klondike Solitär-Spiel. Das Ziel des Spiels besteht darin alle Karten auf den Ablagestapeln abzulegen. Eine ausführliche Beschreibung der Spielregeln befindet sich auf der Hilfe-Seite der App.
 
+Welche Features hat Privacy Friendly Solitär?
 
 Die App bietet verschiedene Schwierigkeitsgrade, bei denen abhängig von der gewählten Einstellung jeweils eine oder drei Karten vom Stapel gezogen werden. Zusätzlich gibt es folgende Varianten Punkte zu zählen:
 
