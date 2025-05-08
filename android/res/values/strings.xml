@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-
     <string name="app_name">Solitaire</string>
     <string name="app_name_long">Privacy Friendly Solitaire</string>
-
-    <string name="okay">Okay</string>
-
+    <string name="okay">Ok</string>
     <!-- ###DRAWER###-->
     <string name="action_help">Help</string>
     <string name="action_about">About</string>
@@ -15,37 +11,26 @@
     <string name="action_game">Game</string>
     <string name="action_tutorial">Tutorial</string>
     <string name="help_privacy_heading">Privacy Info</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <!-- ###GAME###-->
     <string name="game_button_start">New Game</string>
     <string name="game_button_continue">Continue Game</string>
-
     <!--###HELP###-->
     <string name="help_usage">Operation</string>
-
     <string name="sel_card">Selected card</string>
     <string name="sel_card_summary">The selected card is surrounded with a border</string>
-
     <string name="help">Help</string>
-
     <string name="help_undo">Undo</string>
     <string name="help_undo_summary">Undo last move</string>
-
     <string name="help_redo">Redo</string>
     <string name="help_redo_summary">Redo last move</string>
-
     <string name="help_foundation">Automove</string>
     <string name="help_foundation_summary">Shaking the device moves all cards to their respective foundations</string>
-
     <string name="help_hint">Hint</string>
     <string name="help_hint_summary">Hint for a possible move</string>
-
     <string name="help_save">Saving a game</string>
     <string name="help_save_summary">In the current version of Privacy Friendly Solitaire games cannot be saved, but we will integrate this function in version 2.</string>
-
     <!--###Play-Rules###-->
     <string name="rules">Rules</string>
     <string name="rules_description">
@@ -55,18 +40,13 @@
         \nIn the standard game mode, the deck can be reset and reopened as often as desired. In the Vegas game mode you can not reset the deck.
         \nThe cards of the deck are faced up one by one or three cards simultaneously, depending on the settings, and sent to the Waste.
     </string>
-
     <string name="rules_point">Counting points - Solitaire</string>
     <string name="rules_point_desc">There are two possibilities to count points: Standard or Vegas.
         In Standard mode, the rules are as follows: \n</string>
-
     <string name="rules_point_desc_vegas">\nIn Vegas mode the player starts with -52$. For placing a card on a foundation, the player gets 5$. The deck can be placed only once on the waste, after which the game is finished.
     </string>
-
     <string name="help_permission">Permissions</string>
     <string name="help_permission_answer">Privacy Friendly App Solitaire does not require any permission.</string>
-
-
     <!--###ABOUT###-->
     <string name="about">About</string>
     <string name="version_number">Version</string>
@@ -75,44 +55,31 @@
     <string name="about_affiliation">In affiliation with</string>
     <string name="privacy_friendly">This application belongs to the group of Privacy Friendly Apps developed by Karlsruhe Institute of Technology. Sourcecode licensed under GPLv3. Images copyright KIT and Google Inc.</string>
     <string name="more_info">More information can be found on:</string>
-
     <!-- ###SETTINGS### -->
     <string name="pref_sound_switch">Sound</string>
     <string name="pref_sound_switch_summary_on">On</string>
     <string name="pref_sound_switch_summary_off">Off</string>
-
     <string name="pref_shake_switch">Shake function</string>
     <string name="pref_shake_switch_summary_on">On</string>
     <string name="pref_shake_switch_summary_off">Off</string>
-
-
     <string name="pref_dnd_switch_summary_on">On</string>
     <string name="pref_dnd_switch_summary_off">Off</string>
-
     <string name="pref_count_point">Points</string>
-
     <string name="pref_waste">Cards per draw</string>
-
     <string name="pref_time">Time</string>
     <string name="pref_time_summary_on">On</string>
     <string name="pref_time_summary_off">Off</string>
-
-
     <!-- Backgroundcolor-->
     <string name="sp_key_background_color">Select background color</string>
-
     <!-- ### TUTORIAL ### -->
     <string name="skip">SKIP</string>
     <string name="start">GOT IT</string>
     <string name="next">NEXT</string>
-
     <string name="slide_1_title">Welcome!</string>
     <string name="slide_1_desc">Privacy Friendly Solitaire is a basic Klondike Solitaire Game.</string>
-
     <string name="slide_2_title">Play</string>
     <string name="slide_2_desc_one">Play Solitaire by selecting \"New Game\". </string>
     <string name="slide_2_desc_two">In the current version of Privacy Friendly Solitaire games cannot be saved, but we will integrate this function in version 2.</string>
-
     <!-- ### WON DIALOG ### -->
     <string name="alert_box_won">Congratulations! You won!</string>
     <string name="alert_box_won_generic_message">You did it! Awesome!</string>
@@ -120,22 +87,18 @@
     <string name="alert_box_won_points">Points: </string>
     <string name="alert_box_won_lost_main">Main Menu</string>
     <string name="alert_box_won_lost_another">New Game</string>
-
     <!-- ### LOST DIALOG ### -->
     <string name="alert_box_lost">You lost!</string>
     <string name="alert_box_lost_generic_message">Sorry, no more moves possible!</string>
-
     <!-- ### WARNING DIALOG ### -->
     <string name="warning_box_title">Caution!</string>
     <string name="warning_box_message">\nYou are leaving the game. Your current game will not be saved.\n\nContinue anyway?</string>
     <string name="warning_box_show_future">Do not show this dialog in the future</string>
     <string name="warning_box_positive_answer">Yes</string>
     <string name="warning_box_negative_answer">No</string>
-
     <!-- ### Hardcoded Strings -->
     <string name="hardcoded_points">0</string>
     <string name="hardcoded_time">00:00</string>
-
     <!-- ### Image Description Strings -->
     <string name="string_descr_pfa_logo">PFA Logo</string>
     <string name="string_descr_drawer_pfa_logo">Drawer PFA Logo</string>
