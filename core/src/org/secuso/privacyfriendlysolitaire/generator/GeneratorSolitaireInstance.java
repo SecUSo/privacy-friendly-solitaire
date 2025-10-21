@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Collections;
 import java.util.Vector;
 
 import static org.secuso.privacyfriendlysolitaire.game.Constants.*;
@@ -63,10 +64,8 @@ public class GeneratorSolitaireInstance {
         Set<Card> allCards = generateAllCards();
 
         // bring generated cards into random order
-        List<Card> scrambledCardList = new ArrayList<Card>();
-        for (Card c : allCards) {
-            scrambledCardList.add(c);
-        }
+        List<Card> scrambledCardList = new ArrayList<Card>(allCards);
+        Collections.shuffle(scrambledCardList);
 
         // generate data container to store the deck and tableaus
         Vector<Card> deck = new Vector<Card>(24);
