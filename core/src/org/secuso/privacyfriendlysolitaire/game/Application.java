@@ -26,6 +26,7 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.utils.Timer;
 
 import org.secuso.privacyfriendlysolitaire.CallBackListener;
 import org.secuso.privacyfriendlysolitaire.ScoreListener;
@@ -158,12 +159,13 @@ public class Application extends ApplicationAdapter implements ScoreListener {
                 public void run() {
                     game.undo();
 
-                    try {
-                        sleep(300);
-                        clickPossible = true;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    // re-enable button after animation finished
+                    Timer.schedule(new Timer.Task(){
+                        @Override
+                        public void run() {
+                            clickPossible = true;
+                        }
+                    }, .3f);
                 }
             });
         }
@@ -177,13 +179,13 @@ public class Application extends ApplicationAdapter implements ScoreListener {
                 @Override
                 public void run() {
                     game.redo();
-
-                    try {
-                        sleep(300);
-                        clickPossible = true;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    // re-enable button after animation finished
+                    Timer.schedule(new Timer.Task(){
+                        @Override
+                        public void run() {
+                            clickPossible = true;
+                        }
+                    }, .3f);
                 }
             });
         }
@@ -209,13 +211,13 @@ public class Application extends ApplicationAdapter implements ScoreListener {
                         }
                         game.handleAction(move.getAction1(), false);
                         game.handleAction(move.getAction2(), false);
-
-                        try {
-                            sleep(300);
-                            clickPossible = true;
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        // re-enable button after animation finished
+                        Timer.schedule(new Timer.Task(){
+                            @Override
+                            public void run() {
+                                clickPossible = true;
+                            }
+                        }, .3f);
                     }
                 }
 
@@ -242,12 +244,13 @@ public class Application extends ApplicationAdapter implements ScoreListener {
                             }
 
                             if (!practicallyWon) {
-                                try {
-                                    sleep(300);
-                                    clickPossible = true;
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
+                                // re-enable button after animation finished
+                                Timer.schedule(new Timer.Task(){
+                                    @Override
+                                    public void run() {
+                                        clickPossible = true;
+                                    }
+                                }, .3f);
                             }
 
                         }
