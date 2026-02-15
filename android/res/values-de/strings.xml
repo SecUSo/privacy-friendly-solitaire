@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!-- ###Start###-->
     <string name="app_name">Solitär</string>
     <string name="app_name_long">Privacy Friendly Solitär</string>
-    
     <string name="okay">Okay</string>
-
     <!-- ###DRAWER###-->
     <string name="action_help">Hilfe</string>
     <string name="action_about">Über</string>
@@ -15,106 +12,69 @@
     <string name="action_game">Spiel</string>
     <string name="action_tutorial">Tutorial</string>
     <string name="help_privacy_heading">Datenschutzinfo</string>
-
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
+    <string name="navigation_drawer_open">Navigationsmenü öffnen</string>
+    <string name="navigation_drawer_close">Navigationsmenü schließen</string>
     <!-- ###GAME###-->
     <string name="game_button_start">Neues Spiel</string>
     <string name="game_button_continue">Spiel fortsetzten</string>
-
     <!--###HELP###-->
 
     <string name="help_usage">Bedienung</string>
-
     <string name="sel_card">Ausgewählte Karte</string>
     <string name="sel_card_summary">Eine ausgewählte Karte im Spiel wird durch eine gelbe Umrandung veranschaulicht</string>
-
     <string name="help">Hilfe</string>
-
     <string name="help_undo">Rückgängig</string>
     <string name="help_undo_summary">Den letzten Zug rückgängig machen</string>
-
     <string name="help_redo">Wiederholen</string>
     <string name="help_redo_summary">Den letzten Zug wiederholen</string>
-
     <string name="help_foundation">Automatisches Ablegen</string>
     <string name="help_foundation_summary">Durch Schütteln werden Karten wenn möglich automatisch auf den Foundations abgelegt</string>
-
     <string name="help_hint">Hinweis</string>
     <string name="help_hint_summary">Hinweis für einen möglichen Zug </string>
-
     <string name="help_save">Spielspeichern</string>
     <string name="help_save_summary">In der aktuellen Version von Privacy Friendly Solitär ist das Speichern von Spielen leider noch nicht möglich, die Version 2 des Spiels wird diese Funktion aber enthalten.</string>
-
-
     <!--###PLAY-RULES###-->
     <string name="rules">Spielregeln</string>
-    <string name="rules_description">\nEs werden sieben verdeckte Kartenstapel (Tableaus) von links nach rechts nebeneinandergelegt. Die obersten Karten der Tableaus werden umgedreht.
-       \nUm Solitär zu gewinnen, müssen alle Karten in aufsteigender Reihenfolge (beginnend mit dem Ass, dann 2, 3 usw.) und nach Farben (Karo, Herz, Pik, Kreuz) sortiert auf die vier horizontal markierten Plätze (Foundations) abgelegt werden. Das Spiel ist gewonnen, wenn alle Karten auf den passenden Foundations liegen, oder verloren, wenn es keine Zugmöglichkeiten mehr gibt bzw. der Spieler aufgibt.
-        \nDazu können Karten auf den Tableaus abgelegt und verschoben werden oder direkt auf einer der vier Foundations abgelegt werden. Die Karten dürfen auf den sieben Tableaus in absteigender Reihenfolge angelegt werden, allerdings nur im Wechsel von rot und schwarz. Wird die letzte offene Karte von einem Tableau bewegt, so wird die oberste verdeckte Karte des Tableaus aufgedeckt. Ein leerer Tableauplatz kann nur durch einen König besetzt werden.
-        \nIm Spielmodus Standard darf das Deck beliebig oft zurückgesetzt und erneut aufgedeckt werden. Im Spielmodus Vegas ist das Zurücksetzen des Decks nicht möglich.
-        \nDie Karten des Decks werden je nach Einstellung eine nach der anderen oder drei Karten gleichzeitig aufgedeckt und auf den Waste gelegt.
-        </string>
-
+    <string name="rules_description">Es werden sieben verdeckte Kartenstapel (Tableaus) von links nach rechts nebeneinandergelegt. Die obersten Karten der Tableaus werden umgedreht. \nUm Solitär zu gewinnen, müssen alle Karten in aufsteigender Reihenfolge (beginnend mit dem Ass, dann 2, 3 usw.) und nach Farben (Karo, Herz, Pik, Kreuz) sortiert auf die vier horizontal markierten Plätze (Foundations) abgelegt werden. Das Spiel ist gewonnen, wenn alle Karten auf den passenden Foundations liegen, oder verloren, wenn es keine Zugmöglichkeiten mehr gibt bzw. der Spieler aufgibt. \nDazu können Karten auf den Tableaus abgelegt und verschoben werden oder direkt auf einer der vier Foundations abgelegt werden. Die Karten dürfen auf den sieben Tableaus in absteigender Reihenfolge angelegt werden, allerdings nur im Wechsel von rot und schwarz. Wird die letzte offene Karte von einem Tableau bewegt, so wird die oberste verdeckte Karte des Tableaus aufgedeckt. Ein leerer Tableauplatz kann nur durch einen König besetzt werden. \nIm Spielmodus Standard darf das Deck beliebig oft zurückgesetzt und erneut aufgedeckt werden. Im Spielmodus Vegas ist das Zurücksetzen des Decks nicht möglich. \nDie Karten des Decks werden je nach Einstellung eine nach der anderen oder drei Karten gleichzeitig aufgedeckt und auf den Waste gelegt.</string>
     <string name="rules_point">Punktezählen - Solitär</string>
     <string name="rules_point_desc">Es sind zwei Varianten des Punktezählens auswählbar: Standard oder Vegas.
         Im Standard Modus sind die Regeln wie folgt: \n</string>
     <string name="rules_point_desc_vegas">\nBei der Variante Vegas beginnt der Spieler mit -52$. Für das Ablegen einer Karte auf einer Foundation, erhält er 5$ zurück. Das Deck darf nur einmal komplett auf dem Waste abgelegt werden, danach ist das Spiel beendet.</string>
-
     <string name="help_permission">Berechtigungen</string>
     <string name="help_permission_answer">Privacy Friendly Solitär verwendet keine Berechtigungen. </string>
-
-
     <!--###ABOUT###-->
     <string name="about">Über</string>
     <string name="version_number">Version</string>
     <string name="about_author">Autoren: </string>
-
     <string name="about_author_contributors">und Mitwirkende.</string>
     <string name="about_affiliation">In Zusammenarbeit mit</string>
     <string name="privacy_friendly">Diese App gehört zur Gruppe der Privacy Friendly Apps entwickelt vom Karlsruher Institut für Technologie. Quelltext lizenziert unter GPLv3. Bilder copyright KIT und Google Inc.</string>
     <string name="more_info">Weitere Infos unter:</string>
-
-
     <!-- ###SETTINGS### -->
     <string name="pref_sound_switch">Ton</string>
     <string name="pref_sound_switch_summary_on">An</string>
     <string name="pref_sound_switch_summary_off">Aus</string>
-
     <string name="pref_shake_switch">Schüttelfunktion </string>
     <string name="pref_shake_switch_summary_on">An</string>
     <string name="pref_shake_switch_summary_off">Aus</string>
-
     <string name="pref_dnd_switch_summary_on">An</string>
     <string name="pref_dnd_switch_summary_off">Aus</string>
-
-
     <string name="pref_count_point">Punkte</string>
-
     <string name="pref_waste">Karten pro Zug</string>
-
-
     <string name="pref_time">Zeit</string>
     <string name="pref_time_summary_on">An</string>
     <string name="pref_time_summary_off">Aus</string>
-
     <!-- Backgroundcolor-->
     <string name="sp_key_background_color">Hintergrundfarbe wählen</string>
-
     <!-- ### TUTORIAL ### -->
     <string name="skip">SKIP</string>
     <string name="start">FERTIG</string>
     <string name="next">WEITER</string>
-
     <string name="slide_1_title">Willkommen!</string>
     <string name="slide_1_desc">Privacy Friendly Solitär ein grundlegendes Klondike-Solitär Spiel.</string>
-
     <string name="slide_2_title">Spielen</string>
     <string name="slide_2_desc_one">Sie können ein Spiel durch Drücken von \"Neues Spiel\" starten. </string>
     <string name="slide_2_desc_two">In der aktuellen Version von Privacy Friendly Solitär ist das Speichern von Spielen leider noch nicht möglich, die Version 2 des Spiels wird diese Funktion aber enthalten.</string>
-
     <!-- ### WON DIALOG ### -->
     <string name="alert_box_won">Glückwunsch! Du hast gewonnen!</string>
     <string name="alert_box_won_generic_message">Du hast es geschafft! Super!</string>
@@ -122,31 +82,26 @@
     <string name="alert_box_won_points">Punkte: </string>
     <string name="alert_box_won_lost_main">Hauptmenü</string>
     <string name="alert_box_won_lost_another">Neues Spiel</string>
-
     <!-- ### LOST DIALOG ### -->
     <string name="alert_box_lost">Verloren!</string>
     <string name="alert_box_lost_generic_message">Leider keine Züge mehr möglich!</string>
-
     <!-- ### WARNING DIALOG ### -->
     <string name="warning_box_title">Vorsicht!</string>
     <string name="warning_box_message">\nDu verlässt das Spiel. Der aktuelle Spielstand wird nicht gespeichert.\n\nTrotzdem fortfahren?</string>
     <string name="warning_box_show_future">Diesen Dialog in der Zukunft nicht anzeigen</string>
     <string name="warning_box_positive_answer">Ja</string>
     <string name="warning_box_negative_answer">Nein</string>
-
     <!-- ### Hardcoded Strings -->
     <string name="hardcoded_points">0</string>
     <string name="hardcoded_time">00:00</string>
-
     <!-- ### Image Description Strings -->
     <string name="string_descr_pfa_logo">PFA Logo</string>
-    <string name="string_descr_drawer_pfa_logo">Drawer PFA Logo</string>
+    <string name="string_descr_drawer_pfa_logo">Menü PFA Logo</string>
     <string name="string_descr_secuso_blue">Secuso Logo Blau</string>
     <string name="string_descr_icon_main_menu">Icon Hauptmenü</string>
-    <string name="string_descr_undo_button">Undo Button Asset</string>
-    <string name="string_descr_redo_button">Redo Button Asset</string>
+    <string name="string_descr_undo_button">Rückgängig Button Asset</string>
+    <string name="string_descr_redo_button">Wiederholen Button Asset</string>
     <string name="string_descr_hint_button">Hinweis Button Asset</string>
-    <string name="string_descr_example_playfield">Beispiel Spielfeld</string>
+    <string name="string_descr_example_playfield">Beispielspielfeld</string>
     <string name="string_descr_table_points_standard">Punktetabelle Standard</string>
-
 </resources>

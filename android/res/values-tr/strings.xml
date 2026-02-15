@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_dnd_switch_summary_off">Kapalı</string>
+    <string name="action_help">Yardım</string>
+    <string name="action_about">Hakkında</string>
+    <string name="action_settings">Ayarlar</string>
+    <string name="action_main">Başlıca</string>
+    <string name="okay">Tamam</string>
+    <string name="action_tutorial">Öğretici</string>
+    <string name="navigation_drawer_open">Gezinti çekmecesini aç</string>
+    <string name="help_privacy_heading">Gizlilik Bilgisi</string>
+    <string name="action_game">Oyun</string>
+    <string name="help">Yardım</string>
+    <string name="help_undo">Geri al</string>
+    <string name="navigation_drawer_close">Gezinti çekmecesini kapat</string>
+    <string name="game_button_start">Yeni Oyun</string>
+    <string name="game_button_continue">Oyuna Devam Et</string>
+    <string name="about">Hakkında</string>
+    <string name="version_number">Sürüm</string>
+    <string name="about_author">Yazarlar:</string>
+    <string name="help_permission">İzinler</string>
+    <string name="about_affiliation">ile bağlantılı olarak</string>
+    <string name="about_author_contributors">ve katkıda bulunanlar.</string>
+    <string name="pref_sound_switch_summary_on">Açık</string>
+    <string name="pref_shake_switch_summary_on">Açık</string>
+    <string name="pref_dnd_switch_summary_on">Açık</string>
+    <string name="pref_sound_switch_summary_off">Kapalı</string>
+    <string name="pref_shake_switch_summary_off">Kapalı</string>
+    <string name="pref_shake_switch">Sallama işlevi</string>
+    <string name="pref_count_point">Puan</string>
+    <string name="slide_2_title">Oyna</string>
+    <string name="next">İLERİ</string>
+    <string name="slide_1_title">Hoş geldiniz!</string>
+    <string name="skip">ATLA</string>
+    <string name="start">ANLADIM</string>
+    <string name="pref_time">Süre</string>
+    <string name="pref_time_summary_on">Açık</string>
+    <string name="pref_time_summary_off">Kapalı</string>
+    <string name="sp_key_background_color">Arka plan rengi seçin</string>
+    <string name="alert_box_won_lost_main">Ana Menü</string>
+    <string name="alert_box_lost">Kaybettin!</string>
+    <string name="alert_box_won_lost_another">Yeni Oyun</string>
+    <string name="warning_box_positive_answer">Evet</string>
+    <string name="warning_box_negative_answer">Hayır</string>
+    <string name="hardcoded_points">0</string>
+    <string name="hardcoded_time">00:00</string>
+</resources>
